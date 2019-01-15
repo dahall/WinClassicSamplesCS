@@ -6,6 +6,24 @@ namespace Vanara.PInvoke
 {
 	internal static class ShellHelpers
 	{
+		public static IShellItem GetDragItem(object data)
+		{
+			var hr = SHGetIDListFromObject(data, out var pidl);
+			if (hr.Succeeded)
+				return SHCreateItemFromIDList<IShellItem>(pidl);
+
+			if (data is System.Runtime.InteropServices.ComTypes.IDataObject pdo)
+			{
+				hr = SHCreateShellItemArrayFromDataObject(pdo, typeof(IShellItem2).GUID, out var ppv);
+				if (hr.Succeeded && ppv.GetCount() > 0)
+					return ppv.GetItemAt(0);
+
+				//pdo.GetData(ref fmt, out var medium);
+			}
+
+			return null;
+		}
+
 		public static IShellItem GetShellItem(this IFolderView2 pfv, int iItem = -1)
 		{
 			if (iItem == -1 && pfv.GetSelectedItem(-1, out iItem).Failed)
