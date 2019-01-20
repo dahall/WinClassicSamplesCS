@@ -23,6 +23,14 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ExecInExplorer", "Win7\winu
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "fileisinuse", "Win7\winui\shell\appplatform\fileisinuse\fileisinuse.csproj", "{5419B69C-7DBE-4006-B62F-38BC06935A6A}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "appshellintegration", "appshellintegration", "{DF85BF81-EE96-41EF-AA3F-ED1EAE463619}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AutomaticJumpList", "Win7\winui\shell\appshellintegration\AutomaticJumpList\AutomaticJumpList.csproj", "{095A4A6A-6A1D-4493-AC12-527199274635}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CustomJumpList", "Win7\winui\shell\appshellintegration\CustomJumpList\CustomJumpList.csproj", "{4BFC28A4-20D7-487E-AEFB-EAD48D7BB01C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DropTargetVerb", "Win7\winui\shell\appshellintegration\DropTargetVerb\DropTargetVerb.csproj", "{614B6038-7A52-407E-B48C-79817C1F7669}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -53,6 +61,18 @@ Global
 		{5419B69C-7DBE-4006-B62F-38BC06935A6A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5419B69C-7DBE-4006-B62F-38BC06935A6A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5419B69C-7DBE-4006-B62F-38BC06935A6A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{095A4A6A-6A1D-4493-AC12-527199274635}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{095A4A6A-6A1D-4493-AC12-527199274635}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{095A4A6A-6A1D-4493-AC12-527199274635}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{095A4A6A-6A1D-4493-AC12-527199274635}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4BFC28A4-20D7-487E-AEFB-EAD48D7BB01C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4BFC28A4-20D7-487E-AEFB-EAD48D7BB01C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4BFC28A4-20D7-487E-AEFB-EAD48D7BB01C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4BFC28A4-20D7-487E-AEFB-EAD48D7BB01C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{614B6038-7A52-407E-B48C-79817C1F7669}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{614B6038-7A52-407E-B48C-79817C1F7669}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{614B6038-7A52-407E-B48C-79817C1F7669}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{614B6038-7A52-407E-B48C-79817C1F7669}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -67,6 +87,10 @@ Global
 		{8C0538E7-6662-4508-960F-F0193A0E02E6} = {EC86EA97-FDE0-44A0-8A95-F0076988987F}
 		{B3108BC1-2E87-4155-9B80-6D4DDD6C7D01} = {EC86EA97-FDE0-44A0-8A95-F0076988987F}
 		{5419B69C-7DBE-4006-B62F-38BC06935A6A} = {EC86EA97-FDE0-44A0-8A95-F0076988987F}
+		{DF85BF81-EE96-41EF-AA3F-ED1EAE463619} = {49EF5E85-E0CD-47CA-9489-2434649CA6FD}
+		{095A4A6A-6A1D-4493-AC12-527199274635} = {DF85BF81-EE96-41EF-AA3F-ED1EAE463619}
+		{4BFC28A4-20D7-487E-AEFB-EAD48D7BB01C} = {DF85BF81-EE96-41EF-AA3F-ED1EAE463619}
+		{614B6038-7A52-407E-B48C-79817C1F7669} = {DF85BF81-EE96-41EF-AA3F-ED1EAE463619}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {82D57A23-9C32-4014-9AFB-25B38D08E1D1}
