@@ -33,6 +33,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DropTargetVerb", "Win7\winu
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PlaylistCreator", "Win7\winui\shell\appshellintegration\PlaylistCreator\PlaylistCreator.csproj", "{1294BA2E-698E-4B71-9437-55088B620849}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "fileoperations", "Win7\winui\shell\appplatform\fileoperations\fileoperations.csproj", "{C3176341-2229-42A7-A9DF-846CB8C360A9}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -79,6 +81,10 @@ Global
 		{1294BA2E-698E-4B71-9437-55088B620849}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1294BA2E-698E-4B71-9437-55088B620849}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{1294BA2E-698E-4B71-9437-55088B620849}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C3176341-2229-42A7-A9DF-846CB8C360A9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C3176341-2229-42A7-A9DF-846CB8C360A9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C3176341-2229-42A7-A9DF-846CB8C360A9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C3176341-2229-42A7-A9DF-846CB8C360A9}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -98,6 +104,7 @@ Global
 		{4BFC28A4-20D7-487E-AEFB-EAD48D7BB01C} = {DF85BF81-EE96-41EF-AA3F-ED1EAE463619}
 		{614B6038-7A52-407E-B48C-79817C1F7669} = {DF85BF81-EE96-41EF-AA3F-ED1EAE463619}
 		{1294BA2E-698E-4B71-9437-55088B620849} = {DF85BF81-EE96-41EF-AA3F-ED1EAE463619}
+		{C3176341-2229-42A7-A9DF-846CB8C360A9} = {EC86EA97-FDE0-44A0-8A95-F0076988987F}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {82D57A23-9C32-4014-9AFB-25B38D08E1D1}

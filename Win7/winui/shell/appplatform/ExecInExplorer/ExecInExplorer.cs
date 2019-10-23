@@ -17,7 +17,8 @@ namespace ExecInExplorer
 		// IShellDispatch2 and related interfaces.
 		private static object GetShellDispatchFromView(IShellView psv)
 		{
-			var psfvd = (IShellFolderViewDual)psv.GetItemObject(SVGIO.SVGIO_BACKGROUND, IID_IDispatch);
+			var io = psv.GetItemObject(SVGIO.SVGIO_BACKGROUND, IID_IDispatch);
+			var psfvd = (IShellFolderViewDual)io;
 			return psfvd.Application;
 		}
 
@@ -27,8 +28,7 @@ namespace ExecInExplorer
 		private static T GetShellViewForDesktop<T>() where T : class
 		{
 			var psw = new IShellWindows();
-			object vEmpty = null;
-			var pdisp = psw.FindWindowSW(ref vEmpty, default, ShellWindowTypeConstants.SWC_DESKTOP, out var hwnd, ShellWindowFindWindowOptions.SWFO_NEEDDISPATCH);
+			var pdisp = psw.FindWindowSW(0 /* CSIDL_Desktop */, default, ShellWindowTypeConstants.SWC_DESKTOP, out _, ShellWindowFindWindowOptions.SWFO_NEEDDISPATCH);
 			var psb = ShlwApi.IUnknown_QueryService<IShellBrowser>(pdisp, SID_STopLevelBrowser);
 			return (T)psb.QueryActiveShellView();
 		}
