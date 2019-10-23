@@ -1,11 +1,15 @@
 ﻿using System;
 using System.Runtime.InteropServices;
+
 using static Vanara.PInvoke.Shell32;
 
 namespace Vanara.PInvoke
 {
 	internal static class ShellHelpers
 	{
+		// register the COM local server for the current running module this is for self registering applications
+		public static HRESULT HRESULT_FROM_WIN32(Win32Error err) => err.ToHRESULT();
+
 		public static IShellItem GetDragItem(object data)
 		{
 			var hr = SHGetIDListFromObject(data, out var pidl);

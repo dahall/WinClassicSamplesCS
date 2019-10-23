@@ -2,10 +2,14 @@
 using System.Runtime.InteropServices;
 using System.Text;
 using System.Windows.Forms;
-using Vanara.PInvoke;
+
+using IServiceProvider = Vanara.PInvoke.Shell32.IServiceProvider;
+
 using static Vanara.PInvoke.Ole32;
 using static Vanara.PInvoke.Shell32;
-using IServiceProvider = Vanara.PInvoke.Shell32.IServiceProvider;
+
+using Vanara.PInvoke;
+using static Vanara.PInvoke.SearchApi;
 
 namespace ExplorerBrowserSearch
 {

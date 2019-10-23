@@ -4,10 +4,10 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{5419B69C-7DBE-4006-B62F-38BC06935A6A}</ProjectGuid>
+    <ProjectGuid>{1294BA2E-698E-4B71-9437-55088B620849}</ProjectGuid>
     <OutputType>WinExe</OutputType>
-    <RootNamespace>fileisinuse</RootNamespace>
-    <AssemblyName>fileisinuse</AssemblyName>
+    <RootNamespace>PlaylistCreator</RootNamespace>
+    <AssemblyName>PlaylistCreator</AssemblyName>
     <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
@@ -50,20 +50,17 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="..\ExplorerBrowserSearch\ShellHelpers.cs">
+    <Compile Include="..\..\appplatform\ExplorerBrowserSearch\ShellHelpers.cs">
       <Link>ShellHelpers.cs</Link>
     </Compile>
-    <Compile Include="fileisinusesample.cs">
-      <SubType>Form</SubType>
+    <Compile Include="..\DropTargetVerb\RegisterExtension.cs">
+      <Link>RegisterExtension.cs</Link>
     </Compile>
-    <Compile Include="fileisinusesample.Designer.cs">
-      <DependentUpon>fileisinusesample.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Program.cs" />
+    <Compile Include="ApplicationVerb.cs" />
+    <Compile Include="COMHelpers.cs" />
+    <Compile Include="PlaylistCreator.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <EmbeddedResource Include="fileisinusesample.resx">
-      <DependentUpon>fileisinusesample.cs</DependentUpon>
-    </EmbeddedResource>
+    <Compile Include="PropertyStoreReader.cs" />
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
@@ -72,8 +69,8 @@
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
     </Compile>
-    <None Include="IFileIsInUse_sample.docx" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
@@ -88,6 +85,9 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
+    <PackageReference Include="Vanara.PInvoke.Mpr">
+      <Version>3.1.1</Version>
+    </PackageReference>
     <PackageReference Include="Vanara.PInvoke.Shell32">
       <Version>3.1.1</Version>
     </PackageReference>

@@ -1,13 +1,16 @@
 ﻿using System;
 using System.Text;
 using System.Windows.Forms;
-using Vanara.PInvoke;
+
 using static CustomJumpList.FileRegistrations;
+
 using static Vanara.PInvoke.Kernel32;
 using static Vanara.PInvoke.Ole32;
 using static Vanara.PInvoke.PropSys;
 using static Vanara.PInvoke.Shell32;
 using static Vanara.PInvoke.ShlwApi;
+
+using Vanara.PInvoke;
 
 namespace CustomJumpList
 {

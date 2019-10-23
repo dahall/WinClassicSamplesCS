@@ -3,9 +3,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using Vanara.PInvoke;
+
 using static Vanara.PInvoke.Ole32;
 using static Vanara.PInvoke.Shell32;
+
+using Vanara.PInvoke;
+using static Vanara.PInvoke.SearchApi;
 
 namespace searchfolder
 {

@@ -75,8 +75,11 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
+    <PackageReference Include="Vanara.PInvoke.SearchApi">
+      <Version>3.1.1</Version>
+    </PackageReference>
     <PackageReference Include="Vanara.PInvoke.Shell32">
-      <Version>2.1.3</Version>
+      <Version>3.1.1</Version>
     </PackageReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

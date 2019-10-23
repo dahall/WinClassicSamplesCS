@@ -1,12 +1,15 @@
 ﻿using System;
 using System.Text;
 using System.Windows.Forms;
-using Vanara.InteropServices;
-using Vanara.PInvoke;
+
 using static AutomaticJumpList.FileRegistrations;
+
 using static Vanara.PInvoke.Kernel32;
 using static Vanara.PInvoke.Shell32;
 using static Vanara.PInvoke.ShlwApi;
+
+using Vanara.InteropServices;
+using Vanara.PInvoke;
 
 namespace AutomaticJumpList
 {

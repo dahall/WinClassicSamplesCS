@@ -5,11 +5,14 @@ using System.Runtime.InteropServices;
 using System.Runtime.InteropServices.ComTypes;
 using System.Text;
 using System.Windows.Forms;
-using Vanara.Extensions;
-using Vanara.PInvoke;
+
+using IDataObject = System.Windows.Forms.IDataObject;
+
 using static Vanara.PInvoke.Shell32;
 using static Vanara.PInvoke.User32;
-using IDataObject = System.Windows.Forms.IDataObject;
+
+using Vanara.Extensions;
+using Vanara.PInvoke;
 
 namespace ChangeNotifyWatcher
 {

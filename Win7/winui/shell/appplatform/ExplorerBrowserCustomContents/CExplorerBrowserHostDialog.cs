@@ -4,10 +4,13 @@ using System.Runtime.InteropServices.ComTypes;
 using System.Text;
 using System.Threading;
 using System.Windows.Forms;
-using Vanara.PInvoke;
+
+using IServiceProvider = Vanara.PInvoke.Shell32.IServiceProvider;
+
 using static Vanara.PInvoke.Ole32;
 using static Vanara.PInvoke.Shell32;
-using IServiceProvider = Vanara.PInvoke.Shell32.IServiceProvider;
+
+using Vanara.PInvoke;
 
 namespace ExplorerBrowserCustomContents
 {

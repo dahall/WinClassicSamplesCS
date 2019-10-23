@@ -1,11 +1,13 @@
-using System;
+﻿using System;
 using System.Drawing;
 using System.Runtime.InteropServices;
 using System.Runtime.InteropServices.ComTypes;
-using Vanara.PInvoke;
+
 using static Vanara.PInvoke.Ole32;
 using static Vanara.PInvoke.Shell32;
 using static Vanara.PInvoke.ShlwApi;
+
+using Vanara.PInvoke;
 
 // This demonstrates how implement a shell verb using the DropTarget method this method is prefered for verb implementations that need to
 // work on Windows XP as it provides the most flexibility, it is simple, and supports out of process activation.
@@ -116,6 +118,7 @@ namespace DropTargetVerb
 			}
 		}
 
+		[STAThread]
 		private static void Main(string[] args)
 		{
 			const string c_szProgID = "txtfile";

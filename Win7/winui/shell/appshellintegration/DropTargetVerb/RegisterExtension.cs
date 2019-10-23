@@ -1,26 +1,29 @@
-using System;
+﻿using System;
+using System.Collections.Generic;
 using System.Runtime.InteropServices.ComTypes;
 using System.Text;
-using Vanara.PInvoke;
+
 using static Vanara.PInvoke.AdvApi32;
 using static Vanara.PInvoke.Kernel32;
 using static Vanara.PInvoke.Shell32;
 using static Vanara.PInvoke.ShlwApi;
 
-namespace DropTargetVerb
+using Vanara.PInvoke;
+
+namespace Vanara.PInvoke
 {
 	public class CRegisterExtension
 	{
-		private Guid _clsid;
+		private Guid? _clsid;
 		private bool _fAssocChanged;
 		private HKEY _hkeyRoot;
 		private string _szCLSID;
 		private string _szModule;
 
-		public CRegisterExtension(in Guid clsid = default, HKEY hkeyRoot = default)
+		public CRegisterExtension(Guid? clsid = default, HKEY hkeyRoot = default)
 		{
 			_hkeyRoot = hkeyRoot == default ? HKEY.HKEY_CURRENT_USER : hkeyRoot;
-			SetHandlerCLSID(clsid);
+			CLSID = clsid;
 			SetModule();
 		}
 
@@ -63,7 +66,6 @@ namespace DropTargetVerb
 				}
 				else
 				{
-					szCmdLine.Clear();
 					szCmdLine.Append(_szModule);
 				}
 
@@ -89,12 +91,142 @@ namespace DropTargetVerb
 			var hr = _EnsureModule();
 			if (hr.Succeeded)
 			{
-				// Windows7 supports per user App Paths, downlevel requires HKLM
-				hr = RegSetKeyValuePrintf(_hkeyRoot,
-					"SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\App Paths\\{0}",
-					"DropTarget", _szCLSID, System.IO.Path.GetFileName(_szModule));
+				hr = RegisterAppPath(new Dictionary<string, object> { { "DropTarget", _szCLSID } });
 			}
 			return hr;
+		}
+
+		/// <summary>Registers the application path in Windows 7 and later with associated sub-entries.</summary>
+		/// <param name="valueNameValuePairs">A dictionary of value name/value pairs that will be assigned as values under the App Path key.</param>
+		/// <returns>S_OK on success; otherwise HRESULT failure.</returns>
+		public HRESULT RegisterAppPath(IDictionary<string, object> valueNameValuePairs)
+		{
+			var hr = _EnsureModule();
+			if (hr.Succeeded)
+			{
+				var regPath = @"Software\Microsoft\Windows\CurrentVersion\App Paths\" + System.IO.Path.GetFileName(_szModule);
+				hr = _RegSetKeyValue(_hkeyRoot, regPath, "", _szModule);
+				if (hr.Succeeded && (valueNameValuePairs?.Count ?? 0) > 0)
+				{
+					foreach (var p in valueNameValuePairs)
+					{
+						hr = _RegSetKeyValue(_hkeyRoot, regPath, p.Key, p.Value);
+						if (hr.Failed) break;
+					}
+				}
+			}
+			return hr;
+		}
+
+		/// <summary>Registers the application path in Windows 7 and later with associated sub-entries.</summary>
+		/// <param name="dropTargetClsid">
+		/// Is a class identifier (CLSID). The DropTarget entry contains the CLSID of an object (usually a local server rather than an
+		/// in-process server) that implements IDropTarget. By default, when the drop target is an executable file, and no DropTarget value
+		/// is provided, the Shell converts the list of dropped files into a command-line parameter and passes it to ShellExecuteEx through lpParameters.
+		/// <para>If this value is <see langword="null"/> and the CLSID property for the class is set to a value, it will be used.</para>
+		/// </param>
+		/// <param name="dontUseDesktopChangeRouter">
+		/// Is mandatory for debugger applications to avoid file dialog deadlocks when debugging the Windows Explorer process. Setting the
+		/// DontUseDesktopChangeRouter entry produces a slightly less efficient handling of the change notifications, however.
+		/// </param>
+		/// <param name="path">
+		/// Supplies a string (in the form of a semicolon-separated list of directories) to append to the PATH environment variable when an
+		/// application is launched by calling ShellExecuteEx. It is the fully qualified path to the .exe. In Windows 7 and later, it can
+		/// include expansion strings and is commonly %ProgramFiles%.
+		/// </param>
+		/// <param name="supportedProtocols">
+		/// Creates a string that contains the URL protocol schemes for a given key. This can contain multiple registry values to indicate
+		/// which schemes are supported. This string follows the format of scheme1:scheme2. If this list is not empty, file: will be added to
+		/// the string. This protocol is implicitly supported when SupportedProtocols is defined.
+		/// </param>
+		/// <param name="useUrl">
+		/// Indicates that your application can accept a URL (instead of a file name) on the command line. Applications that can open
+		/// documents directly from the internet, like web browsers and media players, should set this entry.
+		/// <para>
+		/// When the ShellExecuteEx function starts an application and the UseUrl = 1 value is not set, ShellExecuteEx downloads the document
+		/// to a local file and invokes the handler on the local copy.
+		/// </para>
+		/// <para>
+		/// For example, if the application has this entry set and a user right-clicks on a file stored on a web server, the Open verb will
+		/// be made available.If not, the user will have to download the file and open the local copy.
+		/// </para>
+		/// <para>
+		/// In Windows Vista and earlier, this entry indicated that the URL should be passed to the application along with a local file name,
+		/// when called via ShellExecuteEx. In Windows 7, it indicates that the application can understand any http or https url that is
+		/// passed to it, without having to supply the cache file name as well.This registry key is associated with the SupportedProtocols key.
+		/// </para>
+		/// </param>
+		/// <returns>S_OK on success; otherwise HRESULT failure.</returns>
+		public HRESULT RegisterAppPath(Guid? dropTargetClsid = null, bool dontUseDesktopChangeRouter = false, string path = null, string supportedProtocols = null, bool useUrl = false)
+		{
+			var hr = _EnsureModule();
+			if (hr.Succeeded)
+			{
+				var values = new Dictionary<string, object>();
+				if (dropTargetClsid.HasValue || _clsid.HasValue)
+					values.Add("DropTarget", dropTargetClsid.GetValueOrDefault(_clsid.Value));
+				if (dontUseDesktopChangeRouter) values.Add("DontUseDesktopChangeRouter", true);
+				if (path != null) values.Add("Path", path);
+				if (supportedProtocols != null) values.Add("SupportedProtocols", supportedProtocols);
+				if (useUrl) values.Add("UseUrl", true);
+				return RegisterAppPath(values);
+			}
+			return hr;
+		}
+
+		/// <summary>Registers the application with associated sub-entries.</summary>
+		/// <param name="friendlyName">Provides a way to get a localizable name to display for an application instead of just the version information appearing, which may not be localizable. The association query ASSOCSTR reads this registry entry value and falls back to use the FileDescription name in the version information. If that name is missing, the association query defaults to the display name of the file. Applications should use ASSOCSTR_FRIENDLYAPPNAME to retrieve this information to obtain the proper behavior.</param>
+		/// <param name="noOpenWith">Indicates that no application is specified for opening this file type. Be aware that if an OpenWithProgIDs subkey has been set for an application by file type, and the ProgID subkey itself does not also have a NoOpenWith entry, that application will appear in the list of recommended or available applications even if it has specified the NoOpenWith entry. For more information, see How to How to Include an Application in the Open With Dialog Box and How to exclude an Application from the Open with Dialog Box.</param>
+		/// <param name="verbCommand">Provides the verb method for calling the application from OpenWith. Without a verb definition specified here, the system assumes that the application supports CreateProcess, and passes the file name on the command line. This functionality applies to ExecuteCommand.</param>
+		/// <param name="verbDropTarget">Provides the verb method for calling the application from OpenWith. Without a verb definition specified here, the system assumes that the application supports CreateProcess, and passes the file name on the command line. This functionality applies to DropTarget.</param>
+		/// <param name="defaultIcon">Enables an application to provide a specific icon to represent the application instead of the first icon stored in the .exe file.</param>
+		/// <param name="isHostApp">Indicates that the process is a host process, such as Rundll32.exe or Dllhost.exe, and should not be considered for Start menu pinning or inclusion in the Most Frequently Used (MFU) list. When launched with a shortcut that contains a non-null argument list or an explicit Application User Model IDs (AppUserModelIDs), the process can be pinned (as that shortcut). Such shortcuts are candidates for inclusion in the MFU list.</param>
+		/// <param name="useExecutableForTaskbarGroupIcon">Causes the taskbar to use the default icon of this executable if there is no pinnable shortcut for this application, and instead of the icon of the window that was first encountered.</param>
+		/// <param name="taskbarGroupIcon">Specifies the icon used to override the taskbar icon. The window icon is normally used for the taskbar. Setting the TaskbarGroupIcon entry causes the system to use the icon from the .exe for the application instead.</param>
+		/// <param name="noStartPage">Indicates that the application executable and shortcuts should be excluded from the Start menu and from pinning or inclusion in the MFU list. This entry is typically used to exclude system tools, installers and uninstallers, and readme files.</param>
+		/// <param name="supportedTypes">Lists the file types that the application supports. Doing so enables the application to be listed in the cascade menu of the Open with dialog box.</param>
+		/// <returns>S_OK on success; otherwise HRESULT failure.</returns>
+		public HRESULT RegisterApplication(string friendlyName = null, bool noOpenWith = false, Tuple<string, string> verbCommand = null, Tuple<string, Guid> verbDropTarget = null, string defaultIcon = null,
+			bool isHostApp = false, bool useExecutableForTaskbarGroupIcon = false, string taskbarGroupIcon = null, bool noStartPage = false, string[] supportedTypes = null)
+		{
+			var hr = _EnsureModule();
+			if (hr.Succeeded)
+			{
+				var regPath = $"Software\\Classes\\Applications\\" + System.IO.Path.GetFileName(_szModule);
+				hr = _RegSetKeyValue(_hkeyRoot, regPath, "", null);
+				if (hr.Failed) return hr;
+				hr = SetOrDelete(friendlyName != null, regPath, "FriendlyAppName", friendlyName);
+				if (hr.Failed) return hr;
+				hr = SetOrDelete(noOpenWith, regPath, "NoOpenWith", null);
+				if (hr.Failed) return hr;
+				hr = SetOrDelete(verbCommand != null, $"{regPath}\\shell\\{verbCommand.Item1}\\command", "", verbCommand.Item2);
+				if (hr.Failed) return hr;
+				hr = SetOrDelete(verbDropTarget != null, $"{regPath}\\shell\\{verbDropTarget.Item1}\\DropTarget", "Clsid", verbDropTarget.Item2);
+				if (hr.Failed) return hr;
+				hr = defaultIcon != null ? _RegSetKeyValue(_hkeyRoot, $"{regPath}\\DefaultIcon", "", defaultIcon) : RegDeleteTree(_hkeyRoot, $"{regPath}\\DefaultIcon").ToHRESULT();
+				if (hr.Failed) return hr;
+				hr = SetOrDelete(isHostApp, regPath, "IsHostApp", null);
+				if (hr.Failed) return hr;
+				hr = SetOrDelete(useExecutableForTaskbarGroupIcon, regPath, "UseExecutableForTaskbarGroupIcon", null);
+				if (hr.Failed) return hr;
+				hr = SetOrDelete(taskbarGroupIcon != null, regPath, "TaskbarGroupIcon", taskbarGroupIcon);
+				if (hr.Failed) return hr;
+				hr = SetOrDelete(noStartPage, regPath, "NoStartPage", null);
+				if (hr.Failed) return hr;
+				hr = RegAddValueNames(regPath, supportedTypes);
+			}
+			return hr;
+
+			HRESULT RegAddValueNames(string regPath, string[] valueNames)
+			{
+				var ahr = RegDeleteTree(_hkeyRoot, regPath).ToHRESULT();
+				for (var i = 0; valueNames != null && ahr.Succeeded && i < valueNames.Length; i++)
+				{
+					ahr = _RegSetKeyValue(_hkeyRoot, regPath, valueNames[i], null);
+				}
+				return ahr;
+			}
+			HRESULT SetOrDelete(bool condition, string regPath, string valueName, object value) => condition ? _RegSetKeyValue(_hkeyRoot, regPath, valueName, value) : RegDeleteKeyValue(_hkeyRoot, regPath, valueName).ToHRESULT();
 		}
 
 		public HRESULT RegisterAppShortcutInSendTo()
@@ -112,7 +244,7 @@ namespace DropTargetVerb
 				{
 					szPath.Clear();
 					szPath.Append(szSendTo);
-					hr = (HRESULT)PathAppend(szPath, szName);
+					hr = PathAppend(szPath, szName) ? HRESULT.S_OK : HRESULT.E_FAIL;
 					if (hr.Succeeded)
 					{
 						if (psl is IPersistFile ppf)
@@ -298,7 +430,19 @@ namespace DropTargetVerb
 			return RegSetKeyValuePrintf(_hkeyRoot, "Software\\Classes\\{0}", "", pszProgID, pszFileExtension);
 		}
 
-		public HRESULT RegisterHandlerSupportedProtocols(string pszProtocol) => RegSetKeyValuePrintf(_hkeyRoot, "Software\\Classes\\CLSID\\{0}\\SupportedProtocols", pszProtocol, "", _szCLSID);
+		public HRESULT RegisterHandlerSupportedProtocols(string[] pszProtocol)
+		{
+			var szKey = string.Format("Software\\Classes\\CLSID\\{0}\\SupportedProtocols", _szCLSID);
+			var hr = RegDeleteTree(_hkeyRoot, szKey).ToHRESULT();
+			if ((hr.Failed && hr != HRESULT_FROM_WIN32(Win32Error.ERROR_FILE_NOT_FOUND)) || pszProtocol == null) return hr;
+			if (pszProtocol.Length == 1 && pszProtocol[0] == "*")
+				return _RegSetKeyValue(_hkeyRoot, szKey, "", "*");
+			for (var i = 0; hr.Succeeded && i < pszProtocol.Length; i++)
+			{
+				hr = _RegSetKeyValue(_hkeyRoot, szKey, pszProtocol[i], null);
+			}
+			return hr;
+		}
 
 		public HRESULT RegisterInProcServer(string pszFriendlyName, string pszThreadingModel)
 		{
@@ -362,12 +506,12 @@ namespace DropTargetVerb
 
 		public HRESULT RegisterPlayerVerbs(string[] rgpszAssociation, uint countAssociation, string pszVerb, string pszTitle)
 		{
-			var hr = RegisterAppAsLocalServer(pszTitle, null);
+			var hr = RegisterAppAsLocalServer(pszTitle);
 			if (hr.Succeeded)
 			{
 				// enable this handler to work with OpenSearch results, avoiding the downlaod and open behavior by indicating that we can
 				// accept all URL forms
-				hr = RegisterHandlerSupportedProtocols("*");
+				hr = RegisterHandlerSupportedProtocols(new[] { "*" });
 
 				for (uint i = 0; hr.Succeeded && (i < countAssociation); i++)
 				{
@@ -465,15 +609,40 @@ namespace DropTargetVerb
 		public HRESULT RegSetKeyValuePrintf(HKEY hkey, string pszKeyFormatString, string pszValueName, string pszValue, params object[] argList)
 		{
 			var szKeyName = string.Format(pszKeyFormatString, argList);
-			var hr = HRESULT_FROM_WIN32(RegSetKeyValue(hkey, szKeyName, pszValueName, REG_VALUE_TYPE.REG_SZ, pszValue, pszValue.ChLen()));
+			var hr = _RegSetKeyValue(hkey, szKeyName, pszValueName, pszValue);
 			_UpdateAssocChanged(hr, pszKeyFormatString);
 			return hr;
+		}
+
+		private HRESULT _RegSetKeyValue(HKEY hkey, string szKeyName, string szValueName, object szValue)
+		{
+			switch (szValue)
+			{
+				case null:
+					return HRESULT_FROM_WIN32(RegSetKeyValue(hkey, szKeyName, szValueName, REG_VALUE_TYPE.REG_SZ, IntPtr.Zero, 0));
+				case string s:
+					var valType = s.Contains("%") ? REG_VALUE_TYPE.REG_EXPAND_SZ : REG_VALUE_TYPE.REG_SZ;
+					return HRESULT_FROM_WIN32(RegSetKeyValue(hkey, szKeyName, szValueName, valType, s, s.ChLen()));
+				case uint ui:
+					return HRESULT_FROM_WIN32(RegSetKeyValue(hkey, szKeyName, szValueName, REG_VALUE_TYPE.REG_DWORD, BitConverter.GetBytes(ui), sizeof(uint)));
+				case bool b:
+					return HRESULT_FROM_WIN32(RegSetKeyValue(hkey, szKeyName, szValueName, REG_VALUE_TYPE.REG_DWORD, BitConverter.GetBytes(b ? 1U : 0U), sizeof(uint)));
+				case int i:
+					return HRESULT_FROM_WIN32(RegSetKeyValue(hkey, szKeyName, szValueName, REG_VALUE_TYPE.REG_DWORD, BitConverter.GetBytes(unchecked((uint)i)), sizeof(uint)));
+				case byte[] p:
+					return HRESULT_FROM_WIN32(RegSetKeyValue(hkey, szKeyName, szValueName, REG_VALUE_TYPE.REG_BINARY, p, (uint)p.Length));
+				case Guid g:
+					var gs = g.ToString("B").ToUpperInvariant();
+					return HRESULT_FROM_WIN32(RegSetKeyValue(hkey, szKeyName, szValueName, REG_VALUE_TYPE.REG_SZ, gs, gs.ChLen()));
+				default:
+					return HRESULT.E_FAIL;
+			}
 		}
 
 		public HRESULT RegSetKeyValuePrintf(HKEY hkey, string pszKeyFormatString, string pszValueName, uint dwValue, params object[] argList)
 		{
 			var szKeyName = string.Format(pszKeyFormatString, argList);
-			var hr = HRESULT_FROM_WIN32(RegSetKeyValue(hkey, szKeyName, pszValueName, REG_VALUE_TYPE.REG_DWORD, BitConverter.GetBytes(dwValue), sizeof(uint)));
+			var hr = _RegSetKeyValue(hkey, szKeyName, pszValueName, dwValue);
 			_UpdateAssocChanged(hr, pszKeyFormatString);
 			return hr;
 		}
@@ -481,15 +650,19 @@ namespace DropTargetVerb
 		public HRESULT RegSetKeyValuePrintf(HKEY hkey, string pszKeyFormatString, string pszValueName, byte[] pc, uint dwSize, params object[] argList)
 		{
 			var szKeyName = string.Format(pszKeyFormatString, argList);
-			var hr = HRESULT_FROM_WIN32(RegSetKeyValue(hkey, szKeyName, pszValueName, REG_VALUE_TYPE.REG_BINARY, pc, dwSize));
+			var hr = _RegSetKeyValue(hkey, szKeyName, pszValueName, pc);
 			_UpdateAssocChanged(hr, pszKeyFormatString);
 			return hr;
 		}
 
-		public void SetHandlerCLSID(in Guid clsid)
+		public Guid? CLSID
 		{
-			_clsid = clsid;
-			_szCLSID = _clsid.ToString("B").ToUpperInvariant();
+			get => _clsid;
+			set
+			{
+				_clsid = value;
+				_szCLSID = _clsid?.ToString("B").ToUpperInvariant();
+			}
 		}
 
 		public void SetInstallScope(HKEY hkeyRoot)
@@ -564,7 +737,7 @@ namespace DropTargetVerb
 				HRESULT.S_OK;
 		}
 
-		private HRESULT _EnsureModule() => (HRESULT)(_szModule.Length > 0);
+		private HRESULT _EnsureModule() => _szModule.Length > 0 ? HRESULT.S_OK : HRESULT.E_FAIL;
 
 		private bool _IsBaseClassProgID(string pszProgID)
 		{

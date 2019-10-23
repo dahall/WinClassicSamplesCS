@@ -1,11 +1,13 @@
 ﻿using System;
 using System.Text;
-using Vanara.InteropServices;
-using Vanara.PInvoke;
+
 using static Vanara.PInvoke.AdvApi32;
 using static Vanara.PInvoke.Kernel32;
 using static Vanara.PInvoke.Shell32;
 using static Vanara.PInvoke.ShlwApi;
+
+using Vanara.InteropServices;
+using Vanara.PInvoke;
 
 namespace CustomJumpList
 {
@@ -21,7 +23,7 @@ namespace CustomJumpList
 			HRESULT hr;
 			if (fRegister)
 			{
-				hr = HRESULT_FROM_WIN32(RegCreateKeyEx(HKEY.HKEY_CLASSES_ROOT, c_szProgID, 0, null, REG_OPTION.REG_OPTION_NON_VOLATILE, REGSAM.KEY_SET_VALUE | REGSAM.KEY_CREATE_SUB_KEY, null, out var hkeyProgid, out var _));
+				hr = HRESULT_FROM_WIN32(RegCreateKeyEx(HKEY.HKEY_CLASSES_ROOT, c_szProgID, 0, null, RegOpenOptions.REG_OPTION_NON_VOLATILE, REGSAM.KEY_SET_VALUE | REGSAM.KEY_CREATE_SUB_KEY, null, out var hkeyProgid, out var _));
 				if (hr.Succeeded)
 				{
 					hr = _RegSetString(hkeyProgid, null, "FriendlyTypeName", "Automatic Jump List Document");
@@ -37,7 +39,7 @@ namespace CustomJumpList
 								hr = _RegSetString(hkeyProgid, "CurVer", null, c_szProgID);
 								if (hr.Succeeded)
 								{
-									hr = HRESULT_FROM_WIN32(RegCreateKeyEx(hkeyProgid, "shell", 0, null, REG_OPTION.REG_OPTION_NON_VOLATILE, REGSAM.KEY_SET_VALUE | REGSAM.KEY_CREATE_SUB_KEY,
+									hr = HRESULT_FROM_WIN32(RegCreateKeyEx(hkeyProgid, "shell", 0, null, RegOpenOptions.REG_OPTION_NON_VOLATILE, REGSAM.KEY_SET_VALUE | REGSAM.KEY_CREATE_SUB_KEY,
 										null, out var hkeyShell, out var _));
 									if (hr.Succeeded)
 									{
@@ -71,13 +73,13 @@ namespace CustomJumpList
 			// can be enumerated in the Open With dialog, and so the Jump Lists can find the correct ProgID to use when relaunching a
 			// document with the specific application the Jump List is associated with.
 			var szKey = System.IO.Path.Combine(pszExt, "OpenWithProgids");
-			var hr = HRESULT_FROM_WIN32(RegCreateKeyEx(HKEY.HKEY_CLASSES_ROOT, szKey, 0, null, REG_OPTION.REG_OPTION_NON_VOLATILE,
+			var hr = HRESULT_FROM_WIN32(RegCreateKeyEx(HKEY.HKEY_CLASSES_ROOT, szKey, 0, null, RegOpenOptions.REG_OPTION_NON_VOLATILE,
 				REGSAM.KEY_SET_VALUE, null, out var hkeyProgidList, out var _));
 			if (hr.Succeeded)
 			{
 				if (fRegister)
 				{
-					hr = HRESULT_FROM_WIN32(RegSetValueEx(hkeyProgidList, c_szProgID, 0, (uint)REG_VALUE_TYPE.REG_NONE, default, 0));
+					hr = HRESULT_FROM_WIN32(RegSetValueEx(hkeyProgidList, c_szProgID, 0, (uint)REG_VALUE_TYPE.REG_NONE, IntPtr.Zero, 0));
 				}
 				else
 				{
