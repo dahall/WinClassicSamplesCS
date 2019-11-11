@@ -8,7 +8,18 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Vanara.PInvoke.Shell32" Version="3.1.2" />
+    <COMReference Include="ShellExtensionLib.dll">
+      <Guid>c9f3f6bb-3172-4cd8-9eb7-37c9be601c87</Guid>
+      <VersionMajor>1</VersionMajor>
+      <VersionMinor>0</VersionMinor>
+      <WrapperTool>tlbimp</WrapperTool>
+      <Lcid>0</Lcid>
+      <Isolated>false</Isolated>
+    </COMReference>
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Vanara.PInvoke.Shell32" Version="3.1.3" />
   </ItemGroup>
 
 </Project>

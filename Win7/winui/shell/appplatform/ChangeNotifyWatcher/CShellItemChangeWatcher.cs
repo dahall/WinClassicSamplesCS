@@ -5,14 +5,11 @@ using System.Runtime.InteropServices;
 using System.Runtime.InteropServices.ComTypes;
 using System.Text;
 using System.Windows.Forms;
-
-using IDataObject = System.Windows.Forms.IDataObject;
-
-using static Vanara.PInvoke.Shell32;
-using static Vanara.PInvoke.User32;
-
 using Vanara.Extensions;
 using Vanara.PInvoke;
+using static Vanara.PInvoke.Shell32;
+using static Vanara.PInvoke.User32;
+using IDataObject = System.Windows.Forms.IDataObject;
 
 namespace ChangeNotifyWatcher
 {
@@ -20,8 +17,8 @@ namespace ChangeNotifyWatcher
 	{
 		private const uint c_notifyMessage = 0x04C8; // WM_USER + 200
 
-		private IShellItem2 _psiDrop;
-		private CShellItemChangeWatcher _watcher = new CShellItemChangeWatcher();
+		private readonly CShellItemChangeWatcher _watcher = new CShellItemChangeWatcher();
+		private IShellItem2 psiDrop;
 
 		public CChangeNotifyApp()
 		{
@@ -45,8 +42,9 @@ namespace ChangeNotifyWatcher
 		private static IShellItem GetDragItem(object data)
 		{
 			var hr = SHGetIDListFromObject(data, out var pidl);
-			if (hr.Succeeded)
-				return SHCreateItemFromIDList<IShellItem>(pidl);
+			using (pidl)
+				if (hr.Succeeded)
+					return SHCreateItemFromIDList<IShellItem>(pidl);
 
 			if (data is System.Runtime.InteropServices.ComTypes.IDataObject pdo)
 			{
@@ -88,52 +86,9 @@ namespace ChangeNotifyWatcher
 		private static void SetDropTip(IDataObject pdtobj, DROPIMAGETYPE type, string pszMsg, string pszInsert)
 		{
 			var dd = new DROPDESCRIPTION { type = type, szMessage = pszMsg, szInsert = pszInsert };
-			var hmem = dd.StructureToPtr(Marshal.AllocHGlobal, out var _);
+			var hmem = dd.MarshalToPtr(Marshal.AllocHGlobal, out var _);
 			try { SetBlob(pdtobj, (short)RegisterClipboardFormat(ShellClipboardFormat.CFSTR_DROPDESCRIPTION), hmem); }
 			catch { Marshal.FreeHGlobal(hmem); }
-		}
-
-		private void _OnDestroyDlg(object sender, FormClosedEventArgs e) => _watcher.StopWatching();
-
-		private void _OnInitDlg(object sender, EventArgs e)
-		{
-			// optional cmd line param
-			_psiDrop = GetShellItemFromCommandLine();
-			if (_psiDrop != null)
-				_StartWatching();
-		}
-
-		private void _PickItem(object sender, EventArgs e)
-		{
-			var pfd = new IFileOpenDialog();
-			if (pfd != null)
-			{
-				var dwOptions = pfd.GetOptions();
-				pfd.SetOptions(dwOptions | FILEOPENDIALOGOPTIONS.FOS_ALLNONSTORAGEITEMS | FILEOPENDIALOGOPTIONS.FOS_PICKFOLDERS);
-				pfd.SetTitle("Item Picker");
-				var hr = pfd.Show(Handle);
-				if (hr.Succeeded)
-				{
-					if (pfd.GetResult() is IShellItem2 psi)
-					{
-						_psiDrop = psi;
-						_StartWatching();
-					}
-				}
-			}
-		}
-
-		private void _StartWatching()
-		{
-			IDC_LISTVIEW.Items.Clear();
-
-			var fRecursive = IDC_RECURSIVE.Checked;
-			_watcher.StartWatching(_psiDrop, Handle, c_notifyMessage, SHCNE.SHCNE_ALLEVENTS, fRecursive);
-
-			string pszName = _psiDrop.GetDisplayName(SIGDN.SIGDN_NORMALDISPLAY);
-			LogMessage(GROUPID.NAMES, "Watching", $"{pszName} {(fRecursive ? "(Recursive)" : string.Empty)}");
-			AutoAdjustListView();
-			Text = "Watching - " + pszName;
 		}
 
 		private void AutoAdjustListView()
@@ -163,6 +118,7 @@ namespace ChangeNotifyWatcher
 				Clipboard.SetData(DataFormats.UnicodeText, psz);
 			}
 		}
+
 		private string GetText(bool fSelectionOnly)
 		{
 			if (fSelectionOnly)
@@ -197,6 +153,8 @@ namespace ChangeNotifyWatcher
 			AutoAdjustListView();
 		}
 
+		private void OnDestroyDlg(object sender, FormClosedEventArgs e) => _watcher.StopWatching();
+
 		private void OnDragEnter(object sender, DragEventArgs e)
 		{
 			var psi = GetDragItem(e.Data);
@@ -211,8 +169,49 @@ namespace ChangeNotifyWatcher
 
 		private void OnDrop(object sender, DragEventArgs e)
 		{
-			_psiDrop = GetDragItem(e.Data) as IShellItem2;
-			if (_psiDrop != null) _StartWatching();
+			psiDrop = GetDragItem(e.Data) as IShellItem2;
+			if (psiDrop != null) StartWatching();
+		}
+
+		private void OnInitDlg(object sender, EventArgs e)
+		{
+			// optional cmd line param
+			psiDrop = GetShellItemFromCommandLine();
+			if (psiDrop != null)
+				StartWatching();
+		}
+
+		private void PickItem(object sender, EventArgs e)
+		{
+			var pfd = new IFileOpenDialog();
+			if (pfd != null)
+			{
+				var dwOptions = pfd.GetOptions();
+				pfd.SetOptions(dwOptions | FILEOPENDIALOGOPTIONS.FOS_ALLNONSTORAGEITEMS | FILEOPENDIALOGOPTIONS.FOS_PICKFOLDERS);
+				pfd.SetTitle("Item Picker");
+				var hr = pfd.Show(Handle);
+				if (hr.Succeeded)
+				{
+					if (pfd.GetResult() is IShellItem2 psi)
+					{
+						psiDrop = psi;
+						StartWatching();
+					}
+				}
+			}
+		}
+
+		private void StartWatching()
+		{
+			IDC_LISTVIEW.Items.Clear();
+
+			var fRecursive = IDC_RECURSIVE.Checked;
+			_watcher.StartWatching(psiDrop, Handle, c_notifyMessage, SHCNE.SHCNE_ALLEVENTS, fRecursive);
+
+			string pszName = psiDrop.GetDisplayName(SIGDN.SIGDN_NORMALDISPLAY);
+			LogMessage(GROUPID.NAMES, "Watching", $"{pszName} {(fRecursive ? "(Recursive)" : string.Empty)}");
+			AutoAdjustListView();
+			Text = "Watching - " + pszName;
 		}
 	}
 
@@ -259,7 +258,10 @@ namespace ChangeNotifyWatcher
 				}
 			}
 
-			bool IsItemNotificationEvent() => (lEvent & (SHCNE.SHCNE_UPDATEIMAGE | SHCNE.SHCNE_ASSOCCHANGED | SHCNE.SHCNE_EXTENDED_EVENT | SHCNE.SHCNE_FREESPACE | SHCNE.SHCNE_DRIVEADDGUI | SHCNE.SHCNE_SERVERDISCONNECT)) == 0;
+			bool IsItemNotificationEvent()
+			{
+				return (lEvent & (SHCNE.SHCNE_UPDATEIMAGE | SHCNE.SHCNE_ASSOCCHANGED | SHCNE.SHCNE_EXTENDED_EVENT | SHCNE.SHCNE_FREESPACE | SHCNE.SHCNE_DRIVEADDGUI | SHCNE.SHCNE_SERVERDISCONNECT)) == 0;
+			}
 		}
 
 		public HRESULT StartWatching(IShellItem psi, HWND hwnd, uint uMsg, SHCNE lEvents, bool fRecursive)
@@ -267,12 +269,13 @@ namespace ChangeNotifyWatcher
 			StopWatching();
 
 			var hr = SHGetIDListFromObject(psi, out var pidlWatch);
-			if (hr.Succeeded)
-			{
-				SHChangeNotifyEntry[] entries = { new SHChangeNotifyEntry { pidl = (IntPtr)pidlWatch, fRecursive = fRecursive } };
-				_ulRegister = SHChangeNotifyRegister(hwnd, SHCNRF.SHCNRF_ShellLevel | SHCNRF.SHCNRF_InterruptLevel | SHCNRF.SHCNRF_NewDelivery, lEvents, uMsg, entries.Length, entries);
-				hr = _ulRegister != 0 ? HRESULT.S_OK : HRESULT.E_FAIL;
-			}
+			using (pidlWatch)
+				if (hr.Succeeded)
+				{
+					SHChangeNotifyEntry[] entries = { new SHChangeNotifyEntry { pidl = (IntPtr)pidlWatch, fRecursive = fRecursive } };
+					_ulRegister = SHChangeNotifyRegister(hwnd, SHCNRF.SHCNRF_ShellLevel | SHCNRF.SHCNRF_InterruptLevel | SHCNRF.SHCNRF_NewDelivery, lEvents, uMsg, entries.Length, entries);
+					hr = _ulRegister != 0 ? HRESULT.S_OK : HRESULT.E_FAIL;
+				}
 			return hr;
 		}
 

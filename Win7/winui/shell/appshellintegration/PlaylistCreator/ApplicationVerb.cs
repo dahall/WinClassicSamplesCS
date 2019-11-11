@@ -3,6 +3,7 @@ using System.Drawing;
 using System.Runtime.InteropServices;
 
 using static Vanara.PInvoke.Ole32;
+using static Vanara.PInvoke.OleAut32;
 using static Vanara.PInvoke.Shell32;
 using static Vanara.PInvoke.ShlwApi;
 
@@ -162,12 +163,14 @@ namespace Vanara.PInvoke
 				StartVerb();
 
 				// try to get the items from the view if they are available
-				hr = IUnknown_QueryService(_punkSite, typeof(IFolderView).GUID, typeof(IShellView).GUID, out var psv);
+				if ((hr = IUnknown_QueryService(_punkSite, typeof(IFolderView).GUID, typeof(IShellView).GUID, out var psv)).Failed)
+					return hr;
 
 				var walkFlags = NAMESPACEWALKFLAG.NSWF_DONT_ACCUMULATE_RESULT | NAMESPACEWALKFLAG.NSWF_ASYNC | NAMESPACEWALKFLAG.NSWF_FLAG_VIEWORDER;
 				if (_flags.IsFlagSet(APPLICATION_VERB_FLAGS.AVF_ONE_IMPLIES_ALL)) walkFlags |= NAMESPACEWALKFLAG.NSWF_ONE_IMPLIES_ALL;
 				const int walkDepth = 8;
-				hr = pnsw.Walk(psv ?? _psia, walkFlags, walkDepth, this);
+				if ((hr = pnsw.Walk(psv ?? _psia, walkFlags, walkDepth, this)).Failed)
+					return hr;
 			}
 			else if (_psia != null)
 			{

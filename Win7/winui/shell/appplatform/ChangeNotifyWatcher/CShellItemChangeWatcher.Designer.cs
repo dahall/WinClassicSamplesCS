@@ -16,6 +16,7 @@
 			if (disposing && (components != null))
 			{
 				components.Dispose();
+				_watcher.Dispose();
 			}
 			base.Dispose(disposing);
 		}
@@ -103,7 +104,7 @@
 			this.IDC_PICK.TabIndex = 1;
 			this.IDC_PICK.Text = "Pick...";
 			this.IDC_PICK.UseVisualStyleBackColor = true;
-			this.IDC_PICK.Click += new System.EventHandler(this._PickItem);
+			this.IDC_PICK.Click += new System.EventHandler(this.PickItem);
 			// 
 			// IDC_RECURSIVE
 			// 
@@ -128,8 +129,8 @@
 			this.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
 			this.Name = "CChangeNotifyApp";
 			this.Text = "Shell Change Notify Watcher";
-			this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this._OnDestroyDlg);
-			this.Load += new System.EventHandler(this._OnInitDlg);
+			this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.OnDestroyDlg);
+			this.Load += new System.EventHandler(this.OnInitDlg);
 			this.DragDrop += new System.Windows.Forms.DragEventHandler(this.OnDrop);
 			this.DragEnter += new System.Windows.Forms.DragEventHandler(this.OnDragEnter);
 			this.DragLeave += new System.EventHandler(this.OnDragLeave);

@@ -1,13 +1,13 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 15
-VisualStudioVersion = 15.0.28307.168
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.29418.71
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ExplorerBrowserSearch", "Win7\winui\shell\appplatform\ExplorerBrowserSearch\ExplorerBrowserSearch.csproj", "{BF35499A-12D1-4BEE-90C1-9C74F5236741}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ExplorerBrowserSearch", "Win7\winui\shell\appplatform\ExplorerBrowserSearch\ExplorerBrowserSearch.csproj", "{BF35499A-12D1-4BEE-90C1-9C74F5236741}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ExplorerBrowserCustomContents", "Win7\winui\shell\appplatform\ExplorerBrowserCustomContents\ExplorerBrowserCustomContents.csproj", "{DFE20AAB-EA60-4401-9FE5-C2D32F81BC11}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ExplorerBrowserCustomContents", "Win7\winui\shell\appplatform\ExplorerBrowserCustomContents\ExplorerBrowserCustomContents.csproj", "{DFE20AAB-EA60-4401-9FE5-C2D32F81BC11}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ChangeNotifyWatcher", "Win7\winui\shell\appplatform\ChangeNotifyWatcher\ChangeNotifyWatcher.csproj", "{CBA2C308-CD96-407F-ACB3-B83AD7CA0B08}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ChangeNotifyWatcher", "Win7\winui\shell\appplatform\ChangeNotifyWatcher\ChangeNotifyWatcher.csproj", "{CBA2C308-CD96-407F-ACB3-B83AD7CA0B08}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Win7", "Win7", "{F64D0F04-967C-4AC2-92C0-C93C4C04AFAA}"
 EndProject
@@ -17,23 +17,27 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "shell", "shell", "{49EF5E85
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "appplatform", "appplatform", "{EC86EA97-FDE0-44A0-8A95-F0076988987F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "searchfolder", "Win7\winui\shell\appplatform\searchfolder\searchfolder.csproj", "{8C0538E7-6662-4508-960F-F0193A0E02E6}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "searchfolder", "Win7\winui\shell\appplatform\searchfolder\searchfolder.csproj", "{8C0538E7-6662-4508-960F-F0193A0E02E6}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ExecInExplorer", "Win7\winui\shell\appplatform\ExecInExplorer\ExecInExplorer.csproj", "{B3108BC1-2E87-4155-9B80-6D4DDD6C7D01}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ExecInExplorer", "Win7\winui\shell\appplatform\ExecInExplorer\ExecInExplorer.csproj", "{B3108BC1-2E87-4155-9B80-6D4DDD6C7D01}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "fileisinuse", "Win7\winui\shell\appplatform\fileisinuse\fileisinuse.csproj", "{5419B69C-7DBE-4006-B62F-38BC06935A6A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "fileisinuse", "Win7\winui\shell\appplatform\fileisinuse\fileisinuse.csproj", "{5419B69C-7DBE-4006-B62F-38BC06935A6A}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "appshellintegration", "appshellintegration", "{DF85BF81-EE96-41EF-AA3F-ED1EAE463619}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AutomaticJumpList", "Win7\winui\shell\appshellintegration\AutomaticJumpList\AutomaticJumpList.csproj", "{095A4A6A-6A1D-4493-AC12-527199274635}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AutomaticJumpList", "Win7\winui\shell\appshellintegration\AutomaticJumpList\AutomaticJumpList.csproj", "{095A4A6A-6A1D-4493-AC12-527199274635}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CustomJumpList", "Win7\winui\shell\appshellintegration\CustomJumpList\CustomJumpList.csproj", "{4BFC28A4-20D7-487E-AEFB-EAD48D7BB01C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CustomJumpList", "Win7\winui\shell\appshellintegration\CustomJumpList\CustomJumpList.csproj", "{4BFC28A4-20D7-487E-AEFB-EAD48D7BB01C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DropTargetVerb", "Win7\winui\shell\appshellintegration\DropTargetVerb\DropTargetVerb.csproj", "{614B6038-7A52-407E-B48C-79817C1F7669}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DropTargetVerb", "Win7\winui\shell\appshellintegration\DropTargetVerb\DropTargetVerb.csproj", "{614B6038-7A52-407E-B48C-79817C1F7669}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PlaylistCreator", "Win7\winui\shell\appshellintegration\PlaylistCreator\PlaylistCreator.csproj", "{1294BA2E-698E-4B71-9437-55088B620849}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PlaylistCreator", "Win7\winui\shell\appshellintegration\PlaylistCreator\PlaylistCreator.csproj", "{1294BA2E-698E-4B71-9437-55088B620849}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "fileoperations", "Win7\winui\shell\appplatform\fileoperations\fileoperations.csproj", "{C3176341-2229-42A7-A9DF-846CB8C360A9}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "fileoperations", "Win7\winui\shell\appplatform\fileoperations\fileoperations.csproj", "{C3176341-2229-42A7-A9DF-846CB8C360A9}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ParsingWithParameters", "Win7\winui\shell\appplatform\ParsingWithParameters\ParsingWithParameters.csproj", "{4FBDBE52-2844-47F0-8D2E-CA06234E76A8}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sampler", "Sampler\Sampler.csproj", "{42D061DF-6C64-4907-B23B-38EAAE1EC701}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -85,6 +89,14 @@ Global
 		{C3176341-2229-42A7-A9DF-846CB8C360A9}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C3176341-2229-42A7-A9DF-846CB8C360A9}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C3176341-2229-42A7-A9DF-846CB8C360A9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4FBDBE52-2844-47F0-8D2E-CA06234E76A8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4FBDBE52-2844-47F0-8D2E-CA06234E76A8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4FBDBE52-2844-47F0-8D2E-CA06234E76A8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4FBDBE52-2844-47F0-8D2E-CA06234E76A8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{42D061DF-6C64-4907-B23B-38EAAE1EC701}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{42D061DF-6C64-4907-B23B-38EAAE1EC701}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{42D061DF-6C64-4907-B23B-38EAAE1EC701}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{42D061DF-6C64-4907-B23B-38EAAE1EC701}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -105,6 +117,7 @@ Global
 		{614B6038-7A52-407E-B48C-79817C1F7669} = {DF85BF81-EE96-41EF-AA3F-ED1EAE463619}
 		{1294BA2E-698E-4B71-9437-55088B620849} = {DF85BF81-EE96-41EF-AA3F-ED1EAE463619}
 		{C3176341-2229-42A7-A9DF-846CB8C360A9} = {EC86EA97-FDE0-44A0-8A95-F0076988987F}
+		{4FBDBE52-2844-47F0-8D2E-CA06234E76A8} = {EC86EA97-FDE0-44A0-8A95-F0076988987F}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {82D57A23-9C32-4014-9AFB-25B38D08E1D1}
