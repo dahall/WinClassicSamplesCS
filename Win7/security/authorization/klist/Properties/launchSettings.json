@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "klist": {
+      "commandName": "Project",
+      "commandLineArgs": "tickets"
+    }
+  }
+}
