@@ -92,7 +92,7 @@ namespace AutomaticJumpList
 		public static HRESULT _RegSetString(HKEY hkey, string pszSubKey, string pszValue, string pszData)
 		{
 			var mem = new SafeCoTaskMemString(pszData);
-			return HRESULT_FROM_WIN32(SHSetValue(hkey, pszSubKey, pszValue, REG_VALUE_TYPE.REG_SZ, (IntPtr)mem, (uint)mem.Capacity));
+			return HRESULT_FROM_WIN32(SHSetValue(hkey, pszSubKey, pszValue, REG_VALUE_TYPE.REG_SZ, mem, (uint)mem.Capacity));
 		}
 
 		public static bool AreFileTypesRegistered() => HRESULT_FROM_WIN32(RegOpenKey(HKEY.HKEY_CLASSES_ROOT, c_szProgID, out var hkeyProgid)).Succeeded;

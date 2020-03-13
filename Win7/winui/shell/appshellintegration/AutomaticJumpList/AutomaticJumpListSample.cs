@@ -10,6 +10,7 @@ using static Vanara.PInvoke.ShlwApi;
 
 using Vanara.InteropServices;
 using Vanara.PInvoke;
+using System.Runtime.InteropServices;
 
 namespace AutomaticJumpList
 {
@@ -35,7 +36,8 @@ namespace AutomaticJumpList
 			// From wWinMain
 			var mem = SafeCoTaskMemHandle.CreateFromStructure<uint>();
 			var memSz = (uint)mem.Size;
-			SetCategory(SHGetValue(HKEY.HKEY_CURRENT_USER, REGPATH_SAMPLE, REGVAL_RECENTCATEGORY, out var _, mem, ref memSz).Succeeded);
+			var fRecentSelected = SHGetValue(HKEY.HKEY_CURRENT_USER, REGPATH_SAMPLE, REGVAL_RECENTCATEGORY, out _, mem, ref memSz).Succeeded ? mem.ToStructure<uint>() != 0 : true;
+			SetCategory(fRecentSelected);
 		}
 
 		// Cleans up the sample files that were created in the current user's Documents directory
@@ -60,8 +62,16 @@ namespace AutomaticJumpList
 		// The list of pinned items is not accessible to applications.
 		private static void ClearHistory()
 		{
-			var pad = new IApplicationDestinations();
-			pad.RemoveAllDestinations();
+			IApplicationDestinations pad = null;
+			try
+			{
+				pad = new IApplicationDestinations();
+				pad.RemoveAllDestinations();
+			}
+			finally
+			{
+				Marshal.ReleaseComObject(pad);
+			}
 		}
 
 		// Creates a set of sample files in the current user's Documents directory to use as items in the custom category inserted into the
@@ -80,6 +90,7 @@ namespace AutomaticJumpList
 						if (hr.Succeeded)
 						{
 							hr = IStream_WriteStr(pstm, "This is a sample file for the CustomJumpListSample.\r\n");
+							Marshal.ReleaseComObject(pstm);
 						}
 						else if (((Win32Error)Win32Error.ERROR_FILE_EXISTS).ToHRESULT() == hr)
 						{
@@ -162,7 +173,9 @@ namespace AutomaticJumpList
 					// promoted in the Recent or Frequent lists when their usage is reported many times in rapid succession.
 					SHAddToRecentDocs(SHARD.SHARD_SHELLITEM, psi);
 				}
+				Marshal.ReleaseComObject(ppv);
 			}
+			Marshal.ReleaseComObject(pdlg);
 		}
 
 		// Sets the Known Category (Frequent or Recent) that is displayed in the Jump List for this application. Document creation
@@ -176,13 +189,15 @@ namespace AutomaticJumpList
 			var pcdl = new ICustomDestinationList();
 			// The cMinSlots and poaRemoved values can be ignored when only a Known Category is being added - those parameters apply only to
 			// applications adding custom categories or tasks to the Jump List.s
-			var poaRemoved = pcdl.BeginList<IObjectArray>(out var cMinSlots);
+			var poaRemoved = pcdl.BeginList<IObjectArray>(out _);
 			// Adds a known category, which is filled with items collected for the automatic Jump List. If an application also adds other
 			// custom categories (see the CustomJumpList sample), the categories are displayed in the order they are appended to the list.
 			// When combining custom categories with known categories, duplicates are not removed, so applications should only provide items
 			// in custom categories that will not appear in the known categories.
 			pcdl.AppendKnownCategory(fRecentSelected ? KNOWNDESTCATEGORY.KDC_RECENT : KNOWNDESTCATEGORY.KDC_FREQUENT);
 			pcdl.CommitList();
+			Marshal.ReleaseComObject(poaRemoved);
+			Marshal.ReleaseComObject(pcdl);
 		}
 
 		private void IDM_CATEGORY_FREQUENT_Click(object sender, EventArgs e) => SetCategory(false);
@@ -223,7 +238,7 @@ namespace AutomaticJumpList
 			IDM_CATEGORY_RECENT.Checked = fRecentSelected;
 			IDM_CATEGORY_FREQUENT.Checked = !fRecentSelected;
 			var mem = SafeCoTaskMemHandle.CreateFromStructure(fRecentSelected ? 1U : 0U);
-			SHSetValue(HKEY.HKEY_CURRENT_USER, REGPATH_SAMPLE, REGVAL_RECENTCATEGORY, REG_VALUE_TYPE.REG_DWORD, (IntPtr)mem, (uint)mem.Size);
+			SHSetValue(HKEY.HKEY_CURRENT_USER, REGPATH_SAMPLE, REGVAL_RECENTCATEGORY, REG_VALUE_TYPE.REG_DWORD, mem, mem.Size);
 		}
 	}
 }
