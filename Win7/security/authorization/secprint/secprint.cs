@@ -1,6 +1,9 @@
 ﻿using System;
+using System.Runtime.InteropServices;
+using System.Security.AccessControl;
 using Vanara.PInvoke;
 using static Vanara.PInvoke.AdvApi32;
+using static Vanara.PInvoke.WinSpool;
 
 namespace AclApi
 {
@@ -15,7 +18,7 @@ namespace AclApi
 
 			if (args.Length < 3)
 			{
-				Console.Write("USAGE: secprint <printer name> <user name> <P|MD|MP|F> [D]\n";
+				Console.Write("USAGE: secprint <printer name> <user name> <P|MD|MP|F> [D]\n");
 				Console.Write(" Where P  = Print access\n");
 				Console.Write("       MD = Manage documents\n");
 				Console.Write("       MP = Manage printers\n");
@@ -37,58 +40,33 @@ namespace AclApi
 			{
 				case "p":
 					// Add an ACL for "Print" access
-					if (!AddAccessRights(args[0], PRINTER_EXECUTE, CONTAINER_INHERIT_ACE, args[1], bDeny ? ACCESS_DENY : ACCESS_ALLOW))
+					if (!AddAccessRights(args[0], (uint)AccessRights.PRINTER_EXECUTE, AceFlags.ContainerInherit, args[1], bDeny ? ACCESS_DENY : ACCESS_ALLOW))
 						Console.Write("Error Adding Access Rights\n");
 					break;
 
 				case "f":
 					// Add ACLs for "Full Control" access
-					if (!AddAccessRights(args[0],
-											 GENERIC_ALL,
-											 OBJECT_INHERIT_ACE | INHERIT_ONLY_ACE,
-											 args[1],
-											 (byte)(bDeny ? ACCESS_DENY : ACCESS_ALLOW)))
-
+					if (!AddAccessRights(args[0], ACCESS_MASK.GENERIC_ALL, AceFlags.ObjectInherit | AceFlags.InheritOnly, args[1], bDeny ? ACCESS_DENY : ACCESS_ALLOW))
 						Console.Write("Error Adding Access Rights\n");
 
-					if (!AddAccessRights(args[0],
-										 PRINTER_ALL_ACCESS,
-										 CONTAINER_INHERIT_ACE,
-										 args[1],
-										 (byte)(bDeny ? ACCESS_DENY : ACCESS_ALLOW)))
-
+					if (!AddAccessRights(args[0], (uint)AccessRights.PRINTER_ALL_ACCESS, AceFlags.ContainerInherit, args[1], bDeny ? ACCESS_DENY : ACCESS_ALLOW))
 						Console.Write("Error Adding Access Rights\n");
 					break;
 
 				case "md":
 					// Add ACLs for "Manage Documents" access
 
-					if (!AddAccessRights(args[0],
-										 GENERIC_ALL,
-										 OBJECT_INHERIT_ACE | INHERIT_ONLY_ACE,
-										 args[1],
-										 (byte)(bDeny ? ACCESS_DENY : ACCESS_ALLOW)))
-
+					if (!AddAccessRights(args[0], ACCESS_MASK.GENERIC_ALL, AceFlags.ObjectInherit | AceFlags.InheritOnly, args[1], bDeny ? ACCESS_DENY : ACCESS_ALLOW))
 						Console.Write("Error Adding Access Rights\n");
 
-					if (!AddAccessRights(args[0],
-										 READ_CONTROL,
-										 CONTAINER_INHERIT_ACE,
-										 args[1],
-										 (byte)(bDeny ? ACCESS_DENY : ACCESS_ALLOW)))
-
+					if (!AddAccessRights(args[0], ACCESS_MASK.READ_CONTROL, AceFlags.ContainerInherit, args[1], bDeny ? ACCESS_DENY : ACCESS_ALLOW))
 						Console.Write("Error Adding Access Rights\n");
 					break;
 
 				case "mp":
 					// Add ACLs for "Manage Printers" access
 
-					if (!AddAccessRights(args[0],
-										 PRINTER_ACCESS_ADMINISTER | PRINTER_ACCESS_USE,
-										 0,
-										 args[1],
-										 (byte)(bDeny ? ACCESS_DENY : ACCESS_ALLOW)))
-
+					if (!AddAccessRights(args[0], (uint)(AccessRights.PRINTER_ACCESS_ADMINISTER | AccessRights.PRINTER_ACCESS_USE), 0, args[1], bDeny ? ACCESS_DENY : ACCESS_ALLOW))
 						Console.Write("Error Adding Access Rights\n");
 					break;
 
@@ -107,72 +85,26 @@ namespace AclApi
 		// RETURN VALUE: true or false
 		//
 		// COMMENTS:
-		static bool GetPrinterDACL(string szPrinterName, out SafePACL ppACL)
+		unsafe static bool GetPrinterDACL(string szPrinterName, out SafePACL ppACL)
 		{
-			HANDLE hPrinter = null;
-			PPRINTER_INFO_3 pPrnInfo3 = null;
-			PRINTER_DEFAULTS PrnDefs;
-			uint cbNeeded = 0;
-			uint cbBuf = 0;
-			bool bDaclPres;
-			bool bDef;
-			bool bRes = false;
-			ACL_SIZE_INFORMATION AclInfo;
-			PACL pACL = null;
+			ppACL = default;
 
-			PrnDefs.DesiredAccess = READ_CONTROL;
-			PrnDefs.pDatatype = null;
-			PrnDefs.pDevMode = null;
+			if (!OpenPrinter(szPrinterName, out var hPrinter, new PRINTER_DEFAULTS { DesiredAccess = ACCESS_MASK.READ_CONTROL }))
+				return false;
 
-			try
+			using (hPrinter)
 			{
-				if (!OpenPrinter(szPrinterName, &hPrinter, &PrnDefs))
-					__leave;
-
 				// Call GetPrinter twice to get size of printer info structure.
 
-				while (!GetPrinter(hPrinter, 3, (LPBYTE)pPrnInfo3, cbBuf, &cbNeeded))
-				{
-					if (GetLastError() == ERROR_INSUFFICIENT_BUFFER)
-					{
-						cbBuf = cbNeeded;
-						pPrnInfo3 = LocalAlloc(LPTR, cbNeeded);
-						if (pPrnInfo3 == null)
-							__leave;
-					}
-					else
-						__leave;
-				}
+				var PrnInfo3 = GetPrinter<PRINTER_INFO_3>(hPrinter);
 
-				if (!GetPrinter(hPrinter, 3, (LPBYTE)pPrnInfo3, cbBuf, &cbNeeded))
-					__leave;
+				if (!GetSecurityDescriptorDacl(PrnInfo3.pSecurityDescriptor, out var bDaclPres, out var pACL, out var bDef))
+					return false;
 
-				if (!GetSecurityDescriptorDacl(pPrnInfo3->pSecurityDescriptor,
-												 &bDaclPres, &pACL, &bDef))
-					__leave;
-
-				if (!GetAclInformation(pACL, &AclInfo,
-									  sizeof(ACL_SIZE_INFORMATION), AclSizeInformation))
-					__leave;
-
-				// The caller just needs the DACL. So, make a copy of the DACL for the caller and free the printer info structure. The caller
-				// must free the allocated memory for this DACL copy.
-
-				*ppACL = LocalAlloc(LPTR, AclInfo.AclBytesInUse);
-				if (*ppACL == null)
-					__leave;
-
-				memcpy(*ppACL, pACL, AclInfo.AclBytesInUse);
-
-				bRes = true;
-			}
-			finally
-			{
-				if (pPrnInfo3 != null) LocalFree((HLOCAL)pPrnInfo3);
-				if (hPrinter != null) ClosePrinter(hPrinter);
+				ppACL = new SafePACL(pACL);
 			}
 
-			return bRes;
+			return true;
 		}
 
 		// FUNCTION: SetPrinterDACL
@@ -184,39 +116,25 @@ namespace AclApi
 		// COMMENTS:
 		static bool SetPrinterDACL(string szPrinterName, PACL pDacl)
 		{
-			HANDLE hPrinter = null;
-			PRINTER_INFO_3 pi3;
-			PRINTER_DEFAULTS PrnDefs;
-			SECURITY_DESCRIPTOR NewSD;
-			bool bRes = false;
-
-			PrnDefs.DesiredAccess = READ_CONTROL | WRITE_DAC;
-			PrnDefs.pDatatype = null;
-			PrnDefs.pDevMode = null;
-			pi3.pSecurityDescriptor = &NewSD;
-
-			try
+			var PrnDefs = new PRINTER_DEFAULTS
 			{
-				if (!OpenPrinter(szPrinterName, &hPrinter, &PrnDefs))
-					__leave;
+				DesiredAccess = ACCESS_MASK.READ_CONTROL | ACCESS_MASK.WRITE_DAC
+			};
 
-				if (!InitializeSecurityDescriptor(&NewSD, SECURITY_DESCRIPTOR_REVISION))
-					__leave;
+			if (!OpenPrinter(szPrinterName, out var hPrinter, PrnDefs))
+				return false;
 
-				if (!SetSecurityDescriptorDacl(&NewSD, true, pDacl, false))
-					__leave;
-
-				if (!SetPrinter(hPrinter, 3, (LPBYTE) & pi3, 0))
-					__leave;
-
-				bRes = true;
-			}
-			finally
+			using (hPrinter)
 			{
-				if (hPrinter != null) ClosePrinter(hPrinter);
+				var NewSD = new SafePSECURITY_DESCRIPTOR();
+				if (!SetSecurityDescriptorDacl(NewSD, true, pDacl, false))
+					return false;
+
+				if (!SetPrinter(hPrinter, new PRINTER_INFO_3 { pSecurityDescriptor = NewSD }))
+					return false;
 			}
 
-			return bRes;
+			return true;
 		}
 
 		// FUNCTION: AddAccessRights
@@ -226,19 +144,18 @@ namespace AclApi
 		// RETURN VALUE: true or false
 		//
 		// COMMENTS:
-		static bool AddAccessRights(string szPrinterName, uint dwAccessMask, byte bAceFlags, string szUserName, byte bType)
+		unsafe static bool AddAccessRights(string szPrinterName, uint dwAccessMask, AceFlags bAceFlags, string szUserName, byte bType)
 		{
 			// ACL variables
-			ACL_SIZE_INFORMATION AclInfo;
+			ACL_SIZE_INFORMATION? AclInfo = null;
 			uint dwNewAceCount = 0;
 
 			// New ACL variables
-			PACL pNewACL = null;
-			uint dwNewACLSize;
+			int dwNewACLSize;
 
 			// Temporary ACE
-			PACCESS_ALLOWED_ACE pTempAce; // structure is same for access denied ace
-			UINT CurrentAceIndex;
+			ACCESS_ALLOWED_ACE* pTempAce; // structure is same for access denied ace
+			uint CurrentAceIndex;
 
 			try
 			{
@@ -261,43 +178,33 @@ namespace AclApi
 				}
 
 				// Compute size needed for the new ACL
-
-				if (pACL)  // Get size of old ACL
+				using (pACL)
 				{
-					if (!GetAclInformation(pACL, &AclInfo, sizeof(ACL_SIZE_INFORMATION),
-					   AclSizeInformation))
+					if (!pACL.IsInvalid)  // Get size of old ACL
 					{
-						Console.Write("Error %d: GetAclInformation\n", Win32Error.GetLastError());
-						__leave;
+						AclInfo = ((PACL)pACL).GetAclInformation<ACL_SIZE_INFORMATION>();
+					}
+
+					if (!pACL.IsInvalid)  // Add room for new ACEs
+					{
+						dwNewACLSize = (int)AclInfo.Value.AclBytesInUse +
+									   Marshal.SizeOf(typeof(ACCESS_ALLOWED_ACE)) +
+									   GetLengthSid(pSid) - sizeof(uint);
+					}
+					else
+					{
+						dwNewACLSize = Marshal.SizeOf(typeof(ACCESS_ALLOWED_ACE)) +
+									   Marshal.SizeOf(typeof(ACL)) +
+									   GetLengthSid(pSid) - sizeof(uint);
 					}
 				}
-
-				if (pACL)  // Add room for new ACEs
-				{
-					dwNewACLSize = AclInfo.AclBytesInUse +
-								   sizeof(ACCESS_ALLOWED_ACE) +
-								   GetLengthSid(pSid) - sizeof(uint);
-				}
-				else
-				{
-					dwNewACLSize = sizeof(ACCESS_ALLOWED_ACE) +
-								   sizeof(ACL) +
-								   GetLengthSid(pSid) - sizeof(uint);
-				}
-
 				// Allocate and setup ACL.
 
-				pNewACL = (PACL)LocalAlloc(LPTR, dwNewACLSize);
-				if (pNewACL == null)
+				using var pNewACL = new SafePACL(dwNewACLSize);
+				if (pNewACL.IsInvalid)
 				{
 					Console.Write("LocalAlloc failed.\n");
-					__leave;
-				}
-
-				if (!InitializeAcl(pNewACL, dwNewACLSize, ACL_REVISION2))
-				{
-					Console.Write("Error %d: InitializeAcl\n", Win32Error.GetLastError());
-					__leave;
+					throw new Exception();
 				}
 
 				// If new ACE is Access Denied ACE add it to front of new ACL
@@ -305,58 +212,56 @@ namespace AclApi
 				if (bType == ACCESS_DENY)
 				{
 					// Add the access-denied ACE to the new DACL
-					if (!AddAccessDeniedAce(pNewACL, ACL_REVISION2, dwAccessMask, pSid))
+					if (!AddAccessDeniedAce(pNewACL, 2, dwAccessMask, pSid))
 					{
 						Console.Write("Error %d: AddAccessDeniedAce\n", Win32Error.GetLastError());
-						__leave;
+						throw new Exception();
 					}
 
 					dwNewAceCount++;
 
 					// get pointer to ace we just added, so we can change the AceFlags
 
-					if (!GetAce(pNewACL,
-								0, // we know it is the first ace in the Acl
-								&pTempAce))
+					if (!GetAce(pNewACL, 0, out var mTempAce))
 					{
 						Console.Write("Error %d: GetAce\n", Win32Error.GetLastError());
-						__leave;
+						throw new Exception();
 					}
 
+					pTempAce = (ACCESS_ALLOWED_ACE*)(void*)mTempAce.DangerousGetHandle();
 					pTempAce->Header.AceFlags = bAceFlags;
 				}
 
 				// If a DACL was present, copy the resident ACEs to the new DACL
 
-				if (pACL)
+				if (!pACL.IsInvalid)
 				{
 					// Copy the file's old ACEs to our new ACL
 
-					if (AclInfo.AceCount)
+					if (AclInfo.Value.AceCount > 0)
 					{
-						for (CurrentAceIndex = 0; CurrentAceIndex < AclInfo.AceCount;
-																	 CurrentAceIndex++)
+						for (CurrentAceIndex = 0; CurrentAceIndex < AclInfo.Value.AceCount; CurrentAceIndex++)
 						{
 							// Get an ACE
 
-							if (!GetAce(pACL, CurrentAceIndex, &pTempAce))
+							if (!GetAce(pACL, CurrentAceIndex, out var mTempAce))
 							{
 								Console.Write("Error %d: GetAce\n", Win32Error.GetLastError());
-								__leave;
+								throw new Exception();
 							}
+							pTempAce = (ACCESS_ALLOWED_ACE*)(void*)mTempAce.DangerousGetHandle();
 
 							// Check to see if this ACE is identical to one were adding. If it is identical don't copy it over.
-							if (!EqualSid((PSID) & (pTempAce->SidStart), pSid) ||
+							if (!EqualSid((IntPtr)(void*)&(pTempAce->SidStart), pSid) ||
 								(pTempAce->Mask != dwAccessMask) ||
 								(pTempAce->Header.AceFlags != bAceFlags))
 							{
 								// ACE is distinct, add it to the new ACL
 
-								if (!AddAce(pNewACL, ACL_REVISION, MAXuint, pTempAce,
-								   ((PACE_HEADER)pTempAce)->AceSize))
+								if (!AddAce(pNewACL, 2, uint.MaxValue, (IntPtr)pTempAce, ((ACE_HEADER*)pTempAce)->AceSize))
 								{
 									Console.Write("Error %d: AddAce\n", Win32Error.GetLastError());
-									__leave;
+									throw new Exception();
 								}
 
 								dwNewAceCount++;
@@ -371,21 +276,22 @@ namespace AclApi
 				{
 					// Add the access-allowed ACE to the new DACL
 
-					if (!AddAccessAllowedAce(pNewACL, ACL_REVISION2, dwAccessMask, pSid))
+					if (!AddAccessAllowedAce(pNewACL, 2, dwAccessMask, pSid))
 					{
 						Console.Write("Error %d: AddAccessAllowedAce\n", Win32Error.GetLastError());
-						__leave;
+						throw new Exception();
 					}
 
 					// Get pointer to ACE we just added, so we can change the AceFlags
 
 					if (!GetAce(pNewACL,
 								dwNewAceCount, // Zero based position of the last ace
-								&pTempAce))
+								out var mTempAce))
 					{
 						Console.Write("Error %d: GetAce\n", Win32Error.GetLastError());
-						__leave;
+						throw new Exception();
 					}
+					pTempAce = (ACCESS_ALLOWED_ACE*)(void*)mTempAce.DangerousGetHandle();
 
 					pTempAce->Header.AceFlags = bAceFlags;
 				}
@@ -395,16 +301,11 @@ namespace AclApi
 				if (!SetPrinterDACL(szPrinterName, pNewACL))
 				{
 					Console.Write("Error %d setting printer DACL\n", Win32Error.GetLastError());
-					__leave;
+					throw new Exception();
 				}
 			}
 			finally
 			{
-				// Free the memory allocated for the old and new ACL and user info
-				if (pACL != null) LocalFree((HLOCAL)pACL);
-				if (pNewACL != null) LocalFree((HLOCAL)pNewACL);
-				if (pSid != null) LocalFree(pSid);
-				if (szDomainName != null) LocalFree(szDomainName);
 			}
 
 			return (true);

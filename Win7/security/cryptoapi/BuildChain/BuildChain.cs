@@ -42,13 +42,12 @@ namespace BuildChain
 			//-------------------------------------------------------------------
 			// Open the certificate store to be searched.
 
-			using var pStore = new SafeCoTaskMemString(wszStore);
 			using var hStoreHandle = CertOpenStore(
 				CertStoreProvider.CERT_STORE_PROV_SYSTEM, // the store provider type
 				0, // the encoding type is not needed
 				default, // use the default HCRYPTPROV
 				CertStoreFlags.CERT_SYSTEM_STORE_CURRENT_USER, // set the store location in a registry location
-				pStore); // the store name 
+				wszStore); // the store name 
 
 			if (hStoreHandle.IsInvalid)
 			{
@@ -58,12 +57,11 @@ namespace BuildChain
 			//-------------------------------------------------------------------
 			// Get a certificate that has the specified Subject Name
 
-			using var pSubject = new SafeCoTaskMemString(wszSubject);
 			ppcCert = CertFindCertificateInStore(hStoreHandle,
 				CertEncodingType.X509_ASN_ENCODING, // Use X509_ASN_ENCODING
 				0, // No dwFlags needed
 				CertFindType.CERT_FIND_SUBJECT_STR, // Find a certificate with a subject that matches the string in the next parameter
-				pSubject, // The Unicode string to be found in a certificate's subject
+				wszSubject, // The Unicode string to be found in a certificate's subject
 				default); // NULL for the first call to the function; In all subsequent calls, it is the last pointer returned by the function
 
 			if (ppcCert.IsInvalid)

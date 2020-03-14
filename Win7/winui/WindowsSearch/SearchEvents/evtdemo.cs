@@ -9,7 +9,7 @@ using static Vanara.PInvoke.ShlwApi;
 
 namespace SearchEvents
 {
-    class evtdemo
+    static class evtdemo
     {
         static void Main(string[] args)
         {
@@ -100,25 +100,20 @@ namespace SearchEvents
 
         static void WatchEvents(string pwszQuerySQL, PRIORITY_LEVEL priority, uint dwTimeout)
         {
+            OleDbDataReader spRowset = null;
             IRowsetPrioritization spRowsetPrioritization;
             CRowsetEventListener spListener;
 
-            HRESULT hr = OpenSession(out var spDBCreateCommand);
+            var hr = OpenSession(out var spDBCreateCommand);
+            if (hr.Succeeded)
+                hr = ExecuteQuery(spDBCreateCommand, pwszQuerySQL, true, out spRowset);
+
+            if (hr.Succeeded)
+                spRowsetPrioritization = (IRowsetPrioritization)Marshal.GetObjectForIUnknown(Marshal.GetComInterfaceForObject<OleDbDataReader, IRowsetPrioritization>(spRowset));
+
             if (hr.Succeeded)
             {
-                hr = ExecuteQuery(spDBCreateCommand, pwszQuerySQL, true, typeof(IRowset).GUID, out var spRowset));
-            }
-            if (hr.Succeeded)
-            {
-                spRowsetPrioritization = (IRowsetPrioritization)spRowset;
-            }
-            if (hr.Succeeded)
-            {
-                hr = CreateComObject(&spListener);
-            }
-            if (hr.Succeeded)
-            {
-                spListener.spDBCreateCommand = spDBCreateCommand;
+                spListener = new CRowsetEventListener(spDBCreateCommand);
 
                 uint dwAdviseID = 0;
                 hr = ConnectToConnectionPoint(spListener.GetUnknown(), typeof(IRowsetEvents).GUID, true, spRowset, ref dwAdviseID, out _);
@@ -166,7 +161,7 @@ namespace SearchEvents
         {
             try
             {
-                var hlpr = new ISearchCatalogManager();
+                //var hlpr = new ISearchCatalogManager();
                 pConnection = new OleDbConnection("Provider=Search.CollatorDSO;Extended Properties='Application=Windows';");
                 pConnection.Open();
                 return HRESULT.S_OK;
@@ -181,80 +176,30 @@ namespace SearchEvents
         //*****************************************************************************
         // Run a query against the database, optionally enabling eventing...
 
-        static HRESULT ExecuteQuery(OleDbConnection pConnection, string pwszQuerySQL, bool fEnableEventing, out OleDbDataReader rdr)
+        static void ExecuteQuery(OleDbConnection pConnection, string pwszQuerySQL, bool fEnableEventing, out OleDbDataReader rdr)
         {
             if (!pwszQuerySQL.TrimEnd().EndsWith(" FROM SYSTEMINDEX", StringComparison.InvariantCultureIgnoreCase))
                 pwszQuerySQL = pwszQuerySQL.TrimEnd() + " FROM SYSTEMINDEX";
             var cmd = new OleDbCommand(pwszQuerySQL);
-            cmd.Parameters.AddWithValue()
+            // TODO: Add properties DBPROP_USEEXTENDEDDBTYPES = true, DBPROP_ENABLEROWSETEVENTS = true
             rdr = cmd.ExecuteReader();
-            HRESULT hr = pDBCreateCommand..CreateCommand(0, typeof(ICommand).Guid, &spUnknownCommand);
-            if (SUCCEEDED(hr))
-            {
-                hr = spUnknownCommand.QueryInterface(&spCommandProperties);
-            }
-            if (SUCCEEDED(hr))
-            {
-                DBPROP rgProps[2] = { };
-                DBPROPSET propSet = { };
-
-                rgProps[propSet.cProperties].dwPropertyID = DBPROP_USEEXTENDEDDBTYPES;
-                rgProps[propSet.cProperties].dwOptions = DBPROPOPTIONS_OPTIONAL;
-                rgProps[propSet.cProperties].vValue.vt = VT_BOOL;
-                rgProps[propSet.cProperties].vValue.boolVal = VARIANT_TRUE;
-                propSet.cProperties++;
-
-                if (fEnableEventing)
-                {
-                    rgProps[propSet.cProperties].dwPropertyID = DBPROP_ENABLEROWSETEVENTS;
-                    rgProps[propSet.cProperties].dwOptions = DBPROPOPTIONS_OPTIONAL;
-                    rgProps[propSet.cProperties].vValue.vt = VT_BOOL;
-                    rgProps[propSet.cProperties].vValue.boolVal = VARIANT_TRUE;
-                    propSet.cProperties++;
-                }
-
-                propSet.rgProperties = rgProps;
-                static const GUID guidQueryExt = DBPROPSET_QUERYEXT;
-                propSet.guidPropertySet = guidQueryExt;
-
-                hr = spCommandProperties.SetProperties(1, &propSet);
-            }
-            if (SUCCEEDED(hr))
-            {
-                hr = spUnknownCommand.QueryInterface(&spCommandText);
-            }
-            if (SUCCEEDED(hr))
-            {
-                hr = spCommandText.SetCommandText(DBGUID_DEFAULT, pwszQuerySQL);
-            }
-            if (SUCCEEDED(hr))
-            {
-                DBROWCOUNT cRows;
-                hr = spCommandText.Execute(default, riid, default, &cRows, reinterpret_cast<IUnknown**>(ppv));
-            }
-
-            return hr;
         }
 
 
         //*****************************************************************************
         // Retrieves the URL from a given workid
 
-        HRESULT RetrieveURL(IDBCreateCommand pDBCreateCommand, in PROPVARIANT itemID, out string pwszURL)
+        static HRESULT RetrieveURL(OleDbConnection pDBCreateCommand, in PROPVARIANT itemID, out string pwszURL)
         {
-            WCHAR wszQuery[512];
-            CComPtr<IRowset> spRowset;
+            OleDbDataReader spRowset;
 
-            HRESULT hr = (itemID.vt == VT_UI4) ? S_OK : E_INVALIDARG;
-            if (SUCCEEDED(hr))
+            HRESULT hr = (itemID.vt == VARTYPE.VT_UI4) ? HRESULT.S_OK : HRESULT.E_INVALIDARG;
+            if (hr.Succeeded)
             {
-                hr = StringCchPrintf(wszQuery, ARRAYSIZE(wszQuery), "SELECT TOP 1 System.ItemUrl FROM SystemIndex WHERE workid=%u", itemID.ulVal);
+                var wszQuery = $"SELECT TOP 1 System.ItemUrl FROM SystemIndex WHERE workid={itemID.ulVal}";
+                hr = ExecuteQuery(pDBCreateCommand, wszQuery, false, out spRowset);
             }
-            if (SUCCEEDED(hr))
-            {
-                hr = ExecuteQuery(pDBCreateCommand, wszQuery, false, IID_PPV_ARGS(&spRowset));
-            }
-            if (SUCCEEDED(hr))
+            if (hr.Succeeded)
             {
                 CComPtr<IGetRow> spGetRow;
                 DBCOUNTITEM ciRowsRetrieved = 0;
@@ -263,23 +208,23 @@ namespace SearchEvents
                 CComPtr<IPropertyStore> spPropertyStore;
 
                 hr = spRowset.GetNextRows(DB_NULL_HCHAPTER, 0, 1, &ciRowsRetrieved, &phRow);
-                if (SUCCEEDED(hr))
+                if (hr.Succeeded)
                 {
                     hr = spRowset.QueryInterface(&spGetRow);
-                    if (SUCCEEDED(hr))
+                    if (hr.Succeeded)
                     {
                         CComPtr<IUnknown> spUnknownPropertyStore;
                         hr = spGetRow.GetRowFromHROW(default, hRow, typeof(IPropertyStore).Guid, &spUnknownPropertyStore);
-                        if (SUCCEEDED(hr))
+                        if (hr.Succeeded)
                         {
                             hr = spUnknownPropertyStore.QueryInterface(&spPropertyStore);
                         }
                     }
-                    if (SUCCEEDED(hr))
+                    if (hr.Succeeded)
                     {
                         PROPVARIANT var = { };
                         hr = spPropertyStore.GetValue(PKEY_ItemUrl, &var);
-                        if (SUCCEEDED(hr))
+                        if (hr.Succeeded)
                         {
                             if (var.vt == VT_LPWSTR)
                             {
@@ -302,36 +247,122 @@ namespace SearchEvents
 
         //*****************************************************************************
 
-        string ItemStateToString(ROWSETEVENT_ITEMSTATE itemState)
+        static string ItemStateToString(ROWSETEVENT_ITEMSTATE itemState) => itemState switch
         {
-            switch (itemState)
-            {
-                case ROWSETEVENT_ITEMSTATE_NOTINROWSET:
-                    return "NotInRowset";
-                case ROWSETEVENT_ITEMSTATE_INROWSET:
-                    return "InRowset";
-                case ROWSETEVENT_ITEMSTATE_UNKNOWN:
-                    return "Unknown";
-            }
-            return "";
-        }
+            ROWSETEVENT_ITEMSTATE.ROWSETEVENT_ITEMSTATE_NOTINROWSET => "NotInRowset",
+            ROWSETEVENT_ITEMSTATE.ROWSETEVENT_ITEMSTATE_INROWSET => "InRowset",
+            ROWSETEVENT_ITEMSTATE.ROWSETEVENT_ITEMSTATE_UNKNOWN => "Unknown",
+            _ => "",
+        };
 
         //*****************************************************************************
 
-        string PriorityLevelToString(PRIORITY_LEVEL priority)
+        static string PriorityLevelToString(PRIORITY_LEVEL priority) => priority switch
         {
-            switch (priority)
+            PRIORITY_LEVEL.PRIORITY_LEVEL_FOREGROUND => "Foreground",
+            PRIORITY_LEVEL.PRIORITY_LEVEL_HIGH => "High",
+            PRIORITY_LEVEL.PRIORITY_LEVEL_LOW => "Low",
+            PRIORITY_LEVEL.PRIORITY_LEVEL_DEFAULT => "Default",
+            _ => "",
+        };
+
+        [ComVisible(true)]
+        public class CRowsetEventListener : IRowsetEvents
+        {
+            OleDbConnection spDBCreateCommand;
+
+            public CRowsetEventListener(OleDbConnection conn)
             {
-                case PRIORITY_LEVEL_FOREGROUND:
-                    return "Foreground";
-                case PRIORITY_LEVEL_HIGH:
-                    return "High";
-                case PRIORITY_LEVEL_LOW:
-                    return "Low";
-                case PRIORITY_LEVEL_DEFAULT:
-                    return "Default";
+                spDBCreateCommand = conn;
             }
-            return "";
+
+            void IRowsetEvents.OnNewItem(PROPVARIANT itemID, ROWSETEVENT_ITEMSTATE newItemState)
+            {
+                // This event is received when the indexer has completed indexing of a NEW item that falls within the
+                // scope of your query.  If your query is for C:\users, then only newly indexed items within C:\users
+                // will be given.
+
+                Console.Write("OnNewItem( newItemState: {0} )\n\t\t", ItemStateToString(newItemState));
+                PrintURL(itemID);
+            }
+
+            void IRowsetEvents.OnChangedItem(PROPVARIANT itemID, ROWSETEVENT_ITEMSTATE rowsetItemState, ROWSETEVENT_ITEMSTATE changedItemState)
+            {
+                // This event is received when the indexer has completed re-indexing of an item that was already in
+                // the index that falls within the scope of your query.  The rowsetItemState parameter indicates the
+                // state of the item regarding your query when it was initially executed.  The changedItemState
+                // represents the state of the item following reindexing.
+
+                Console.Write("OnChangedItem( rowsetItemState: {0} changedItemState: {1} )\n\t\t", ItemStateToString(rowsetItemState), ItemStateToString(changedItemState));
+                PrintURL(itemID);
+            }
+
+            void IRowsetEvents.OnDeletedItem(PROPVARIANT itemID, ROWSETEVENT_ITEMSTATE deletedItemState)
+            {
+                // This event is received when the indexer has completed deletion of an item that was already in
+                // the index that falls within the scope of your query.  Note that the item may not have been in your
+                // original query even if the original query was solely scope-based if the item was added following
+                // your query.
+
+                Console.Write("OnDeletedItem( deletedItemState: {0} )\n\t\t", ItemStateToString(deletedItemState));
+                PrintURL(itemID);
+            }
+
+            void IRowsetEvents.OnRowsetEvent(ROWSETEVENT_TYPE eventType, PROPVARIANT eventData)
+            {
+                switch (eventType)
+                {
+                    case ROWSETEVENT_TYPE.ROWSETEVENT_TYPE_DATAEXPIRED:
+                        // This event signals that your rowset is no longer valid, so further calls made to the rowset
+                        // will fail.  This can happen if the client (your application) loses its connection to the
+                        // indexer.  Indexer restarts or network problems with remote queries could cause this.
+
+                        Console.Write("OnRowsetEvent( ROWSETEVENT_TYPE_DATAEXPIRED )\n\t\tData backing the rowset has expired.  Requerying is needed.\n");
+                        break;
+
+                    case ROWSETEVENT_TYPE.ROWSETEVENT_TYPE_FOREGROUNDLOST:
+                        // This event signals that a previous request for PRIORITY_LEVEL_FOREGROUND made on this rowset
+                        // has been downgraded to PRIORITY_LEVEL_HIGH.  The most likely cause of this is another query
+                        // having requested foreground prioritization.  The indexer treats prioritization requests as a
+                        // stack where only the top request on the stack may have foreground priority.
+
+                        Console.Write("OnRowsetEvent( ROWSETEVENT_TYPE_FOREGROUNDLOST )\n\t\tForeground priority has been downgraded to high priority.\n");
+                        break;
+
+                    case ROWSETEVENT_TYPE.ROWSETEVENT_TYPE_SCOPESTATISTICS:
+                        // This informational event is sent periodically when there has been a prioritization request for
+                        // any value other than PRIORITY_LEVEL_DEFAULT.  This event allows tracking indexing progress in
+                        // response to a prioritization reqeust.
+
+                        Console.Write("OnRowsetEvent( ROWSETEVENT_TYPE_SCOPESTATISTICS )\n\t\tStatistics( indexedDocs:{0} docsToAddCount:{1} docsToReindexCount: {2} )\n", eventData.caul.pElems[0], eventData.caul.pElems[1], eventData.caul.pElems[2]);
+                        break;
+
+                    default:
+                        throw new InvalidOperationException();
+                }
+            }
+
+            void PrintURL(PROPVARIANT itemID)
+            {
+                string wszURL = "";
+                HRESULT hr = itemID.vt == VARTYPE.VT_UI4 ? HRESULT.S_OK : HRESULT.E_INVALIDARG;
+                if (hr.Succeeded)
+                {
+                    hr = RetrieveURL(spDBCreateCommand, itemID, out wszURL);
+                    if (hr.Failed)
+                    {
+                        // It's possible that for some items we won't be able to retrieve the URL.
+                        // This can happen when our application doesn't have sufficient priveledges to read the URL
+                        // or if the URL has been deleted from the system.
+
+                        wszURL = "URL-Lookup-NotFound";
+                    }
+                }
+                if (hr.Succeeded)
+                    Console.Write("workid: {0};  URL: {1}\n", itemID.ulVal, wszURL);
+                else
+                    throw new InvalidOperationException();
+            }
         }
     }
 }

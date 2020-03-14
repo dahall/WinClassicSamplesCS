@@ -219,7 +219,7 @@ namespace CreateCertificate
 			// Find the Signature algorithm
 			//
 
-			var pOidInfo = CryptFindOIDInfo(CryptOIDInfoFlags.CRYPT_OID_INFO_NAME_KEY, new SafeCoTaskMemString(wszKeyAlgName), OIDGroupId.CRYPT_PUBKEY_ALG_OID_GROUP_ID);
+			var pOidInfo = CryptFindOIDInfo(CryptOIDInfoFlags.CRYPT_OID_INFO_NAME_KEY, wszKeyAlgName, OIDGroupId.CRYPT_PUBKEY_ALG_OID_GROUP_ID);
 			if (default == pOidInfo)
 			{
 				Console.Write("FAILED: Unable to find Public Key algorithm: '{0}'.\n", wszKeyAlgName);
@@ -251,7 +251,7 @@ namespace CreateCertificate
 			//-------------------------------------------------------------------
 			// Open a system store, in this case, the My store.
 
-			hStoreHandle = CertOpenStore(CertStoreProvider.CERT_STORE_PROV_SYSTEM, 0, default, CertStoreFlags.CERT_SYSTEM_STORE_CURRENT_USER, new SafeCoTaskMemString(wszStoreName));
+			hStoreHandle = CertOpenStore(CertStoreProvider.CERT_STORE_PROV_SYSTEM, 0, default, CertStoreFlags.CERT_SYSTEM_STORE_CURRENT_USER, wszStoreName);
 			if (hStoreHandle.IsInvalid)
 			{
 				hr = (HRESULT)Win32Error.GetLastError();

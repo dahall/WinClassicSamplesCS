@@ -61,7 +61,7 @@ namespace CertSelect
 			CERT_SELECT_CRITERIA[] rgCriteriaFilter = { EKUCriteria, KUCriteria };
 
 			using var hStore = CertOpenStore(CertStoreProvider.CERT_STORE_PROV_SYSTEM, 0, default,
-				CertStoreFlags.CERT_SYSTEM_STORE_CURRENT_USER, new SafeCoTaskMemString("MY"));
+				CertStoreFlags.CERT_SYSTEM_STORE_CURRENT_USER, "MY");
 
 			if (hStore.IsInvalid)
 			{

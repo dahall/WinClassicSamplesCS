@@ -6,4 +6,8 @@
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
 
+  <ItemGroup>
+    <PackageReference Include="Vanara.PInvoke.Cryptography" Version="3.2.1" />
+  </ItemGroup>
+
 </Project>

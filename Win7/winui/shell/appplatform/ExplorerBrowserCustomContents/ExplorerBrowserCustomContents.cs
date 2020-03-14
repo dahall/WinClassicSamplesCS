@@ -11,6 +11,7 @@ using static Vanara.PInvoke.Ole32;
 using static Vanara.PInvoke.Shell32;
 
 using Vanara.PInvoke;
+using System.Linq;
 
 namespace ExplorerBrowserCustomContents
 {
@@ -26,7 +27,7 @@ namespace ExplorerBrowserCustomContents
 
 		private RECT EBRect => IDC_BROWSER.Bounds;
 
-		HRESULT IServiceProvider.QueryService(ref Guid guidService, ref Guid riid, out IntPtr ppvObject)
+		HRESULT IServiceProvider.QueryService(in Guid guidService, in Guid riid, out IntPtr ppvObject)
 		{
 			if (guidService.Equals(IID_ICommDlgBrowser) && (riid.Equals(IID_ICommDlgBrowser) || riid.Equals(typeof(ICommDlgBrowser3).GUID)))
 			{
@@ -160,10 +161,10 @@ namespace ExplorerBrowserCustomContents
 
 			// Fill in the results (from FillResultsOnBackgroundThread)
 			var pManager = new IKnownFolderManager();
-			foreach (var id in pManager.GetFolderIds())
+			foreach (var i in pManager.GetFolderIds().Select(g => pManager.GetFolder(g)).Select(f => f.GetShellItem<IShellItem>(0)))
 				try
 				{
-					prf.AddItem(id.GetIShellItem());
+					prf.AddItem(i);
 				}
 				catch { }
 

@@ -103,7 +103,7 @@ namespace CertSign
 			//-------------------------------------------------------------------
 			// Open the certificate store to be searched.
 
-			using var hStoreHandle = CertOpenStore(CertStoreProvider.CERT_STORE_PROV_SYSTEM, 0, default, CertStoreFlags.CERT_SYSTEM_STORE_CURRENT_USER, new SafeCoTaskMemString(wszStore));
+			using var hStoreHandle = CertOpenStore(CertStoreProvider.CERT_STORE_PROV_SYSTEM, 0, default, CertStoreFlags.CERT_SYSTEM_STORE_CURRENT_USER, wszStore);
 
 			if (hStoreHandle.IsInvalid)
 			{
@@ -113,7 +113,7 @@ namespace CertSign
 			//-------------------------------------------------------------------
 			// Get a certificate that has the specified Subject Name
 
-			ppcCert = CertFindCertificateInStore(hStoreHandle, CertEncodingType.X509_ASN_ENCODING, 0, CertFindType.CERT_FIND_SUBJECT_STR, new SafeCoTaskMemString(wszSubject), default);
+			ppcCert = CertFindCertificateInStore(hStoreHandle, CertEncodingType.X509_ASN_ENCODING, 0, CertFindType.CERT_FIND_SUBJECT_STR, wszSubject, default);
 			if (ppcCert.IsInvalid)
 			{
 				return (HRESULT)Win32Error.GetLastError();
@@ -302,7 +302,7 @@ namespace CertSign
 			ppbSignature = default;
 
 			// Find ALGID for
-			var pOidInfo = CryptFindOIDInfo(CryptOIDInfoFlags.CRYPT_OID_INFO_NAME_KEY, new SafeCoTaskMemString(wszHashAlgName), OIDGroupId.CRYPT_HASH_ALG_OID_GROUP_ID);
+			var pOidInfo = CryptFindOIDInfo(CryptOIDInfoFlags.CRYPT_OID_INFO_NAME_KEY, wszHashAlgName, OIDGroupId.CRYPT_HASH_ALG_OID_GROUP_ID);
 
 			if (pOidInfo == default || IS_SPECIAL_OID_INFO_ALGID(((CRYPT_OID_INFO)pOidInfo).Union.Algid))
 			{

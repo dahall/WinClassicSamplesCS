@@ -70,7 +70,7 @@ namespace ExplorerBrowserSearch
 
 		HRESULT IExplorerBrowserEvents.OnViewCreated(IShellView psv) => HRESULT.E_NOTIMPL;
 
-		HRESULT IServiceProvider.QueryService(ref Guid guidService, ref Guid riid, out IntPtr ppvObject)
+		HRESULT IServiceProvider.QueryService(in Guid guidService, in Guid riid, out IntPtr ppvObject)
 		{
 			if (guidService.Equals(IID_ICommDlgBrowser) && (riid.Equals(IID_ICommDlgBrowser) || riid.Equals(typeof(ICommDlgBrowser3).GUID)))
 			{
