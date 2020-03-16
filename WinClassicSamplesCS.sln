@@ -91,7 +91,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "encrypt", "Win7\security\cr
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "encryptmessage", "Win7\security\cryptoapi\encryptmessage\encryptmessage.csproj", "{ADECA52F-A04F-4A8F-812E-59A9FBE3EC68}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "enumalgs", "Win7\security\cryptoapi\enumalgs\enumalgs.csproj", "{6AD1E7B2-B9A7-497C-A61D-21C6FCE9F3BC}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "enumalgs", "Win7\security\cryptoapi\enumalgs\enumalgs.csproj", "{6AD1E7B2-B9A7-497C-A61D-21C6FCE9F3BC}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "signhash", "Win7\security\cryptoapi\signhash\signhash.csproj", "{097E5E27-6233-45BC-9C76-81C9ECF34DE2}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -239,6 +241,10 @@ Global
 		{6AD1E7B2-B9A7-497C-A61D-21C6FCE9F3BC}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6AD1E7B2-B9A7-497C-A61D-21C6FCE9F3BC}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6AD1E7B2-B9A7-497C-A61D-21C6FCE9F3BC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{097E5E27-6233-45BC-9C76-81C9ECF34DE2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{097E5E27-6233-45BC-9C76-81C9ECF34DE2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{097E5E27-6233-45BC-9C76-81C9ECF34DE2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{097E5E27-6233-45BC-9C76-81C9ECF34DE2}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -287,6 +293,7 @@ Global
 		{38087D48-66EF-4379-9989-CA6F2CA7DAC9} = {5FFDBDCB-7524-438E-9C4F-4FA4A9CF13A8}
 		{ADECA52F-A04F-4A8F-812E-59A9FBE3EC68} = {5FFDBDCB-7524-438E-9C4F-4FA4A9CF13A8}
 		{6AD1E7B2-B9A7-497C-A61D-21C6FCE9F3BC} = {5FFDBDCB-7524-438E-9C4F-4FA4A9CF13A8}
+		{097E5E27-6233-45BC-9C76-81C9ECF34DE2} = {5FFDBDCB-7524-438E-9C4F-4FA4A9CF13A8}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {82D57A23-9C32-4014-9AFB-25B38D08E1D1}
