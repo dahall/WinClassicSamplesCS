@@ -37,7 +37,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "fileoperations", "Win7\winu
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ParsingWithParameters", "Win7\winui\shell\appplatform\ParsingWithParameters\ParsingWithParameters.csproj", "{4FBDBE52-2844-47F0-8D2E-CA06234E76A8}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sampler", "Sampler\Sampler.csproj", "{42D061DF-6C64-4907-B23B-38EAAE1EC701}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Sampler", "Sampler\Sampler.csproj", "{42D061DF-6C64-4907-B23B-38EAAE1EC701}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "security", "security", "{3F7A94C8-F84A-43A3-9276-B2F5F3047394}"
 EndProject
@@ -93,7 +93,13 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "encryptmessage", "Win7\secu
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "enumalgs", "Win7\security\cryptoapi\enumalgs\enumalgs.csproj", "{6AD1E7B2-B9A7-497C-A61D-21C6FCE9F3BC}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "signhash", "Win7\security\cryptoapi\signhash\signhash.csproj", "{097E5E27-6233-45BC-9C76-81C9ECF34DE2}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "signhash", "Win7\security\cryptoapi\signhash\signhash.csproj", "{097E5E27-6233-45BC-9C76-81C9ECF34DE2}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WinsockBluetoothConnection", "WinsockBluetoothConnection\WinsockBluetoothConnection.csproj", "{5F006E2E-82A2-4696-81DF-DF7501622BFE}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BacgroundIntelligenceTransferServicePolicy", "BacgroundIntelligenceTransferServicePolicy\BacgroundIntelligenceTransferServicePolicy.csproj", "{302CEFC1-3011-4B2A-B443-EA6FA0C0B4FD}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BackgroundCopyFileProperties", "BackgroundCopyFileProperties\BackgroundCopyFileProperties.csproj", "{313955BB-513D-43BD-9367-938635B9AC9A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -245,6 +251,18 @@ Global
 		{097E5E27-6233-45BC-9C76-81C9ECF34DE2}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{097E5E27-6233-45BC-9C76-81C9ECF34DE2}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{097E5E27-6233-45BC-9C76-81C9ECF34DE2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5F006E2E-82A2-4696-81DF-DF7501622BFE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5F006E2E-82A2-4696-81DF-DF7501622BFE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5F006E2E-82A2-4696-81DF-DF7501622BFE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5F006E2E-82A2-4696-81DF-DF7501622BFE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{302CEFC1-3011-4B2A-B443-EA6FA0C0B4FD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{302CEFC1-3011-4B2A-B443-EA6FA0C0B4FD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{302CEFC1-3011-4B2A-B443-EA6FA0C0B4FD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{302CEFC1-3011-4B2A-B443-EA6FA0C0B4FD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{313955BB-513D-43BD-9367-938635B9AC9A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{313955BB-513D-43BD-9367-938635B9AC9A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{313955BB-513D-43BD-9367-938635B9AC9A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{313955BB-513D-43BD-9367-938635B9AC9A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
