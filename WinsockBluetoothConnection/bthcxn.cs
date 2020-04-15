@@ -510,7 +510,7 @@ namespace WinsockBluetoothConnection
 					lpServiceClassId = (IntPtr)pg_guidServiceClass,
 					lpszServiceInstanceName = $"{Environment.MachineName} {CXN_INSTANCE_STRING}",
 					lpszComment = "Example Service instance registered in the directory service through RnR",
-					dwNameSpace = (uint)NS.NS_BTH,
+					dwNameSpace = NS.NS_BTH,
 					dwNumberOfCsAddrs = 1, // Must be 1.
 					lpcsaBuffer = lpCSAddrInfo // Req'd.
 				};

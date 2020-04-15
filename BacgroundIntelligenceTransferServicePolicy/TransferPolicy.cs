@@ -56,7 +56,7 @@ namespace BacgroundIntelligenceTransferServicePolicy
 			Console.Write(" Job is succesfully created ...\n");
 
 			// Set Transfer Policy for the job
-			job.TransferBehavior = BackgroundCopyCost.OstStateOvercapThrottled | BackgroundCopyCost.OstStateUsageBased | BackgroundCopyCost.BelowCap | BackgroundCopyCost.CappedUsageUnknown | BackgroundCopyCost.Unrestricted;
+			job.TransferBehavior = BackgroundCopyCost.OvercapThrottled | BackgroundCopyCost.UsageBased | BackgroundCopyCost.BelowCap | BackgroundCopyCost.CappedUsageUnknown | BackgroundCopyCost.Unrestricted;
 
 			// get Transfer Policy for the new job
 			Console.Write("Getting TransferPolicy Property ...\n");
