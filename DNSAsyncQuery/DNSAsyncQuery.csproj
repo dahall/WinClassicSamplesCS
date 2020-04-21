@@ -6,8 +6,8 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Vanara.PInvoke.DnsApi" Version="3.2.5" />
-    <PackageReference Include="Vanara.PInvoke.Kernel32" Version="3.2.5" />
+    <PackageReference Include="Vanara.PInvoke.DnsApi" Version="3.2.6" />
+    <PackageReference Include="Vanara.PInvoke.Kernel32" Version="3.2.6" />
   </ItemGroup>
 
 </Project>

@@ -93,7 +93,7 @@ namespace ConnectionManagerCost
 				var wcmCostData = new WCM_CONNECTION_COST_DATA { ConnectionCost = (WCM_CONNECTION_COST)dwNewCost };
 
 				//Set cost using WcmSetProperty 
-				var dwRetCode = WcmSetProperty(interfaceGUID, profileName, WCM_PROPERTY.wcm_intf_property_connection_cost, wcmCostData);
+				var dwRetCode = WcmSetProperty(WCM_PROPERTY.wcm_intf_property_connection_cost, interfaceGUID, profileName, wcmCostData);
 				if (dwRetCode.Succeeded)
 				{
 					Console.Write("Cost set successfully\n");
@@ -145,7 +145,7 @@ namespace ConnectionManagerCost
 				wcmProfData.MaxTransferSizeInMegabytes = (uint)ReadIntegerFromConsole("Enter Profile Max Transfer Size in Megabytes: ");
 
 				//Set Profile Data using WcmSetProperty 
-				var dwRetCode = WcmSetProperty(interfaceGUID, profileName, WCM_PROPERTY.wcm_intf_property_dataplan_status, wcmProfData);
+				var dwRetCode = WcmSetProperty(WCM_PROPERTY.wcm_intf_property_dataplan_status, interfaceGUID, profileName, wcmProfData);
 
 				if (dwRetCode.Succeeded)
 				{

@@ -114,16 +114,11 @@ namespace DNSAsyncQuery
 		{
 			DNS_ADDR_ARRAY DnsServerList = default;
 			pDnsServerList = null;
-			var Error = WSAStartup(Macros.MAKEWORD(2, 2), out _);
-			if (Error != 0)
-			{
-				Console.Write("WSAStartup failed with {0}\n", Error);
-				return Error;
-			}
+			using var wsa = SafeWSA.Initialize();
 
 			var SockAddr = new SOCKADDR(new SOCKADDR_IN6());
 			int AddressLength = SockAddr.Size;
-			Error = WSAStringToAddress(ServerIp, ADDRESS_FAMILY.AF_INET, default, SockAddr, ref AddressLength);
+			var Error = WSAStringToAddress(ServerIp, ADDRESS_FAMILY.AF_INET, default, SockAddr, ref AddressLength);
 			if (Error != 0)
 			{
 				AddressLength = SockAddr.Size;
@@ -143,8 +138,7 @@ namespace DNSAsyncQuery
 
 			exit:
 
-			WSACleanup();
-			return Error;
+			return (int)Error;
 		}
 
 		// Callback function called by DNS as part of asynchronous query complete

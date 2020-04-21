@@ -107,7 +107,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DNSAsyncNetworkNameResoluti
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DesktopToasts", "DesktopToasts\DesktopToasts.csproj", "{331269B7-C7F6-453F-98FB-D59516C6044E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DNSAsyncQuery", "DNSAsyncQuery\DNSAsyncQuery.csproj", "{678455CA-F4F2-4285-B414-E220026C4AA7}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DNSAsyncQuery", "DNSAsyncQuery\DNSAsyncQuery.csproj", "{678455CA-F4F2-4285-B414-E220026C4AA7}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NetworkCost", "NetworkCost\NetworkCost.csproj", "{45B91ECD-3F16-401F-BA6F-DE4E42661EAC}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -459,6 +461,14 @@ Global
 		{678455CA-F4F2-4285-B414-E220026C4AA7}.Release|Any CPU.Build.0 = Release|Any CPU
 		{678455CA-F4F2-4285-B414-E220026C4AA7}.Release|x64.ActiveCfg = Release|Any CPU
 		{678455CA-F4F2-4285-B414-E220026C4AA7}.Release|x64.Build.0 = Release|Any CPU
+		{45B91ECD-3F16-401F-BA6F-DE4E42661EAC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{45B91ECD-3F16-401F-BA6F-DE4E42661EAC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{45B91ECD-3F16-401F-BA6F-DE4E42661EAC}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{45B91ECD-3F16-401F-BA6F-DE4E42661EAC}.Debug|x64.Build.0 = Debug|Any CPU
+		{45B91ECD-3F16-401F-BA6F-DE4E42661EAC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{45B91ECD-3F16-401F-BA6F-DE4E42661EAC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{45B91ECD-3F16-401F-BA6F-DE4E42661EAC}.Release|x64.ActiveCfg = Release|Any CPU
+		{45B91ECD-3F16-401F-BA6F-DE4E42661EAC}.Release|x64.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
