@@ -4,18 +4,18 @@
     <OutputType>WinExe</OutputType>
     <TargetFramework>net472</TargetFramework>
     <UseWindowsForms>true</UseWindowsForms>
-    <TargetPlatformVersion>10.0.18362</TargetPlatformVersion>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.Toolkit.Uwp.Notifications" Version="6.0.0" />
-    <PackageReference Include="Vanara.PInvoke.Shell32" Version="3.2.6" />
+    <PackageReference Include="Microsoft.Toolkit.Uwp.Notifications" Version="6.1.0" />
+    <PackageReference Include="Microsoft.Windows.SDK.Contracts" Version="10.0.19041.1" />
+    <PackageReference Include="Vanara.PInvoke.Shell32" Version="3.2.11" />
   </ItemGroup>
 
   <ItemGroup>
-    <Reference Include="Windows.Data" />
-    <Reference Include="Windows.UI" />
-    <Reference Include="System.Runtime" />
+    <None Update="toastImageAndText.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
 
 </Project>
