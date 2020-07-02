@@ -27,11 +27,11 @@ namespace ExplorerBrowserCustomContents
 
 		private RECT EBRect => IDC_BROWSER.Bounds;
 
-		HRESULT IServiceProvider.QueryService(in Guid guidService, in Guid riid, out IntPtr ppvObject)
+		HRESULT IServiceProvider.QueryService(in Guid guidService, in Guid riid, out object ppvObject)
 		{
 			if (guidService.Equals(IID_ICommDlgBrowser) && (riid.Equals(IID_ICommDlgBrowser) || riid.Equals(typeof(ICommDlgBrowser3).GUID)))
 			{
-				ppvObject = Marshal.GetComInterfaceForObject(this, typeof(ICommDlgBrowser3));
+				ppvObject = this;
 				return HRESULT.S_OK;
 			}
 			ppvObject = default;
@@ -85,7 +85,7 @@ namespace ExplorerBrowserCustomContents
 
 				if (pfv2 is IColumnManager pcm)
 				{
-					var rgkeys = new[] { Ole32.PROPERTYKEY.System.ItemNameDisplay, Ole32.PROPERTYKEY.System.ItemFolderPathDisplay };
+					var rgkeys = new[] { PROPERTYKEY.System.ItemNameDisplay, PROPERTYKEY.System.ItemFolderPathDisplay };
 					pcm.SetColumns(rgkeys, (uint)rgkeys.Length);
 					var ci = new CM_COLUMNINFO(CM_MASK.CM_MASK_WIDTH | CM_MASK.CM_MASK_DEFAULTWIDTH | CM_MASK.CM_MASK_IDEALWIDTH);
 					pcm.GetColumnInfo(rgkeys[1], ref ci);

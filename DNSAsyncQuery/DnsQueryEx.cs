@@ -37,14 +37,14 @@ namespace DNSAsyncQuery
 			{
 				var err = GetLastError();
 				Console.Write("AllocateQueryContext failed with error {0}", err);
-				return (int)err;
+				return (int)err.ToHRESULT();
 			}
 
 			// Parse input arguments
 			Win32Error Error = Win32Error.ERROR_SUCCESS;
 			if ((Error = ParseArguments(args, out QueryContext.QueryName, out QueryContext.QueryType, out QueryContext.QueryOptions, out var ServerIp)).Failed)
 			{
-				return (int)Error;
+				return (int)Error.ToHRESULT();
 			}
 
 			// Initiate asynchronous DnsQuery: Note that QueryResults and QueryCancelContext should be valid till query completes.
@@ -75,7 +75,7 @@ namespace DNSAsyncQuery
 			}
 
 			// Initiate asynchronous query.
-			Error = DnsQueryEx(DnsQueryRequest, ref QueryContext.QueryResults, out QueryContext.QueryCancelContext);
+			Error = DnsQueryEx(DnsQueryRequest, ref QueryContext.QueryResults, ref QueryContext.QueryCancelContext);
 
 			// If DnsQueryEx() returns DNS_REQUEST_PENDING, Completion routine will be invoked. If not (when completed inline) completion
 			// routine will not be invoked.
@@ -91,7 +91,7 @@ namespace DNSAsyncQuery
 				// Initiate Cancel: Note that Cancel is just a request which will speed the process. It should still wait for the completion callback.
 				Console.Write("The query took longer than {0} seconds to complete; cancelling the query...\n", QueryTimeout / 1000);
 
-				DnsCancelQuery(QueryContext.QueryCancelContext);
+				DnsCancelQuery(ref QueryContext.QueryCancelContext);
 
 				WaitForSingleObject(QueryCompletedEvent, INFINITE);
 			}
@@ -100,7 +100,7 @@ namespace DNSAsyncQuery
 
 			DnsServerList?.Dispose();
 
-			return (int)Error;
+			return (int)Error.ToHRESULT();
 		}
 
 		private static void AllocateQueryContext(out QUERY_CONTEXT QueryContext)
@@ -138,7 +138,7 @@ namespace DNSAsyncQuery
 
 			exit:
 
-			return (int)Error;
+			return (int)Error.ToHRESULT();
 		}
 
 		// Callback function called by DNS as part of asynchronous query complete

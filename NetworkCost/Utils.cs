@@ -134,7 +134,7 @@ namespace NetworkCost
 					}
 
 					// determine the preferred IP address
-					dwErr = (int)GetPreferredAddress(destAddrList.ToArray(), out socketAddress);
+					dwErr = GetPreferredAddress(destAddrList.ToArray(), out socketAddress);
 					if (dwErr != NO_ERROR)
 					{
 						Console.Write("WSAIoctl failed, (dwErr = {0}).", dwErr);
@@ -355,11 +355,11 @@ namespace NetworkCost
 		}
 
 
-		struct errorDescription
-		{
-			public HRESULT hr;
-			public string description;
-		}
+		//struct errorDescription
+		//{
+		//	public HRESULT hr;
+		//	public string description;
+		//}
 
 		//********************************************************************************************
 		// Function: DisplayError

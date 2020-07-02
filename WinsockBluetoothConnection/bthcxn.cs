@@ -14,6 +14,8 @@ namespace Vanara.PInvoke
 		public const uint BTHPROTO_RFCOMM = 0x0003;
 		public const uint BTHPROTO_L2CAP = 0x0100;
 
+		public const int iSOCKET_ERROR = -1;
+
 		public const uint SOL_RFCOMM = BTHPROTO_RFCOMM;
 		public const uint SOL_L2CAP = BTHPROTO_L2CAP;
 		public const uint SOL_SDP = 0x0101;
@@ -114,7 +116,7 @@ namespace WinsockBluetoothConnection
 			//
 			if (CXN_SUCCESS == ulRetCode)
 			{
-				ulRetCode = (uint)WSAStartup(Macros.MAKEWORD(2, 2), out var WSAData);
+				ulRetCode = (uint)WSAStartup(Macros.MAKEWORD(2, 2), out _);
 				if (CXN_SUCCESS != ulRetCode)
 				{
 					Console.Write("-FATAL- | Unable to initialize Winsock version 2.2\n");
@@ -184,7 +186,7 @@ namespace WinsockBluetoothConnection
 		//
 		static uint NameToBthAddr(string pszRemoteName, out SOCKADDR_BTH RemoteBtAddr)
 		{
-			uint iResult = CXN_SUCCESS;
+			Win32Error iResult = CXN_SUCCESS;
 			bool bRemoteDeviceFound = false;
 
 			RemoteBtAddr = default;
@@ -290,14 +292,14 @@ namespace WinsockBluetoothConnection
 							// Found a remote bluetooth device with matching name.
 							// Get the address of the device and exit the lookup.
 							//
-							querySet.lpcsaBuffer.ToStructure<CSADDR_INFO>().RemoteAddr.lpSockAddr.CopyTo(pRemoteBtAddr, Marshal.SizeOf(RemoteBtAddr));
+							querySet.lpcsaBuffer.ToStructure<CSADDR_INFO>().RemoteAddr.lpSockaddr.CopyTo(pRemoteBtAddr, Marshal.SizeOf(RemoteBtAddr));
 							bRemoteDeviceFound = true;
 							bContinueLookup = false;
 						}
 					}
 					else
 					{
-						iResult = (uint)(int)WSAGetLastError();
+						iResult = WSAGetLastError();
 						if (Win32Error.WSA_E_NO_MORE == iResult)
 						{ //No more data
 						  //
@@ -316,7 +318,7 @@ namespace WinsockBluetoothConnection
 							if (pWSAQuerySet.IsInvalid)
 							{
 								Console.Write("!ERROR! | Unable to allocate memory for WSAQERYSET\n");
-								iResult = NTStatus.STATUS_NO_MEMORY;
+								iResult = Win32Error.ERROR_OUTOFMEMORY;
 								bContinueLookup = false;
 							}
 						}
@@ -328,7 +330,7 @@ namespace WinsockBluetoothConnection
 					}
 				}
 
-				if (NTStatus.STATUS_NO_MEMORY == iResult)
+				if (Win32Error.ERROR_OUTOFMEMORY == iResult)
 				{
 					break;
 				}
@@ -343,7 +345,7 @@ namespace WinsockBluetoothConnection
 				iResult = CXN_ERROR;
 			}
 
-			return iResult;
+			return (uint)iResult;
 		}
 
 		//
@@ -352,13 +354,13 @@ namespace WinsockBluetoothConnection
 		//
 		static uint RunClientMode(SOCKADDR_BTH RemoteAddr, int iMaxCxnCycles)
 		{
-			uint ulRetCode = CXN_SUCCESS;
+			Win32Error ulRetCode = CXN_SUCCESS;
 			SOCKADDR_BTH SockAddrBthServer = RemoteAddr;
 
 			using var pszData = new SafeCoTaskMemString(CXN_TEST_DATA_STRING);
 			if (pszData.IsInvalid)
 			{
-				ulRetCode = NTStatus.STATUS_NO_MEMORY;
+				ulRetCode = Win32Error.ERROR_OUTOFMEMORY;
 				Console.Write("=CRITICAL= | HeapAlloc failed | out of memory, gle = [{0}] \n", GetLastError());
 			}
 
@@ -392,7 +394,7 @@ namespace WinsockBluetoothConnection
 				//
 				// Connect the socket (pSocket) to a given remote socket represented by address (pServerAddr)
 				//
-				if (SOCKET_ERROR == connect(LocalSocket, (SOCKADDR)SockAddrBthServer, Marshal.SizeOf<SOCKADDR_BTH>()))
+				if (iSOCKET_ERROR == connect(LocalSocket, (SOCKADDR)SockAddrBthServer, Marshal.SizeOf<SOCKADDR_BTH>()))
 				{
 					Console.Write("=CRITICAL= | connect() call failed. WSAGetLastError=[{0}]\n", WSAGetLastError());
 					ulRetCode = CXN_ERROR;
@@ -404,7 +406,7 @@ namespace WinsockBluetoothConnection
 				// of a specified length over a given connection.
 				//
 				Console.Write("*INFO* | Sending following data string:\n{0}\n", pszData);
-				if (SOCKET_ERROR == send(LocalSocket, pszData, CXN_TRANSFER_DATA_LENGTH, 0))
+				if (iSOCKET_ERROR == send(LocalSocket, pszData, CXN_TRANSFER_DATA_LENGTH, 0))
 				{
 					Console.Write("=CRITICAL= | send() call failed w/socket = [0x{0:X}], szData = [{1}], dataLen = [{2}]. WSAGetLastError=[{3}]\n", LocalSocket, pszData.ToString(), (ulong)CXN_TRANSFER_DATA_LENGTH, WSAGetLastError());
 					ulRetCode = CXN_ERROR;
@@ -414,7 +416,7 @@ namespace WinsockBluetoothConnection
 				//
 				// Close the socket
 				//
-				if (SOCKET_ERROR == closesocket(LocalSocket))
+				if (iSOCKET_ERROR == closesocket(LocalSocket))
 				{
 					Console.Write("=CRITICAL= | closesocket() call failed w/socket = [0x{0:X}]. WSAGetLastError=[{1}]\n", LocalSocket, WSAGetLastError());
 					ulRetCode = CXN_ERROR;
@@ -423,7 +425,7 @@ namespace WinsockBluetoothConnection
 
 			}
 
-			return ulRetCode;
+			return (uint)ulRetCode;
 		}
 
 		//
@@ -467,7 +469,7 @@ namespace WinsockBluetoothConnection
 				// the application is a server that has a well-known port
 				// that clients know about in advance.
 				//
-				if (SOCKET_ERROR == bind(LocalSocket, (SOCKADDR)SockAddrBthLocal, Marshal.SizeOf(SockAddrBthLocal)))
+				if (iSOCKET_ERROR == bind(LocalSocket, (SOCKADDR)SockAddrBthLocal, Marshal.SizeOf(SockAddrBthLocal)))
 				{
 					Console.Write("=CRITICAL= | bind() call failed w/socket = [0x{0:X}]. WSAGetLastError=[{1}]\n", LocalSocket, WSAGetLastError());
 					ulRetCode = CXN_ERROR;
@@ -478,7 +480,7 @@ namespace WinsockBluetoothConnection
 			if (CXN_SUCCESS == ulRetCode)
 			{
 				var iAddrLen = Marshal.SizeOf<SOCKADDR_BTH>();
-				if (SOCKET_ERROR == getsockname(LocalSocket, new SOCKADDR(pSockAddrBthLocal), ref iAddrLen))
+				if (iSOCKET_ERROR == getsockname(LocalSocket, new SOCKADDR(pSockAddrBthLocal), ref iAddrLen))
 				{
 					Console.Write("=CRITICAL= | getsockname() call failed w/socket = [0x{0:X}]. WSAGetLastError=[{1}]\n", LocalSocket, WSAGetLastError());
 					ulRetCode = CXN_ERROR;
@@ -490,7 +492,7 @@ namespace WinsockBluetoothConnection
 				//
 				// CSADDR_INFO
 				//
-				var scktAddr = new SOCKET_ADDRESS { iSockaddrLength = Marshal.SizeOf(typeof(SOCKADDR_BTH)), lpSockAddr = pSockAddrBthLocal };
+				var scktAddr = new SOCKET_ADDRESS { iSockaddrLength = Marshal.SizeOf(typeof(SOCKADDR_BTH)), lpSockaddr = pSockAddrBthLocal };
 				var csaddrInfo = new CSADDR_INFO
 				{
 					LocalAddr = scktAddr,
@@ -533,7 +535,7 @@ namespace WinsockBluetoothConnection
 			//
 			if (CXN_SUCCESS == ulRetCode)
 			{
-				if (SOCKET_ERROR == listen(LocalSocket, CXN_DEFAULT_LISTEN_BACKLOG))
+				if (iSOCKET_ERROR == listen(LocalSocket, CXN_DEFAULT_LISTEN_BACKLOG))
 				{
 					Console.Write("=CRITICAL= | listen() call failed w/socket = [0x{0:X}]. WSAGetLastError=[{1}]\n", LocalSocket, WSAGetLastError());
 					ulRetCode = CXN_ERROR;
@@ -597,7 +599,7 @@ namespace WinsockBluetoothConnection
 								bContinue = false;
 								break;
 
-							case SOCKET_ERROR:
+							case iSOCKET_ERROR:
 								Console.Write("=CRITICAL= | recv() call failed. WSAGetLastError=[{0}]\n", WSAGetLastError());
 								bContinue = false;
 								ulRetCode = CXN_ERROR;

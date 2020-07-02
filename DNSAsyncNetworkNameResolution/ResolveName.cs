@@ -36,7 +36,7 @@ namespace DNSAsyncNetworkNameResolution
 			if (Error.Failed)
 			{
 				Console.Write("WSAStartup failed with {0}\n", Error);
-				return (int)Error;
+				return (int)Error.ToHRESULT();
 			}
 
 			IsWSAStartupCalled = true;
@@ -52,7 +52,7 @@ namespace DNSAsyncNetworkNameResolution
 			{
 				Error = GetLastError();
 				Console.Write("Failed to create completion event: Error {0}\n", Error);
-				return (int)Error;
+				return (int)Error.ToHRESULT();
 			}
 
 			// Initiate asynchronous GetAddrInfoExW.
@@ -73,7 +73,7 @@ namespace DNSAsyncNetworkNameResolution
 			if (Error != Win32Error.ERROR_IO_PENDING)
 			{
 				QueryResults = queryResults.ToArray();
-				QueryCompleteCallback((uint)(int)Error, 0, &QueryOverlapped);
+				QueryCompleteCallback((uint)Error, 0, &QueryOverlapped);
 				goto exit;
 			}
 
@@ -99,7 +99,7 @@ namespace DNSAsyncNetworkNameResolution
 				WSACleanup();
 			}
 
-			return (int)Error;
+			return (int)Error.ToHRESULT();
 		}
 
 		// Callback function called by Winsock as part of asynchronous query complete

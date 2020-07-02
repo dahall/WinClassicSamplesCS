@@ -44,7 +44,7 @@
     <AppInstallerUpdateFrequency>1</AppInstallerUpdateFrequency>
     <AppInstallerCheckForUpdateFrequency>OnApplicationRun</AppInstallerCheckForUpdateFrequency>
     <EntryPointProjectUniqueName>..\CloudMirror\CloudMirror.csproj</EntryPointProjectUniqueName>
-    <PackageCertificateThumbprint>EF8F1BFF800611073071A1164FE609968E1553B2</PackageCertificateThumbprint>
+    <!--<PackageCertificateThumbprint>EF8F1BFF800611073071A1164FE609968E1553B2</PackageCertificateThumbprint>-->
     <AppxPackageSigningEnabled>True</AppxPackageSigningEnabled>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x86'">
