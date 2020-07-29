@@ -6,7 +6,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Vanara.PInvoke.ProjectedFSLib" Version="3.2.11" />
+    <PackageReference Include="Vanara.PInvoke.ProjectedFSLib" Version="3.2.14" />
   </ItemGroup>
 
 </Project>

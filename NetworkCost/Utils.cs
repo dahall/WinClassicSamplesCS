@@ -394,15 +394,16 @@ namespace NetworkCost
 				var pNetworkConnections = pManager.GetNetworkConnections();
 				while (!bDone)
 				{
-					hr = pNetworkConnections.Next(1, out var pConnection, out var cFetched);
+					var pConnection = new INetworkConnection[1];
+					hr = pNetworkConnections.Next(1, pConnection, out var cFetched);
 					if (hr.Succeeded && cFetched > 0)
 					{
 						try
 						{
-							var guid = pConnection.GetConnectionId();
+							var guid = pConnection[0].GetConnectionId();
 							if (guid == connID)
 							{
-								ppConnection = pConnection;
+								ppConnection = pConnection[0];
 								bFound = true;
 								break;
 							}

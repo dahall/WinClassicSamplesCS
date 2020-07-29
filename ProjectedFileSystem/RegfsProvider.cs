@@ -15,7 +15,7 @@ namespace ProjectedFileSystem
 		private Dictionary<Guid, DirInfo> _activeEnumSessions = new Dictionary<Guid, DirInfo>();
 
 		// If this flag is set to true, RegFS will block file content modifications for placeholder files.
-		private bool _readOnlyFileContent = true;
+		//private bool _readOnlyFileContent = true;
 
 		// If this flag is set to true, RegFS will block the following namespace-altering operations that take place under virtualization root:
 		// 1) file or directory deletion

@@ -208,12 +208,13 @@ namespace NetworkCost
 				while (!bDone)
 				{
 					//Get cost and data plan status info for each of the connections on the machine
-					hr = pNetworkConnections.Next(1, out var ppConnection, out var cFetched);
+					var ppConnection = new INetworkConnection[1];
+					hr = pNetworkConnections.Next(1, ppConnection, out var cFetched);
 					if ((HRESULT.S_OK == hr) && (cFetched > 0))
 					{
 						try
 						{
-							using var pConnection = ComReleaserFactory.Create(ppConnection);
+							using var pConnection = ComReleaserFactory.Create(ppConnection[0]);
 							numberOfConnections++;
 							var interfaceGUID = pConnection.Item.GetAdapterId();
 							Console.Write("--------------------------------------------------------------\n");

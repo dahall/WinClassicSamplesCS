@@ -9,8 +9,8 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Vanara.PInvoke.Shell32" Version="3.2.11" />
-    <PackageReference Include="Vanara.PInvoke.User32" Version="3.2.11" />
+    <PackageReference Include="Vanara.PInvoke.Shell32" Version="3.2.14" />
+    <PackageReference Include="Vanara.PInvoke.User32" Version="3.2.14" />
   </ItemGroup>
 
   <Target Name="PostBuild" AfterTargets="PostBuildEvent">
