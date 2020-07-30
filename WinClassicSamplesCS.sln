@@ -117,9 +117,13 @@ Project("{C7167F0D-BC9F-4E6E-AFE1-012C56B48DB5}") = "CloudMirrorPackage", "Cloud
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ProjectedFileSystem", "ProjectedFileSystem\ProjectedFileSystem.csproj", "{EB4659EE-9D90-4413-A9E2-301715CAF4EF}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AppVisibility", "AppVisibility\AppVisibility.csproj", "{E5A7F376-432F-44DB-94A7-A14A2D4E5C4B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AppVisibility", "AppVisibility\AppVisibility.csproj", "{E5A7F376-432F-44DB-94A7-A14A2D4E5C4B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DesktopAutomationDismiss", "DesktopAutomationDismiss\DesktopAutomationDismiss.csproj", "{8CE621E6-B633-4957-8D64-508F54461DF0}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DesktopAutomationDismiss", "DesktopAutomationDismiss\DesktopAutomationDismiss.csproj", "{8CE621E6-B633-4957-8D64-508F54461DF0}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MagnificationWindowed", "MagnificationWindowed\MagnificationWindowed.csproj", "{4451ED6E-508F-4627-987A-699C19A48DE5}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MagnificationFullscreen", "MagnificationFullscreen\MagnificationFullscreen.csproj", "{C1BE10FD-E8E1-47C7-94A9-90A24443A3CE}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -721,6 +725,30 @@ Global
 		{8CE621E6-B633-4957-8D64-508F54461DF0}.Release|x64.Build.0 = Release|Any CPU
 		{8CE621E6-B633-4957-8D64-508F54461DF0}.Release|x86.ActiveCfg = Release|Any CPU
 		{8CE621E6-B633-4957-8D64-508F54461DF0}.Release|x86.Build.0 = Release|Any CPU
+		{4451ED6E-508F-4627-987A-699C19A48DE5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4451ED6E-508F-4627-987A-699C19A48DE5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4451ED6E-508F-4627-987A-699C19A48DE5}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{4451ED6E-508F-4627-987A-699C19A48DE5}.Debug|x64.Build.0 = Debug|Any CPU
+		{4451ED6E-508F-4627-987A-699C19A48DE5}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{4451ED6E-508F-4627-987A-699C19A48DE5}.Debug|x86.Build.0 = Debug|Any CPU
+		{4451ED6E-508F-4627-987A-699C19A48DE5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4451ED6E-508F-4627-987A-699C19A48DE5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4451ED6E-508F-4627-987A-699C19A48DE5}.Release|x64.ActiveCfg = Release|Any CPU
+		{4451ED6E-508F-4627-987A-699C19A48DE5}.Release|x64.Build.0 = Release|Any CPU
+		{4451ED6E-508F-4627-987A-699C19A48DE5}.Release|x86.ActiveCfg = Release|Any CPU
+		{4451ED6E-508F-4627-987A-699C19A48DE5}.Release|x86.Build.0 = Release|Any CPU
+		{C1BE10FD-E8E1-47C7-94A9-90A24443A3CE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C1BE10FD-E8E1-47C7-94A9-90A24443A3CE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C1BE10FD-E8E1-47C7-94A9-90A24443A3CE}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{C1BE10FD-E8E1-47C7-94A9-90A24443A3CE}.Debug|x64.Build.0 = Debug|Any CPU
+		{C1BE10FD-E8E1-47C7-94A9-90A24443A3CE}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{C1BE10FD-E8E1-47C7-94A9-90A24443A3CE}.Debug|x86.Build.0 = Debug|Any CPU
+		{C1BE10FD-E8E1-47C7-94A9-90A24443A3CE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C1BE10FD-E8E1-47C7-94A9-90A24443A3CE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C1BE10FD-E8E1-47C7-94A9-90A24443A3CE}.Release|x64.ActiveCfg = Release|Any CPU
+		{C1BE10FD-E8E1-47C7-94A9-90A24443A3CE}.Release|x64.Build.0 = Release|Any CPU
+		{C1BE10FD-E8E1-47C7-94A9-90A24443A3CE}.Release|x86.ActiveCfg = Release|Any CPU
+		{C1BE10FD-E8E1-47C7-94A9-90A24443A3CE}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

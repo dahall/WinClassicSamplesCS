@@ -1,0 +1,11 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.WindowsDesktop">
+	<PropertyGroup>
+		<OutputType>WinExe</OutputType>
+		<UseWindowsForms>true</UseWindowsForms>
+		<TargetFramework>netcoreapp3.1</TargetFramework>
+	</PropertyGroup>
+	<ItemGroup>
+		<PackageReference Include="Vanara.PInvoke.Magnification" Version="3.2.14" />
+		<PackageReference Include="Vanara.PInvoke.User32" Version="3.2.14" />
+	</ItemGroup>
+</Project>
