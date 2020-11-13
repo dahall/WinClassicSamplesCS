@@ -6,9 +6,9 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Vanara.PInvoke.Kernel32" Version="3.2.14" />
-    <PackageReference Include="Vanara.PInvoke.WcmApi" Version="3.2.14" />
-    <PackageReference Include="Vanara.PInvoke.WlanApi" Version="3.2.14" />
+    <PackageReference Include="Vanara.PInvoke.Kernel32" Version="3.2.21" />
+    <PackageReference Include="Vanara.PInvoke.WcmApi" Version="3.2.21" />
+    <PackageReference Include="Vanara.PInvoke.WlanApi" Version="3.2.21" />
   </ItemGroup>
 
 </Project>

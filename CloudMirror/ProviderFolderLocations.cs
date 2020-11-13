@@ -66,10 +66,10 @@ namespace CloudMirror
 			hr.ThrowIfFailed();
 
 			using var item = ComReleaserFactory.Create(fileOpen.Item.GetResult());
-			using var path = item.Item.GetDisplayName(SIGDN.SIGDN_FILESYSPATH);
+			var path = item.Item.GetDisplayName(SIGDN.SIGDN_FILESYSPATH);
 
 			// Save the last location
-			settings[title] = (string)path;
+			settings[title] = path;
 
 			return path;
 		}

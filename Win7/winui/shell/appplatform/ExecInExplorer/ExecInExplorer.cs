@@ -27,7 +27,8 @@ namespace ExecInExplorer
 			var psw = new IShellWindows();
 			var pdisp = psw.FindWindowSW(0 /* CSIDL_Desktop */, default, ShellWindowTypeConstants.SWC_DESKTOP, out _, ShellWindowFindWindowOptions.SWFO_NEEDDISPATCH);
 			var psb = ShlwApi.IUnknown_QueryService<IShellBrowser>(pdisp, SID_STopLevelBrowser);
-			return (T)psb.QueryActiveShellView();
+			psb.QueryActiveShellView(out var iShView).ThrowIfFailed();
+			return (T)iShView;
 		}
 
 		/// <summary>The main entry point for the application.</summary>

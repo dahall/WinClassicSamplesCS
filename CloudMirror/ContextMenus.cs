@@ -86,7 +86,7 @@ namespace CloudMirror
 				{
 					using var pShellItem = ComReleaserFactory.Create(selection.GetItemAt(i));
 
-					using var fullPath = pShellItem.Item.GetDisplayName(SIGDN.SIGDN_FILESYSPATH);
+					using var fullPath = new SafeCoTaskMemString(pShellItem.Item.GetDisplayName(SIGDN.SIGDN_FILESYSPATH));
 
 					var item = (IStorageItem)StorageFile.GetFileFromPathAsync(fullPath);
 					StorageProviderItemProperties.SetAsync(item, new[] { prop }).GetResults();

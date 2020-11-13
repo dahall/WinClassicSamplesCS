@@ -70,11 +70,11 @@ namespace ExplorerBrowserSearch
 
 		HRESULT IExplorerBrowserEvents.OnViewCreated(IShellView psv) => HRESULT.E_NOTIMPL;
 
-		HRESULT IServiceProvider.QueryService(in Guid guidService, in Guid riid, out object ppvObject)
+		HRESULT IServiceProvider.QueryService(in Guid guidService, in Guid riid, out IntPtr ppvObject)
 		{
 			if (guidService.Equals(IID_ICommDlgBrowser) && (riid.Equals(IID_ICommDlgBrowser) || riid.Equals(typeof(ICommDlgBrowser3).GUID)))
 			{
-				ppvObject = this;
+				ppvObject = Marshal.GetComInterfaceForObject(this, typeof(ICommDlgBrowser3));
 				return HRESULT.S_OK;
 			}
 			ppvObject = default;

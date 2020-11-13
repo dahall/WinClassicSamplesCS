@@ -6,8 +6,8 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Vanara.BITS" Version="3.2.14" />
-    <PackageReference Include="Vanara.PInvoke.Ole" Version="3.2.14" />
+    <PackageReference Include="Vanara.BITS" Version="3.2.21" />
+    <PackageReference Include="Vanara.PInvoke.Ole" Version="3.2.21" />
   </ItemGroup>
 
 </Project>

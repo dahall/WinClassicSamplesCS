@@ -316,7 +316,7 @@ namespace BackgroundCopyFileProperties
 			try
 			{
 				var Error = Job.GetError();
-				using var ErrorDescription = Error.GetErrorDescription(GetThreadUILanguage());
+				var ErrorDescription = Error.GetErrorDescription(GetThreadUILanguage());
 				Console.Write(" Error details: %ws\n", ErrorDescription);
 				Marshal.ReleaseComObject(Error);
 			}

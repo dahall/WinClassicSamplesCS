@@ -12,8 +12,8 @@
 
   <ItemGroup>
     <PackageReference Include="Microsoft.Windows.SDK.Contracts" Version="10.0.19041.1" />
-    <PackageReference Include="Vanara.PInvoke.CldApi" Version="3.2.14" />
-    <PackageReference Include="Vanara.PInvoke.SearchApi" Version="3.2.14" />
+    <PackageReference Include="Vanara.PInvoke.CldApi" Version="3.2.21" />
+    <PackageReference Include="Vanara.PInvoke.SearchApi" Version="3.2.21" />
   </ItemGroup>
 
 </Project>

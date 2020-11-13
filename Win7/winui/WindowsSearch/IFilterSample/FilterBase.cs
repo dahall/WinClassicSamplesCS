@@ -87,8 +87,7 @@ namespace IFilterSample
 			Clear();
 
 			// initialize the chunk
-			m_chunk.attribute.psProperty.ulKind = PRSPEC.PRSPEC_PROPID;
-			m_chunk.attribute.psProperty.union.propid = pkey.pid;
+			m_chunk.attribute.psProperty = new PROPSPEC(pkey.pid);
 			m_chunk.attribute.guidPropSet = pkey.fmtid;
 			m_chunk.flags = chunkType;
 			m_chunk.locale = (uint)locale;

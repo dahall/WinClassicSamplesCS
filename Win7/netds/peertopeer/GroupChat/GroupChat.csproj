@@ -1,0 +1,27 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.WindowsDesktop">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net48</TargetFramework>
+    <UseWindowsForms>true</UseWindowsForms>
+    <LangVersion>8.0</LangVersion>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Vanara.PInvoke.P2P" Version="3.2.21" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Update="IDD_OPENGROUP.cs" />
+    <Compile Update="IDD_DELETEGROUP - Copy.Designer.cs">
+      <DependentUpon>IDD_DELETEGROUP.Designer.cs</DependentUpon>
+    </Compile>
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Update="IDD_DELETEGROUP - Copy.resx">
+      <DependentUpon>IDD_DELETEGROUP.resx</DependentUpon>
+    </EmbeddedResource>
+  </ItemGroup>
+
+</Project>

@@ -4,6 +4,7 @@ using System.Runtime.InteropServices;
 using System.Text;
 using Vanara.InteropServices;
 using Vanara.PInvoke;
+using static Vanara.PInvoke.Gdi32;
 using static Vanara.PInvoke.Kernel32;
 using static Vanara.PInvoke.Shell32;
 using static Vanara.PInvoke.ShlwApi;
@@ -15,7 +16,7 @@ namespace CloudMirror
 	{
 		private IShellItem2 _itemDest, _itemSrc;
 
-		public HRESULT GetThumbnail(uint cx, out HBITMAP phbmp, out WTS_ALPHATYPE pdwAlpha)
+		public HRESULT GetThumbnail(uint cx, out SafeHBITMAP phbmp, out WTS_ALPHATYPE pdwAlpha)
 		{
 			// Retrieve thumbnails of the placeholders on demand by delegating to the thumbnail of the source items.
 			try
@@ -25,7 +26,7 @@ namespace CloudMirror
 			}
 			catch (Exception ex)
 			{
-				phbmp = HBITMAP.NULL;
+				phbmp = new SafeHBITMAP(IntPtr.Zero, false);
 				pdwAlpha = WTS_ALPHATYPE.WTSAT_UNKNOWN;
 				return ex.HResult;
 			}
