@@ -176,7 +176,7 @@ namespace SearchEvents
         //*****************************************************************************
         // Run a query against the database, optionally enabling eventing...
 
-        static void ExecuteQuery(OleDbConnection pConnection, string pwszQuerySQL, bool fEnableEventing, out OleDbDataReader rdr)
+        static HRESULT ExecuteQuery(OleDbConnection pConnection, string pwszQuerySQL, bool fEnableEventing, out OleDbDataReader rdr)
         {
             if (!pwszQuerySQL.TrimEnd().EndsWith(" FROM SYSTEMINDEX", StringComparison.InvariantCultureIgnoreCase))
                 pwszQuerySQL = pwszQuerySQL.TrimEnd() + " FROM SYSTEMINDEX";
@@ -234,7 +234,7 @@ namespace SearchEvents
                             {
                                 hr = E_INVALIDARG;
                             }
-                    ::PropVariantClear(&var);
+                            ::PropVariantClear(&var);
                         }
                     }
 
