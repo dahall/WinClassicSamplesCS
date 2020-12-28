@@ -3,6 +3,7 @@ using Vanara.InteropServices;
 using Vanara.IO;
 using static Vanara.PInvoke.BITS;
 using static Vanara.PInvoke.Ole32;
+using static Vanara.PInvoke.Rpc;
 
 namespace BacgroundIntelligenceTransferServicePolicy
 {

@@ -109,7 +109,7 @@ namespace Vanara.PInvoke
 
 		/// <summary>Gets the state of the mouse button from the verb action.</summary>
 		/// <value>The state of the mouse button.</value>
-		public User32.MouseButtonState KeyState { get; private set; }
+		public MouseButtonState KeyState { get; private set; }
 
 		/// <summary>Registers this instance so that other applications can connect to it.</summary>
 		public void Register() => CoRegisterClassObject(typeof(TVerb).GUID, this, CLSCTX.CLSCTX_LOCAL_SERVER, REGCLS.REGCLS_MULTIPLEUSE, out _dwRegisterClass);
@@ -181,7 +181,7 @@ namespace Vanara.PInvoke
 
 		HRESULT IExecuteCommand.SetDirectory([In, MarshalAs(UnmanagedType.LPWStr)] string _) => HRESULT.S_OK;
 
-		HRESULT IExecuteCommand.SetKeyState(User32.MouseButtonState grfKeyState)
+		HRESULT IExecuteCommand.SetKeyState(MouseButtonState grfKeyState)
 		{
 			KeyState = grfKeyState;
 			return HRESULT.S_OK;

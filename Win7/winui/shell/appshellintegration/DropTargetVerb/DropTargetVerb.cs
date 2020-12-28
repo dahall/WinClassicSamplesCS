@@ -62,18 +62,18 @@ namespace DropTargetVerb
 			MessageLoop();
 		}
 
-		HRESULT IDropTarget.DragEnter(IDataObject pDataObj, uint grfKeyState, Point pt, ref DROPEFFECT pdwEffect) => HRESULT.S_OK;
+		HRESULT IDropTarget.DragEnter(IDataObject pDataObj, MouseButtonState grfKeyState, Point pt, ref DROPEFFECT pdwEffect) => HRESULT.S_OK;
 
 		HRESULT IDropTarget.DragLeave() => HRESULT.S_OK;
 
 		// IDropTarget this is the required interface for a verb implemeting the DropTarget method DragEnter is called to enable the
 		// implementaiton to zero the output dwEffect value, indicating that the verb does not accept the input data object. this is rarely used.
-		HRESULT IDropTarget.DragOver(uint grfKeyState, Point pt, ref DROPEFFECT pdwEffect) => HRESULT.S_OK;
+		HRESULT IDropTarget.DragOver(MouseButtonState grfKeyState, Point pt, ref DROPEFFECT pdwEffect) => HRESULT.S_OK;
 
 		// this method is what is called to invoke the verb and is typically the only method that needs to be implemented this is the method
 		// that is called to invoke the verb the data object represents the selection and is converted into a shell item array to address the
 		// items being acted on.
-		HRESULT IDropTarget.Drop(IDataObject pDataObj, uint grfKeyState, Point pt, ref DROPEFFECT pdwEffect)
+		HRESULT IDropTarget.Drop(IDataObject pDataObj, MouseButtonState grfKeyState, Point pt, ref DROPEFFECT pdwEffect)
 		{
 			_pdtobj = pDataObj;
 

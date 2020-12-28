@@ -5,6 +5,7 @@ using Vanara.InteropServices;
 using Vanara.PInvoke;
 using Windows.Storage;
 using Windows.Storage.Provider;
+using static Vanara.PInvoke.Ole32;
 using static Vanara.PInvoke.Shell32;
 using static Vanara.PInvoke.ShlwApi;
 
