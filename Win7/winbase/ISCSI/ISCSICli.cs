@@ -35,7 +35,7 @@ namespace ISCSI
 
 		//#define OffsetToPtr(Base, Offset) ((ref byte)((ref byte)(Base) + (Offset)))
 
-		private static void Usage(uint Code)
+		private static Win32Error Usage(uint Code)
 		{
 			if (Code == 0)
 			{
@@ -450,6 +450,8 @@ namespace ISCSI
 				Console.Write("mode, just run iscsicli without any parameters\n");
 				Console.Write("\n");
 			}
+
+			return Win32Error.ERROR_SUCCESS;
 		}
 
 		private static string GetiSCSIMessageText(Win32Error Status) =>
@@ -742,7 +744,7 @@ namespace ISCSI
 		{
 			s = s.ToLowerInvariant();
 			if (s.StartsWith('*'))
-				return (Default);
+				return Default;
 
 			return s.StartsWith('t');
 		}
@@ -757,7 +759,7 @@ namespace ISCSI
 			if (ArgV.Length != 6)
 			{
 				Usage(28);
-				return (Win32Error.ERROR_SUCCESS);
+				return Win32Error.ERROR_SUCCESS;
 			}
 
 			Initiator = ArgV[1];
@@ -797,7 +799,7 @@ namespace ISCSI
 			if (ArgV.Length != 3)
 			{
 				Usage(29);
-				return (Win32Error.ERROR_SUCCESS);
+				return Win32Error.ERROR_SUCCESS;
 			}
 
 			string Key = null;
@@ -824,7 +826,7 @@ namespace ISCSI
 			if (ArgV.Length != 2)
 			{
 				Usage(27);
-				return (Status);
+				return Status;
 			}
 
 			Secret = ArgV[1];
@@ -847,7 +849,7 @@ namespace ISCSI
 			}
 
 			Key?.Dispose();
-			return (Status);
+			return Status;
 		}
 
 		// Console.Write("iscsicli BindPersistentVolumes\n");
@@ -904,7 +906,7 @@ namespace ISCSI
 				Status = Win32Error.ERROR_NOT_ENOUGH_MEMORY;
 			}
 
-			return (Status);
+			return Status;
 		}
 
 		// iscsicli NodeName <node name>
@@ -913,7 +915,7 @@ namespace ISCSI
 			if (ArgV.Length != 2)
 			{
 				Usage(25);
-				return (Win32Error.ERROR_SUCCESS);
+				return Win32Error.ERROR_SUCCESS;
 			}
 
 			var NodeName = !ArgV[1].StartsWith('*') ? default : ArgV[1];
@@ -945,10 +947,10 @@ namespace ISCSI
 			{
 				if (Volume.Extents[i].DiskNumber == DeviceNumber)
 				{
-					return (true);
+					return true;
 				}
 			}
-			return (false);
+			return false;
 		}
 
 		/*++
@@ -1026,7 +1028,7 @@ namespace ISCSI
 				}
 			}
 
-			return (Status);
+			return Status;
 		}
 
 		/*++
@@ -1070,13 +1072,13 @@ namespace ISCSI
 			//
 			var Drive = new StringBuilder(" :\\");
 			Win32Error Status = Win32Error.ERROR_SUCCESS;
-			for (var c = 'C'; ((c < ('Z' + 1)) && (Status == Win32Error.ERROR_SUCCESS)); c++)
+			for (var c = 'C'; (c < ('Z' + 1)) && (Status == Win32Error.ERROR_SUCCESS); c++)
 			{
 				Drive[0] = c;
 				Status = DiscpVolumeMountList(Drive.ToString(), VolumeNameToFind, VolumePath);
 			}
 
-			return (Status);
+			return Status;
 		}
 
 		/*++
@@ -1154,7 +1156,7 @@ namespace ISCSI
 				Status = GetLastError();
 			}
 
-			return (Status);
+			return Status;
 		}
 
 		private delegate Win32Error ENUMDEVICEINTERFACECALLBACK(IntPtr Context, in Guid Guid, HDEVINFO DevInfo, ref DEVICEINTERFACEENTRY DevEntry);
@@ -1196,7 +1198,7 @@ namespace ISCSI
 			{
 				Status = Win32Error.GetLastError();
 			}
-			return (Status);
+			return Status;
 		}
 
 		/*++
@@ -1279,7 +1281,7 @@ namespace ISCSI
 				Status = Win32Error.GetLastError();
 			}
 
-			return (Status);
+			return Status;
 		}
 
 		public static readonly Guid GUID_DEVINTERFACE_DISK = new Guid(0x53f56307, 0xb6bf, 0x11d0, 0x94, 0xf2, 0x00, 0xa0, 0xc9, 0x1e, 0xfb, 0x8b);
@@ -1350,7 +1352,7 @@ namespace ISCSI
 					}
 				}
 			}
-			return (Status);
+			return Status;
 		}
 
 		// iscsicli SessionList
@@ -1363,7 +1365,7 @@ namespace ISCSI
 			if ((ArgV.Length < 1) || (ArgV.Length > 2))
 			{
 				Usage(26);
-				return (Win32Error.ERROR_SUCCESS);
+				return Win32Error.ERROR_SUCCESS;
 			}
 
 			if (ArgV.Length == 2)
@@ -1503,7 +1505,7 @@ namespace ISCSI
 				}
 			}
 
-			return (Status);
+			return Status;
 		}
 
 		// Console.Write("iscsicli GetPSKey <Initiator Name> <initiator Port>
@@ -1516,7 +1518,7 @@ namespace ISCSI
 			if (ArgV.Length != 5)
 			{
 				Usage(42);
-				return (Win32Error.ERROR_SUCCESS);
+				return Win32Error.ERROR_SUCCESS;
 			}
 
 			var Initiator = ArgV[1];
@@ -1548,7 +1550,7 @@ namespace ISCSI
 							Status = WSAStringToAddress(IdText, ADDRESS_FAMILY.AF_INET, default, sockaddr, ref sockaddrlen);
 							if (Status != Win32Error.ERROR_SUCCESS)
 							{
-								return (Status);
+								return Status;
 							}
 							Id = sockaddr.GetAddressBytes();
 							break;
@@ -1561,7 +1563,7 @@ namespace ISCSI
 							Status = WSAStringToAddress(IdText, ADDRESS_FAMILY.AF_INET6, default, sockaddr, ref sockaddrlen);
 							if (Status != Win32Error.ERROR_SUCCESS)
 							{
-								return (Status);
+								return Status;
 							}
 							Id = sockaddr.GetAddressBytes();
 							break;
@@ -1577,7 +1579,7 @@ namespace ISCSI
 					default:
 						{
 							Console.Write("Error, only id types ID_IPV4_ADDR (1), ID_FQDN (2), ID_USER_FQDN supported (3)\n");
-							return (Win32Error.ERROR_SUCCESS);
+							return Win32Error.ERROR_SUCCESS;
 						}
 				}
 
@@ -1600,7 +1602,7 @@ namespace ISCSI
 					PrintSecurityFlags(" ", AuthInfo.PsKey.SecurityFlags);
 				}
 			}
-			return (Status);
+			return Status;
 		}
 
 		// iscsicli PSKey <Initiator Name> <initiator Port> <Security Flags>
@@ -1621,7 +1623,7 @@ namespace ISCSI
 			if (ArgV.Length != 8)
 			{
 				Usage(30);
-				return (Win32Error.ERROR_SUCCESS);
+				return Win32Error.ERROR_SUCCESS;
 			}
 
 			Initiator = ArgV[1];
@@ -1654,7 +1656,7 @@ namespace ISCSI
 							Status = WSAStringToAddress(IdText, ADDRESS_FAMILY.AF_INET, default, sockaddr, ref sockaddrlen);
 							if (Status != Win32Error.ERROR_SUCCESS)
 							{
-								return (Status);
+								return Status;
 							}
 							Id = sockaddr.GetAddressBytes();
 							break;
@@ -1667,7 +1669,7 @@ namespace ISCSI
 							Status = WSAStringToAddress(IdText, ADDRESS_FAMILY.AF_INET6, default, sockaddr, ref sockaddrlen);
 							if (Status != Win32Error.ERROR_SUCCESS)
 							{
-								return (Status);
+								return Status;
 							}
 							Id = sockaddr.GetAddressBytes();
 							break;
@@ -1683,7 +1685,7 @@ namespace ISCSI
 					default:
 						{
 							Console.Write("Error, only id types ID_IPV4_ADDR (1), ID_FQDN (2), ID_USER_FQDN supported (3)\n");
-							return (Win32Error.ERROR_SUCCESS);
+							return Win32Error.ERROR_SUCCESS;
 						}
 				}
 
@@ -1722,7 +1724,7 @@ namespace ISCSI
 				}
 			}
 
-			return (Status);
+			return Status;
 		}
 
 		// iscsicli ReportLUNs <SessionId>
@@ -1767,7 +1769,7 @@ namespace ISCSI
 
 			}
 
-			return (Status);
+			return Status;
 		}
 
 		// iscsicli ReadCapacity <SessionId> <LUN>
@@ -1821,7 +1823,7 @@ namespace ISCSI
 
 			}
 
-			return (Status);
+			return Status;
 		}
 
 		// iscsicli ScsiInquiry <SessionId> <LUN> <EvpdCmddt> <PageCode>
@@ -1877,7 +1879,7 @@ namespace ISCSI
 				}
 			}
 
-			return (Status);
+			return Status;
 		}
 
 		// iscsicli LogoutTarget <SessionId>
@@ -1904,7 +1906,7 @@ namespace ISCSI
 				}
 			}
 
-			return (Status);
+			return Status;
 		}
 
 		private static Win32Error DoLoginToTarget(string[] ArgV, bool IsPersistent)
@@ -1947,7 +1949,7 @@ namespace ISCSI
 					TargetPortalAddress = ArgV[3];
 					if (TargetPortalAddress.Length > (MAX_ISCSI_PORTAL_ADDRESS_LEN - 1))
 					{
-						return (Win32Error.ERROR_INVALID_PARAMETER);
+						return Win32Error.ERROR_INVALID_PARAMETER;
 					}
 				}
 
@@ -1961,7 +1963,7 @@ namespace ISCSI
 				else if (!((TargetPortalAddress is null) && ArgV[4].StartsWith('*')))
 				{
 					Console.Write("Portal address and socket must be specified\n");
-					return (Win32Error.ERROR_INVALID_PARAMETER);
+					return Win32Error.ERROR_INVALID_PARAMETER;
 				}
 
 				if (!ArgV[5].StartsWith('*'))
@@ -1998,7 +2000,7 @@ namespace ISCSI
 				if (ArgV.Length != ArgCExpected)
 				{
 					Usage(IsPersistent ? 11 : 9);
-					return (Win32Error.ERROR_SUCCESS);
+					return Win32Error.ERROR_SUCCESS;
 				}
 
 				if (MappingCount != 0)
@@ -2017,7 +2019,7 @@ namespace ISCSI
 						if (b == false)
 						{
 							Console.Write("Target LUN must be in 0x0123456789abcdef format\n");
-							return (Win32Error.ERROR_INVALID_PARAMETER);
+							return Win32Error.ERROR_INVALID_PARAMETER;
 						}
 
 						ArgCIndex++; // bus
@@ -2026,7 +2028,7 @@ namespace ISCSI
 						if (x != sMapping.OSBusNumber)
 						{
 							Console.Write("OSBus number must be the same for all LUNs\n");
-							return (Win32Error.ERROR_INVALID_PARAMETER);
+							return Win32Error.ERROR_INVALID_PARAMETER;
 						}
 
 						ArgCIndex++; // target
@@ -2034,7 +2036,7 @@ namespace ISCSI
 						if (x != sMapping.OSTargetNumber)
 						{
 							Console.Write("OSTarget number must be the same for all LUNs\n");
-							return (Win32Error.ERROR_INVALID_PARAMETER);
+							return Win32Error.ERROR_INVALID_PARAMETER;
 						}
 
 						ArgCIndex++;
@@ -2075,7 +2077,7 @@ namespace ISCSI
 				Mapping?.Dispose();
 			}
 
-			return (Status);
+			return Status;
 		}
 
 		// iscsicli LoginTarget <TargetName> <ReportToPNP>
@@ -2126,7 +2128,7 @@ namespace ISCSI
 				{
 					if (ArgV[4].Length > (MAX_ISCSI_PORTAL_ADDRESS_LEN - 1))
 					{
-						return (Win32Error.ERROR_INVALID_PARAMETER);
+						return Win32Error.ERROR_INVALID_PARAMETER;
 					}
 
 					TargetPortal.Address = ArgV[4];
@@ -2136,7 +2138,7 @@ namespace ISCSI
 				Status = RemoveIScsiPersistentTarget(I, PortNumber, ArgV[2], TargetPortal);
 			}
 
-			return (Status);
+			return Status;
 		}
 
 
@@ -2186,7 +2188,7 @@ namespace ISCSI
 				}
 			}
 
-			return (Status);
+			return Status;
 		}
 
 		private static Win32Error GetTargetInfo(string TargetName, string DiscoveryMechanism, TARGET_INFORMATION_CLASS InfoClass, out ISafeMemoryHandle Buffer)
@@ -2207,7 +2209,7 @@ namespace ISCSI
 					b.Dispose();
 				}
 			}
-			return (Status);
+			return Status;
 		}
 
 		private static void PrintPortalGroups(ISCSI_TARGET_PORTAL_GROUP[] PortalGroups, uint Size)
@@ -2234,7 +2236,7 @@ namespace ISCSI
 			if ((ArgV.Length != 2) && (ArgV.Length != 3))
 			{
 				Usage(8);
-				return (Win32Error.ERROR_SUCCESS);
+				return Win32Error.ERROR_SUCCESS;
 			}
 			else
 			{
@@ -2398,7 +2400,7 @@ namespace ISCSI
 			}
 			Console.Write("\n");
 
-			return (Status);
+			return Status;
 		}
 
 		// iscsicli AddConnection <SessionId> <initiator instance>
@@ -2420,13 +2422,13 @@ namespace ISCSI
 			if (ArgV.Length != 17)
 			{
 				Usage(14);
-				return (Win32Error.ERROR_SUCCESS);
+				return Win32Error.ERROR_SUCCESS;
 			}
 
 			if (!StringToSessionId(ArgV[1], out ISCSI_UNIQUE_SESSION_ID SessionId))
 			{
 				Usage(14);
-				return (Win32Error.ERROR_SUCCESS);
+				return Win32Error.ERROR_SUCCESS;
 			}
 
 			var InitiatorName = !ArgV[2].StartsWith('*') ? ArgV[2] : default;
@@ -2438,7 +2440,7 @@ namespace ISCSI
 				TargetPortalAddress = ArgV[4];
 				if (TargetPortalAddress.Length > (MAX_ISCSI_PORTAL_ADDRESS_LEN - 1))
 				{
-					return (Win32Error.ERROR_INVALID_PARAMETER);
+					return Win32Error.ERROR_INVALID_PARAMETER;
 				}
 			}
 			else
@@ -2446,7 +2448,7 @@ namespace ISCSI
 				TargetPortalAddress = default;
 			}
 
-			if ((TargetPortalAddress != default) && ((!ArgV[5].StartsWith('*'))))
+			if ((TargetPortalAddress != default) && !ArgV[5].StartsWith('*'))
 			{
 				TargetPortalSocket = (ushort)int.Parse(ArgV[5]);
 				TargetPortal.Address = TargetPortalAddress;
@@ -2464,7 +2466,6 @@ namespace ISCSI
 			{
 				Key = default;
 				KeyLength = 0;
-				Status = Win32Error.ERROR_SUCCESS;
 			}
 			else
 			{
@@ -2477,7 +2478,7 @@ namespace ISCSI
 			Status = AddIScsiConnection(SessionId, InitiatorName, PortNumber, TargetPortalAddress is not null ? pTargetPortal : IntPtr.Zero,
 				SecurityFlags, pLoginOptions, KeyLength, Key, out _);
 
-			return (Status);
+			return Status;
 		}
 
 		// Console.Write("iscsicli RemoveConnection <SessionId> <ConnectionId> \n");
@@ -2486,19 +2487,19 @@ namespace ISCSI
 			if (ArgV.Length != 3)
 			{
 				Usage(15);
-				return (Win32Error.ERROR_SUCCESS);
+				return Win32Error.ERROR_SUCCESS;
 			}
 
 			if (!StringToSessionId(ArgV[1], out ISCSI_UNIQUE_SESSION_ID SessionId))
 			{
 				Usage(15);
-				return (Win32Error.ERROR_SUCCESS);
+				return Win32Error.ERROR_SUCCESS;
 			}
 
 			if (!StringToSessionId(ArgV[2], out ISCSI_UNIQUE_SESSION_ID ConnectionId))
 			{
 				Usage(15);
-				return (Win32Error.ERROR_SUCCESS);
+				return Win32Error.ERROR_SUCCESS;
 			}
 
 			return RemoveIScsiConnection(SessionId, ConnectionId);
@@ -2534,7 +2535,7 @@ namespace ISCSI
 						Console.Write(" {0}\n", s);
 				}
 			}
-			return (Status);
+			return Status;
 		}
 
 		// iscsicli ReportTargetMappings
@@ -2563,7 +2564,7 @@ namespace ISCSI
 				Console.Write("No mappings\n");
 			}
 
-			return (Status);
+			return Status;
 		}
 
 		// iscsicli ListTargets <ForceUpdate>
@@ -2578,7 +2579,7 @@ namespace ISCSI
 			}
 			else
 			{
-				var ForceUpdate = ArgV.Length == 2 ? IsTrue(ArgV[1], false) : false;
+				var ForceUpdate = ArgV.Length == 2 && IsTrue(ArgV[1], false);
 
 				var BufferSize = 0U;
 				using var Buffer = new SafeCoTaskMemHandle(StringHelper.GetCharSize());
@@ -2599,7 +2600,7 @@ namespace ISCSI
 				}
 			}
 
-			return (Status);
+			return Status;
 		}
 
 		// iscsicli RefreshTargetPortal <TargetPortalAddress>
@@ -2623,7 +2624,7 @@ namespace ISCSI
 				TargetPortalAddress = ArgV[1];
 				if (TargetPortalAddress.Length > (MAX_ISCSI_PORTAL_ADDRESS_LEN - 1))
 				{
-					return (Win32Error.ERROR_INVALID_PARAMETER);
+					return Win32Error.ERROR_INVALID_PARAMETER;
 				}
 				TargetPortalSocket = ArgV[2];
 
@@ -2658,7 +2659,7 @@ namespace ISCSI
 				Status = RefreshIScsiSendTargetPortal(HBAName, PortNumber, TargetPortal);
 			}
 
-			return (Status);
+			return Status;
 		}
 
 
@@ -2705,7 +2706,7 @@ namespace ISCSI
 				}
 			}
 
-			return (Status);
+			return Status;
 		}
 
 
@@ -2730,7 +2731,7 @@ namespace ISCSI
 				TargetPortalAddress = ArgV[1];
 				if (TargetPortalAddress.Length > (MAX_ISCSI_PORTAL_ADDRESS_LEN - 1))
 				{
-					return (Win32Error.ERROR_INVALID_PARAMETER);
+					return Win32Error.ERROR_INVALID_PARAMETER;
 				}
 				TargetPortalSocket = ArgV[2];
 
@@ -2772,7 +2773,7 @@ namespace ISCSI
 				Status = RemoveIScsiSendTargetPortal(HBAName, PortNumber, TargetPortal);
 			}
 
-			return (Status);
+			return Status;
 		}
 
 		// iscsicli AddTargetPortal <TargetPortalAddress> <TargetPortalSocket>
@@ -2800,7 +2801,7 @@ namespace ISCSI
 				TargetPortalAddress = ArgV[1];
 				if (TargetPortalAddress.Length > (MAX_ISCSI_PORTAL_ADDRESS_LEN - 1))
 				{
-					return (Win32Error.ERROR_INVALID_PARAMETER);
+					return Win32Error.ERROR_INVALID_PARAMETER;
 				}
 
 				TargetPortalSocket = ArgV[2];
@@ -2850,7 +2851,7 @@ namespace ISCSI
 				Status = AddIScsiSendTargetPortal(HBAName, PortNumber, LoginOptions, SecurityFlags, TargetPortal);
 			}
 
-			return (Status);
+			return Status;
 		}
 
 		// iscsicli RemoveTarget <TargetName>
@@ -2900,7 +2901,7 @@ namespace ISCSI
 					var TargetPortalAddress = ArgV[3];
 					if (TargetPortalAddress.Length > (MAX_ISCSI_PORTAL_ADDRESS_LEN - 1))
 					{
-						return (Win32Error.ERROR_INVALID_PARAMETER);
+						return Win32Error.ERROR_INVALID_PARAMETER;
 					}
 					var TargetPortalSocket = ArgV[4];
 
@@ -2922,7 +2923,7 @@ namespace ISCSI
 				if (ArgV.Length != ArgCExpected)
 				{
 					Usage(1);
-					return (Win32Error.ERROR_SUCCESS);
+					return Win32Error.ERROR_SUCCESS;
 				}
 
 				var SizeNeeded = (uint)Marshal.SizeOf<ISCSI_TARGET_MAPPING>() + MappingCount * (uint)Marshal.SizeOf<SCSI_LUN_LIST>();
@@ -2946,7 +2947,7 @@ namespace ISCSI
 						if (b == false)
 						{
 							Console.Write("Target LUN must be in 0x0123456789abcdef format\n");
-							return (Win32Error.ERROR_INVALID_PARAMETER);
+							return Win32Error.ERROR_INVALID_PARAMETER;
 						}
 						ArgCIndex++;
 
@@ -2954,7 +2955,7 @@ namespace ISCSI
 						if (x != m.OSBusNumber)
 						{
 							Console.Write("OSBus number must be the same for all LUNs\n");
-							return (Win32Error.ERROR_INVALID_PARAMETER);
+							return Win32Error.ERROR_INVALID_PARAMETER;
 						}
 
 						ArgCIndex++; // target
@@ -2962,7 +2963,7 @@ namespace ISCSI
 						if (x != m.OSTargetNumber)
 						{
 							Console.Write("OSTarget number must be the same for all LUNs\n");
-							return (Win32Error.ERROR_INVALID_PARAMETER);
+							return Win32Error.ERROR_INVALID_PARAMETER;
 						}
 
 						ArgCIndex++;
@@ -2978,7 +2979,7 @@ namespace ISCSI
 				Status = AddIScsiStaticTarget(TargetName, TargetAlias, TargetFlags, Persist, Mapping,
 					pLoginOptions, pPortalGroup);
 			}
-			return (Status);
+			return Status;
 		}
 
 		// iscsicli AddiSNSServer <Server name>
@@ -2989,7 +2990,7 @@ namespace ISCSI
 			if (ArgV.Length != 2)
 			{
 				Usage(21);
-				return (Win32Error.ERROR_SUCCESS);
+				return Win32Error.ERROR_SUCCESS;
 			}
 
 			ServerName = ArgV[1];
@@ -3006,7 +3007,7 @@ namespace ISCSI
 			if (ArgV.Length != 2)
 			{
 				Usage(22);
-				return (Win32Error.ERROR_SUCCESS);
+				return Win32Error.ERROR_SUCCESS;
 			}
 
 			ServerName = ArgV[1];
@@ -3020,7 +3021,7 @@ namespace ISCSI
 			if (ArgV.Length != 2)
 			{
 				Usage(23);
-				return (Win32Error.ERROR_SUCCESS);
+				return Win32Error.ERROR_SUCCESS;
 			}
 
 			var ServerName = ArgV[1].StartsWith('*') ? default : ArgV[1];
@@ -3051,7 +3052,7 @@ namespace ISCSI
 				Console.Write("No SNS Servers\n");
 			}
 
-			return (Status);
+			return Status;
 		}
 
 		/*++
@@ -3115,7 +3116,7 @@ namespace ISCSI
 				}
 			}
 
-			return (Status);
+			return Status;
 		}
 
 		// Console.Write("iscsicli QLoginTarget <TargetName> [CHAP Username] [CHAP Password]\n");
@@ -3128,7 +3129,7 @@ namespace ISCSI
 			if ((ArgV.Length != 2) && (ArgV.Length != 4))
 			{
 				Usage(33);
-				return (Win32Error.ERROR_SUCCESS);
+				return Win32Error.ERROR_SUCCESS;
 			}
 
 			TargetName = ArgV[1];
@@ -3169,7 +3170,7 @@ namespace ISCSI
 				}
 			}
 
-			return (Status);
+			return Status;
 		}
 
 		// Console.Write("iscsicli QAddTarget <TargetName> <TargetPortalAddress>\n");
@@ -3182,7 +3183,7 @@ namespace ISCSI
 			if (ArgV.Length != 3)
 			{
 				Usage(34);
-				return (Win32Error.ERROR_SUCCESS);
+				return Win32Error.ERROR_SUCCESS;
 			}
 
 			TargetName = ArgV[1];
@@ -3192,7 +3193,7 @@ namespace ISCSI
 				TargetPortalAddress = ArgV[2];
 				if (TargetPortalAddress.Length > (MAX_ISCSI_PORTAL_ADDRESS_LEN - 1))
 				{
-					return (Win32Error.ERROR_INVALID_PARAMETER);
+					return Win32Error.ERROR_INVALID_PARAMETER;
 				}
 
 				PortalGroup.Count = 1;
@@ -3212,7 +3213,7 @@ namespace ISCSI
 				default, // LoginOptions
 				PortalGroup);
 
-			return (Status);
+			return Status;
 		}
 
 		// Console.Write("iscsicli QAddTargetPortal <TargetPortalAddress> 
@@ -3220,7 +3221,6 @@ namespace ISCSI
 		private static Win32Error QAddTargetPortal(string[] ArgV)
 		{
 			Win32Error Status;
-			ISCSI_TARGET_PORTAL TargetPortal;
 			string TargetPortalAddress;
 			string CHAPUsername, CHAPPassword;
 			SafeCoTaskMemStruct<ISCSI_LOGIN_OPTIONS> LoginOptions;
@@ -3228,18 +3228,15 @@ namespace ISCSI
 			if ((ArgV.Length != 2) && (ArgV.Length != 4))
 			{
 				Usage(35);
-				return (Win32Error.ERROR_SUCCESS);
+				return Win32Error.ERROR_SUCCESS;
 			}
 
 			TargetPortalAddress = ArgV[1];
 			if (TargetPortalAddress.Length > (MAX_ISCSI_PORTAL_ADDRESS_LEN - 1))
 			{
-				return (Win32Error.ERROR_INVALID_PARAMETER);
+				return Win32Error.ERROR_INVALID_PARAMETER;
 			}
 
-			TargetPortal.Address = TargetPortalAddress;
-			//TargetPortal.Address[MAX_ISCSI_PORTAL_ADDRESS_LEN - 1] = 0;
-			TargetPortal.Socket = 3260;
 
 			if (ArgV.Length == 4)
 			{
@@ -3256,6 +3253,7 @@ namespace ISCSI
 
 			if (Status == Win32Error.ERROR_SUCCESS)
 			{
+				var TargetPortal = new ISCSI_TARGET_PORTAL { Address = TargetPortalAddress, Socket = 3260 };
 				Status = AddIScsiSendTargetPortal(default, // InitiatorInstance,
 					ISCSI_ANY_INITIATOR_PORT,
 					LoginOptions,
@@ -3263,7 +3261,7 @@ namespace ISCSI
 					TargetPortal);
 			}
 
-			return (Status);
+			return Status;
 		}
 
 		// Console.Write("iscsicli QAddConnection <SessionId> <Initiator Instance>\n");
@@ -3272,7 +3270,7 @@ namespace ISCSI
 		private static Win32Error QAddConnection(string[] ArgV)
 		{
 			Win32Error Status;
-			ISCSI_TARGET_PORTAL TargetPortal;
+			ISCSI_TARGET_PORTAL TargetPortal = default;
 			string TargetPortalAddress;
 			string InitiatorName;
 			SafeCoTaskMemStruct<ISCSI_LOGIN_OPTIONS> LoginOptions;
@@ -3281,13 +3279,13 @@ namespace ISCSI
 			if ((ArgV.Length != 4) && (ArgV.Length != 6))
 			{
 				Usage(36);
-				return (Win32Error.ERROR_SUCCESS);
+				return Win32Error.ERROR_SUCCESS;
 			}
 
 			if (!StringToSessionId(ArgV[1], out ISCSI_UNIQUE_SESSION_ID SessionId))
 			{
 				Usage(36);
-				return (Win32Error.ERROR_SUCCESS);
+				return Win32Error.ERROR_SUCCESS;
 			}
 
 			InitiatorName = ArgV[2];
@@ -3297,7 +3295,7 @@ namespace ISCSI
 				TargetPortalAddress = ArgV[3];
 				if (TargetPortalAddress.Length > (MAX_ISCSI_PORTAL_ADDRESS_LEN - 1))
 				{
-					return (Win32Error.ERROR_INVALID_PARAMETER);
+					return Win32Error.ERROR_INVALID_PARAMETER;
 				}
 
 				TargetPortal.Address = TargetPortalAddress;
@@ -3339,268 +3337,67 @@ namespace ISCSI
 				}
 			}
 
-			return (Status);
+			return Status;
 		}
 
 		private static Win32Error PerformCommandLine(string[] ArgV)
 		{
-			Win32Error Status = Win32Error.ERROR_SUCCESS;
+			Win32Error Status;
 
-			if (ArgV != default)
+			if (ArgV is not null && ArgV.Length > 0)
 			{
-				if (ArgV.Length > 0)
+				Status = ArgV[0].ToLowerInvariant() switch
 				{
-					// AddIScsiStaticTarget
-					if (string.Compare(ArgV[0], "AddTarget", true) == 0)
-					{
-						Status = AddTarget(ArgV);
-
-						// RemoveIScsiStaticTarget 
-					}
-					else if (string.Compare(ArgV[0], "RemoveTarget", true) == 0)
-					{
-						Status = RemoveTarget(ArgV);
-
-						// AddIScsiSendTargetPortal 
-					}
-					else if (string.Compare(ArgV[0], "AddTargetPortal", true) == 0)
-					{
-						Status = AddTargetPortal(ArgV);
-
-						// RemoveIScsiSendTargetPortal 
-					}
-					else if (string.Compare(ArgV[0], "RemoveTargetPortal", true) == 0)
-					{
-						Status = RemoveTargetPortal(ArgV);
-
-						// RefreshIScsiSendTargetPortal 
-					}
-					else if (string.Compare(ArgV[0], "RefreshTargetPortal", true) == 0)
-					{
-						Status = RefreshTargetPortal(ArgV);
-
-						// ReportIScsiSendTargetPortals 
-					}
-					else if (string.Compare(ArgV[0], "ListTargetPortals", true) == 0)
-					{
-						Status = ListTargetPortals(ArgV);
-
-						// ReportTargets 
-					}
-					else if (string.Compare(ArgV[0], "ListTargets", true) == 0)
-					{
-						Status = ListTargets(ArgV);
-
-						// GetTargetInformation 
-					}
-					else if (string.Compare(ArgV[0], "TargetInfo", true) == 0)
-					{
-						Status = TargetInfo(ArgV);
-
-						// LoginTarget 
-					}
-					else if (string.Compare(ArgV[0], "LoginTarget", true) == 0)
-					{
-						Status = TryLoginToTarget(ArgV);
-
-						// PersistentLoginTarget 
-					}
-					else if (string.Compare(ArgV[0], "PersistentLoginTarget", true) == 0)
-					{
-						Status = PersistentLoginTarget(ArgV);
-
-						// RemovePersistentTarget
-					}
-					else if (string.Compare(ArgV[0], "RemovePersistentTarget", true) == 0)
-					{
-						Status = RemovePersistentTarget(ArgV);
-
-						// ListPersistentTarget
-					}
-					else if (string.Compare(ArgV[0], "ListPersistentTargets", true) == 0)
-					{
-						Status = ListPersistentTarget(ArgV);
-
-						// LogoutTarget 
-					}
-					else if (string.Compare(ArgV[0], "LogoutTarget", true) == 0)
-					{
-						Status = DoLogoutTarget(ArgV);
-
-						// ReportInitiatorList 
-					}
-					else if (string.Compare(ArgV[0], "ListInitiators", true) == 0)
-					{
-						Status = DoReportInitiatorList(ArgV);
-
-						// ReportActiveIScsiTargetMappings
-					}
-					else if (string.Compare(ArgV[0], "ReportTargetMappings", true) == 0)
-					{
-						Status = DoReportActiveIScsiTargetMappings(ArgV);
-
-						// AddConnection 
-					}
-					else if (string.Compare(ArgV[0], "AddConnection", true) == 0)
-					{
-						Status = DoAddConnection(ArgV);
-
-						// RemoveConnection
-					}
-					else if (string.Compare(ArgV[0], "RemoveConnection", true) == 0)
-					{
-						Status = DoRemoveConnection(ArgV);
-
-						// SendScsiInquiry 
-					}
-					else if (string.Compare(ArgV[0], "ScsiInquiry", true) == 0)
-					{
-						Status = DoScsiInquiry(ArgV);
-
-						// SendScsiReadCapacity 
-					}
-					else if (string.Compare(ArgV[0], "ReadCapacity", true) == 0)
-					{
-						Status = ReadCapacity(ArgV);
-
-						// SendScsiReportLuns 
-					}
-					else if (string.Compare(ArgV[0], "ReportLUNs", true) == 0)
-					{
-						Status = ReportLUNs(ArgV);
-
-						// AddiSNSServer
-					}
-					else if (string.Compare(ArgV[0], "AddiSNSServer", true) == 0)
-					{
-						Status = AddiSNSServerX(ArgV);
-
-						// RemoveiSNSServer
-					}
-					else if (string.Compare(ArgV[0], "RemoveiSNSServer", true) == 0)
-					{
-						Status = RemoveiSNSServerX(ArgV);
-
-						// ListiSNSServers
-					}
-					else if (string.Compare(ArgV[0], "ListiSNSServers", true) == 0)
-					{
-						Status = ListiSNSServers(ArgV);
-
-						// RefreshiSNSServer
-					}
-					else if (string.Compare(ArgV[0], "RefreshiSNSServer", true) == 0)
-					{
-						Status = RefreshiSNSServer(ArgV);
-
-						// TunnelAddr
-					}
-					else if (string.Compare(ArgV[0], "TunnelAddr", true) == 0)
-					{
-						Status = TunnelAddress(ArgV);
-
-						// GroupKey
-					}
-					else if (string.Compare(ArgV[0], "GroupKey", true) == 0)
-					{
-						Status = GroupKey(ArgV);
-
-						// PSKey
-					}
-					else if (string.Compare(ArgV[0], "PSKey", true) == 0)
-					{
-						Status = PSKey(ArgV);
-
-						// CHAPSecret
-					}
-					else if (string.Compare(ArgV[0], "CHAPSecret", true) == 0)
-					{
-						Status = CHAPSecret(ArgV);
-
-					}
-					else if (string.Compare(ArgV[0], "NodeName", true) == 0)
-					{
-						Status = NodeName(ArgV);
-
-					}
-					else if (string.Compare(ArgV[0], "SessionList", true) == 0)
-					{
-						Status = SessionList(ArgV);
-
-					}
-					else if (string.Compare(ArgV[0], "BindPersistentVolumes", true) == 0)
-					{
-						Status = BindPeristentVolumes(ArgV);
-
-					}
-					else if (string.Compare(ArgV[0], "BindPersistentDevices", true) == 0)
-					{
-						Status = BindPeristentVolumes(ArgV);
-
-					}
-					else if (string.Compare(ArgV[0], "AddPersistentDevice", true) == 0)
-					{
-						Status = AddPersistentVolume(ArgV);
-
-					}
-					else if (string.Compare(ArgV[0], "RemovePersistentDevice", true) == 0)
-					{
-						Status = RemovePersistentVolume(ArgV);
-
-					}
-					else if (string.Compare(ArgV[0], "ClearPersistentDevices", true) == 0)
-					{
-						Status = ClearPersistentVolumes(ArgV);
-
-					}
-					else if (string.Compare(ArgV[0], "ReportPersistentDevices", true) == 0)
-					{
-						Status = ReportPersistentVolumes(ArgV);
-
-					}
-					else if (string.Compare(ArgV[0], "GetPSKey", true) == 0)
-					{
-						Status = GetPSKey(ArgV);
-
-					}
-					else if (string.Compare(ArgV[0], "QLoginTarget", true) == 0)
-					{
-						Status = QLoginTarget(ArgV);
-
-					}
-					else if (string.Compare(ArgV[0], "QAddTarget", true) == 0)
-					{
-						Status = QAddTarget(ArgV);
-
-					}
-					else if (string.Compare(ArgV[0], "QAddTargetPortal", true) == 0)
-					{
-						Status = QAddTargetPortal(ArgV);
-
-					}
-					else if (string.Compare(ArgV[0], "QAddConnection", true) == 0)
-					{
-						Status = QAddConnection(ArgV);
-					}
-					else
-					{
-						Usage(0);
-						Status = Win32Error.ERROR_SUCCESS;
-					}
-				}
-				else
-				{
-					Usage(0);
-					Status = Win32Error.ERROR_SUCCESS;
-				}
-
+					"addtarget" => AddTarget(ArgV),
+					"removetarget" => RemoveTarget(ArgV),
+					"addtargetportal" => AddTargetPortal(ArgV),
+					"removetargetportal" => RemoveTargetPortal(ArgV),
+					"refreshtargetportal" => RefreshTargetPortal(ArgV),
+					"listtargetportals" => ListTargetPortals(ArgV),
+					"listtargets" => ListTargets(ArgV),
+					"targetinfo" => TargetInfo(ArgV),
+					"logintarget" => TryLoginToTarget(ArgV),
+					"persistentlogintarget" => PersistentLoginTarget(ArgV),
+					"removepersistenttarget" => RemovePersistentTarget(ArgV),
+					"listpersistenttargets" => ListPersistentTarget(ArgV),
+					"logouttarget" => DoLogoutTarget(ArgV),
+					"listinitiators" => DoReportInitiatorList(ArgV),
+					"reporttargetmappings" => DoReportActiveIScsiTargetMappings(ArgV),
+					"addconnection" => DoAddConnection(ArgV),
+					"removeconnection" => DoRemoveConnection(ArgV),
+					"scsiinquiry" => DoScsiInquiry(ArgV),
+					"readcapacity" => ReadCapacity(ArgV),
+					"reportluns" => ReportLUNs(ArgV),
+					"addisnsserver" => AddiSNSServerX(ArgV),
+					"removeisnsserver" => RemoveiSNSServerX(ArgV),
+					"listisnsservers" => ListiSNSServers(ArgV),
+					"refreshisnsserver" => RefreshiSNSServer(ArgV),
+					"tunneladdr" => TunnelAddress(ArgV),
+					"groupkey" => GroupKey(ArgV),
+					"pskey" => PSKey(ArgV),
+					"chapsecret" => CHAPSecret(ArgV),
+					"nodename" => NodeName(ArgV),
+					"sessionlist" => SessionList(ArgV),
+					"bindpersistentvolumes" => BindPeristentVolumes(ArgV),
+					"bindpersistentdevices" => BindPeristentVolumes(ArgV),
+					"addpersistentdevice" => AddPersistentVolume(ArgV),
+					"removepersistentdevice" => RemovePersistentVolume(ArgV),
+					"clearpersistentdevices" => ClearPersistentVolumes(ArgV),
+					"reportpersistentdevices" => ReportPersistentVolumes(ArgV),
+					"getpskey" => GetPSKey(ArgV),
+					"qlogintarget" => QLoginTarget(ArgV),
+					"qaddtarget" => QAddTarget(ArgV),
+					"qaddtargetportal" => QAddTargetPortal(ArgV),
+					"qaddconnection" => QAddConnection(ArgV),
+					_ => Usage(0),
+				};
 			}
 			else
 			{
-				Status = Win32Error.ERROR_NOT_ENOUGH_MEMORY;
+				Status = Usage(0);
 			}
 			Console.Write("{0}\n", GetiSCSIMessageText(Status));
-			return (Status);
+			return Status;
 		}
 
 		private const int INPUT_BUFFER_SIZE = 4096;
