@@ -315,10 +315,10 @@ namespace sendto
 
 			var ofn = new OPENFILENAME
 			{
-				lStructSize = Marshal.SizeOf<OPENFILENAME>(),
+				lStructSize = (uint)Marshal.SizeOf<OPENFILENAME>(),
 				hwndOwner = hwnd,
 				lpstrFile = (IntPtr)szFileName,
-				nMaxFile = szFileName.Capacity,
+				nMaxFile = (uint)szFileName.Capacity,
 				lpstrFileTitle = (IntPtr)szTitle,
 				nMaxFileTitle = (uint)szTitle.Capacity,
 				Flags = OFN.OFN_FILEMUSTEXIST | OFN.OFN_HIDEREADONLY | OFN.OFN_PATHMUSTEXIST
