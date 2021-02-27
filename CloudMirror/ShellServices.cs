@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading;
 using System.Threading.Tasks;
 using Vanara.PInvoke;
 using static Vanara.PInvoke.Kernel32;
@@ -10,11 +11,12 @@ namespace CloudMirror
 	{
 		public static void InitAndStartServiceTask()
 		{
-			Task.Run(() =>
+			var thread = new Thread(() =>
 			{
-				uint cookie;
+				CoInitializeEx(default, COINIT.COINIT_APARTMENTTHREADED).ThrowIfFailed();
+
 				var thumbnailProvider = new ThumbnailProvider();
-				CoRegisterClassObject(typeof(ThumbnailProvider).GUID, thumbnailProvider, CLSCTX.CLSCTX_LOCAL_SERVER, REGCLS.REGCLS_MULTIPLEUSE, out cookie).ThrowIfFailed();
+				CoRegisterClassObject(typeof(ThumbnailProvider).GUID, thumbnailProvider, CLSCTX.CLSCTX_LOCAL_SERVER, REGCLS.REGCLS_MULTIPLEUSE, out var cookie).ThrowIfFailed();
 
 				var contextMenu = new TestExplorerCommandHandler();
 				CoRegisterClassObject(typeof(TestExplorerCommandHandler).GUID, contextMenu, CLSCTX.CLSCTX_LOCAL_SERVER, REGCLS.REGCLS_MULTIPLEUSE, out cookie).ThrowIfFailed();
@@ -30,6 +32,8 @@ namespace CloudMirror
 					Win32Error.ThrowLastError();
 				CoWaitForMultipleHandles(COWAIT_FLAGS.COWAIT_DISPATCH_CALLS, INFINITE, 1, new[] { (IntPtr)dummyEvent }, out _);
 			});
+			thread.SetApartmentState(ApartmentState.STA);
+			thread.Start();
 		}
 	}
 }

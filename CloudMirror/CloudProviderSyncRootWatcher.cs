@@ -60,7 +60,7 @@ namespace CloudMirror
             // Set up a Directory Watcher on the client side to handle user's changing things there
             try
             {
-                s_directoryWatcher.Initalize(ProviderFolderLocations.GetClientFolder(), OnSyncRootFileChanges);
+                s_directoryWatcher.Initalize(ProviderFolderLocations.ClientFolder, OnSyncRootFileChanges);
             }
             catch
             {

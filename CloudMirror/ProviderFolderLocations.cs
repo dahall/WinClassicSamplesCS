@@ -7,40 +7,36 @@ namespace CloudMirror
 {
 	internal static class ProviderFolderLocations
 	{
-		private static string s_clientFolder;
+		public static string ClientFolder { get; private set; }
 
-		private static string s_serverFolder;
-
-		public static string GetClientFolder() => s_clientFolder;
-
-		public static string GetServerFolder() => s_serverFolder;
+		public static string ServerFolder { get; private set; }
 
 		public static bool Init(string serverFolder = "", string clientFolder = "")
 		{
 			if (!string.IsNullOrEmpty(serverFolder))
 			{
-				s_serverFolder = serverFolder;
+				ServerFolder = serverFolder;
 			}
 			if (!string.IsNullOrEmpty(clientFolder))
 			{
-				s_clientFolder = clientFolder;
+				ClientFolder = clientFolder;
 			}
-			if (string.IsNullOrEmpty(s_serverFolder))
+			if (string.IsNullOrEmpty(ServerFolder))
 			{
-				s_serverFolder = PromptForFolderPath("\"Server in the Fluffy Cloud\" Location");
+				ServerFolder = PromptForFolderPath("\"Server in the Fluffy Cloud\" Location");
 			}
 
-			if (!string.IsNullOrEmpty(s_serverFolder) && string.IsNullOrEmpty(s_clientFolder))
+			if (!string.IsNullOrEmpty(ServerFolder) && string.IsNullOrEmpty(ClientFolder))
 			{
-				s_clientFolder = PromptForFolderPath("\"Syncroot (Client)\" Location");
+				ClientFolder = PromptForFolderPath("\"Syncroot (Client)\" Location");
 			}
 
 			var result = false;
-			if (!string.IsNullOrEmpty(s_serverFolder) && !string.IsNullOrEmpty(s_clientFolder))
+			if (!string.IsNullOrEmpty(ServerFolder) && !string.IsNullOrEmpty(ClientFolder))
 			{
 				// In case they were passed in params we may need to create the folder. If the folder is already there then these are benign calls.
-				CreateDirectory(s_serverFolder);
-				CreateDirectory(s_clientFolder);
+				CreateDirectory(ServerFolder);
+				CreateDirectory(ClientFolder);
 				result = true;
 			}
 			return result;

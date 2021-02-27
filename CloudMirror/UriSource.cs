@@ -26,7 +26,7 @@ namespace CloudMirror
 			var uri = contentUri;
 			if (uri.StartsWith(prefix, StringComparison.OrdinalIgnoreCase))
 			{
-				var localPath = ProviderFolderLocations.GetClientFolder() + "\\" + uri[prefix.Length..uri.IndexOf('?')];
+				var localPath = ProviderFolderLocations.ClientFolder + "\\" + uri[prefix.Length..uri.IndexOf('?')];
 
 				if (File.Exists(localPath))
 				{

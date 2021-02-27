@@ -14,16 +14,16 @@ namespace CloudMirror
 		private const string STORAGE_PROVIDER_ACCOUNT = "TestAccount1";
 		private const string STORAGE_PROVIDER_ID = "TestStorageProvider";
 
-		public static async Task RegisterWithShell()
+		public static void RegisterWithShell()
 		{
 			try
 			{
 				var info = new StorageProviderSyncRootInfo();
 				info.Id = GetSyncRootId();
-				info.Path = await StorageFolder.GetFolderFromPathAsync(ProviderFolderLocations.GetClientFolder());
+				var folder = StorageFolder.GetFolderFromPathAsync(ProviderFolderLocations.ClientFolder).GetResults();
+				info.Path = folder;
 				info.DisplayNameResource = "TestStorageProviderDisplayName";
-				// This icon is just for the sample. You should provide your own branded icon here
-				info.IconResource = "%SystemRoot%\\system32\\charmap.exe,0";
+				info.IconResource = "%SystemRoot%\\system32\\charmap.exe,0"; // This icon is just for the sample. You should provide your own branded icon here
 				info.HydrationPolicy = StorageProviderHydrationPolicy.Full;
 				info.HydrationPolicyModifier = StorageProviderHydrationPolicyModifier.None;
 				info.PopulationPolicy = StorageProviderPopulationPolicy.AlwaysFull;
@@ -33,22 +33,19 @@ namespace CloudMirror
 				info.HardlinkPolicy = StorageProviderHardlinkPolicy.None;
 				info.RecycleBinUri = new Uri("http://cloudmirror.example.com/recyclebin");
 
-				// Context
-				var syncRootIdentity = ProviderFolderLocations.GetServerFolder() + "->" + ProviderFolderLocations.GetClientFolder();
+				var syncRootIdentity = ProviderFolderLocations.ServerFolder + "->" + ProviderFolderLocations.ClientFolder;
+				info.Context = CryptographicBuffer.ConvertStringToBinary(syncRootIdentity, BinaryStringEncoding.Utf8);
 
-				//var contextString = "TestProviderContextString";
-				var contextBuffer = CryptographicBuffer.ConvertStringToBinary(syncRootIdentity, BinaryStringEncoding.Utf8);
-				info.Context = contextBuffer;
-
-				var customStates = info.StorageProviderItemPropertyDefinitions;
-				AddCustomState(customStates, "CustomStateName1", 1);
-				AddCustomState(customStates, "CustomStateName2", 2);
-				AddCustomState(customStates, "CustomStateName3", 3);
+				AddCustomState("CustomStateName1", 1);
+				AddCustomState("CustomStateName2", 2);
+				AddCustomState("CustomStateName3", 3);
 
 				StorageProviderSyncRootManager.Register(info);
 
 				// Give the cache some time to invalidate
 				Sleep(1000);
+
+				void AddCustomState(string displayNameResource, int id) => info.StorageProviderItemPropertyDefinitions.Add(new StorageProviderItemPropertyDefinition { DisplayNameResource = displayNameResource, Id = id });
 			}
 			catch (Exception ex)
 			{
@@ -72,9 +69,6 @@ namespace CloudMirror
 				Console.Write("Could not unregister the sync root, hr {0:X8}\n", ex.HResult);
 			}
 		}
-
-		private static void AddCustomState(ICollection<StorageProviderItemPropertyDefinition> customStates, string displayNameResource, int id) =>
-			customStates.Add(new StorageProviderItemPropertyDefinition { DisplayNameResource = displayNameResource, Id = id });
 
 		private static string GetSyncRootId() => $"{STORAGE_PROVIDER_ID}!{WindowsIdentity.GetCurrent().User}!{STORAGE_PROVIDER_ACCOUNT}";
 	}

@@ -14,7 +14,7 @@ namespace CloudMirror
 
 			try
 			{
-				if (FakeCloudProvider.Start(args.Length > 0 ? args[0] : null, args.Length > 1 ? args[1] : null).Result)
+				if (FakeCloudProvider.Start(args.Length > 0 ? args[0] : null, args.Length > 1 ? args[1] : null))
 				{
 					returnCode = 1;
 				}

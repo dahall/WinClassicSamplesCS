@@ -47,19 +47,19 @@ namespace CloudMirror
 				Console.Write("Thumbnail requested for {0}\n", destPathItem);
 
 				// Verify the item is underneath the root as we expect.
-				if (!PathIsPrefix(ProviderFolderLocations.GetClientFolder(), destPathItem))
+				if (!PathIsPrefix(ProviderFolderLocations.ClientFolder, destPathItem))
 				{
 					return HRESULT.E_UNEXPECTED;
 				}
 
 				// Find the relative segment to the sync root.
 				var relativePath = new StringBuilder(MAX_PATH);
-				if (!PathRelativePathTo(relativePath, ProviderFolderLocations.GetClientFolder(), FileFlagsAndAttributes.FILE_ATTRIBUTE_DIRECTORY, destPathItem, FileFlagsAndAttributes.FILE_ATTRIBUTE_NORMAL))
+				if (!PathRelativePathTo(relativePath, ProviderFolderLocations.ClientFolder, FileFlagsAndAttributes.FILE_ATTRIBUTE_DIRECTORY, destPathItem, FileFlagsAndAttributes.FILE_ATTRIBUTE_NORMAL))
 					Win32Error.ThrowLastError();
 
 				// Now combine that relative segment with the original source folder, which results in the path to the source item that
 				// we're mirroring.
-				var sourcePathItem = Path.Combine(ProviderFolderLocations.GetServerFolder(), relativePath.ToString());
+				var sourcePathItem = Path.Combine(ProviderFolderLocations.ServerFolder, relativePath.ToString());
 
 				_itemSrc = SHCreateItemFromParsingName<IShellItem2>(sourcePathItem);
 			}
