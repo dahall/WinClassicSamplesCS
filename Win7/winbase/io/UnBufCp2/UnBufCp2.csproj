@@ -1,0 +1,17 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net5.0-windows</TargetFramework>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Include="..\FCopy\ULARGE_INTEGER.cs" Link="ULARGE_INTEGER.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Vanara.PInvoke.User32" Version="3.3.6" />
+  </ItemGroup>
+
+</Project>
