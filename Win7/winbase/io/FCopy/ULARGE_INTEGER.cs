@@ -4,7 +4,7 @@ using System.Runtime.InteropServices;
 namespace System
 {
 	[StructLayout(LayoutKind.Explicit)]
-	[DebuggerDisplay(nameof(QuadPart))]
+	[DebuggerDisplay("{QuadPart}:{LowPart}/{HighPart}")]
 	internal struct ULARGE_INTEGER : IEquatable<ULARGE_INTEGER>, IEquatable<ulong>
 	{
 		[FieldOffset(0)]
@@ -14,7 +14,8 @@ namespace System
 		[FieldOffset(0)]
 		public ulong QuadPart;
 
-		public static implicit operator ulong(ULARGE_INTEGER ul) => ul;
+		public static implicit operator ulong(ULARGE_INTEGER ul) => ul.QuadPart;
+
 		public static implicit operator ULARGE_INTEGER(ulong ul) => new ULARGE_INTEGER { QuadPart = ul };
 
 		public static bool operator ==(ULARGE_INTEGER left, ULARGE_INTEGER right) => left.Equals(right);
