@@ -1931,7 +1931,7 @@ namespace ISCSI
 
 			if (ArgV.Length < 19)
 			{
-				Usage(IsPersistent ? 11 : 9);
+				Usage(IsPersistent ? 11U : 9);
 				Status = Win32Error.ERROR_SUCCESS;
 			}
 			else
@@ -1999,7 +1999,7 @@ namespace ISCSI
 				ArgCExpected = 20 + ((int)MappingCount * 4);
 				if (ArgV.Length != ArgCExpected)
 				{
-					Usage(IsPersistent ? 11 : 9);
+					Usage(IsPersistent ? 11U : 9);
 					return Win32Error.ERROR_SUCCESS;
 				}
 
