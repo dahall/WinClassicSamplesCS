@@ -167,6 +167,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Mount", "Win7\winbase\io\Mo
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UnBufCp2", "Win7\winbase\io\UnBufCp2\UnBufCp2.csproj", "{B997EAFC-13A1-48EB-8581-B9E3074F7A26}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CrawlScopeCommandLine", "Win7\winui\WindowsSearch\CrawlScopeCommandLine\CrawlScopeCommandLine.csproj", "{47736DBE-538F-4A65-8AD3-3DD803343C81}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -971,6 +973,18 @@ Global
 		{B997EAFC-13A1-48EB-8581-B9E3074F7A26}.Release|x64.Build.0 = Release|Any CPU
 		{B997EAFC-13A1-48EB-8581-B9E3074F7A26}.Release|x86.ActiveCfg = Release|Any CPU
 		{B997EAFC-13A1-48EB-8581-B9E3074F7A26}.Release|x86.Build.0 = Release|Any CPU
+		{47736DBE-538F-4A65-8AD3-3DD803343C81}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{47736DBE-538F-4A65-8AD3-3DD803343C81}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{47736DBE-538F-4A65-8AD3-3DD803343C81}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{47736DBE-538F-4A65-8AD3-3DD803343C81}.Debug|x64.Build.0 = Debug|Any CPU
+		{47736DBE-538F-4A65-8AD3-3DD803343C81}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{47736DBE-538F-4A65-8AD3-3DD803343C81}.Debug|x86.Build.0 = Debug|Any CPU
+		{47736DBE-538F-4A65-8AD3-3DD803343C81}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{47736DBE-538F-4A65-8AD3-3DD803343C81}.Release|Any CPU.Build.0 = Release|Any CPU
+		{47736DBE-538F-4A65-8AD3-3DD803343C81}.Release|x64.ActiveCfg = Release|Any CPU
+		{47736DBE-538F-4A65-8AD3-3DD803343C81}.Release|x64.Build.0 = Release|Any CPU
+		{47736DBE-538F-4A65-8AD3-3DD803343C81}.Release|x86.ActiveCfg = Release|Any CPU
+		{47736DBE-538F-4A65-8AD3-3DD803343C81}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -1041,6 +1055,7 @@ Global
 		{E0B5CE9F-FB29-4873-A434-8D22F22EE84E} = {B6D6F885-55E8-4A2C-A873-54953586E387}
 		{824E112B-6FD9-4E73-BC0F-7E9FFA089CB2} = {B6D6F885-55E8-4A2C-A873-54953586E387}
 		{B997EAFC-13A1-48EB-8581-B9E3074F7A26} = {B6D6F885-55E8-4A2C-A873-54953586E387}
+		{47736DBE-538F-4A65-8AD3-3DD803343C81} = {3B612B74-8DF0-4B45-8C49-4883022467C2}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {82D57A23-9C32-4014-9AFB-25B38D08E1D1}
