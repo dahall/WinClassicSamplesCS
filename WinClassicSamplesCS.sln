@@ -3,13 +3,13 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.29418.71
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ExplorerBrowserSearch", "Win7\winui\shell\appplatform\ExplorerBrowserSearch\ExplorerBrowserSearch.csproj", "{BF35499A-12D1-4BEE-90C1-9C74F5236741}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ExplorerBrowserSearch", "Win7Samples\winui\shell\appplatform\ExplorerBrowserSearch\ExplorerBrowserSearch.csproj", "{BF35499A-12D1-4BEE-90C1-9C74F5236741}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ExplorerBrowserCustomContents", "Win7\winui\shell\appplatform\ExplorerBrowserCustomContents\ExplorerBrowserCustomContents.csproj", "{DFE20AAB-EA60-4401-9FE5-C2D32F81BC11}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ExplorerBrowserCustomContents", "Win7Samples\winui\shell\appplatform\ExplorerBrowserCustomContents\ExplorerBrowserCustomContents.csproj", "{DFE20AAB-EA60-4401-9FE5-C2D32F81BC11}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ChangeNotifyWatcher", "Win7\winui\shell\appplatform\ChangeNotifyWatcher\ChangeNotifyWatcher.csproj", "{CBA2C308-CD96-407F-ACB3-B83AD7CA0B08}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ChangeNotifyWatcher", "Win7Samples\winui\shell\appplatform\ChangeNotifyWatcher\ChangeNotifyWatcher.csproj", "{CBA2C308-CD96-407F-ACB3-B83AD7CA0B08}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Win7", "Win7", "{F64D0F04-967C-4AC2-92C0-C93C4C04AFAA}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Win7Samples", "Win7Samples", "{F64D0F04-967C-4AC2-92C0-C93C4C04AFAA}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "winui", "winui", "{A74C6952-488E-4926-BE04-E17684FDAA0C}"
 EndProject
@@ -17,25 +17,25 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "shell", "shell", "{49EF5E85
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "appplatform", "appplatform", "{EC86EA97-FDE0-44A0-8A95-F0076988987F}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "searchfolder", "Win7\winui\shell\appplatform\searchfolder\searchfolder.csproj", "{8C0538E7-6662-4508-960F-F0193A0E02E6}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "searchfolder", "Win7Samples\winui\shell\appplatform\searchfolder\searchfolder.csproj", "{8C0538E7-6662-4508-960F-F0193A0E02E6}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ExecInExplorer", "Win7\winui\shell\appplatform\ExecInExplorer\ExecInExplorer.csproj", "{B3108BC1-2E87-4155-9B80-6D4DDD6C7D01}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ExecInExplorer", "Win7Samples\winui\shell\appplatform\ExecInExplorer\ExecInExplorer.csproj", "{B3108BC1-2E87-4155-9B80-6D4DDD6C7D01}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "fileisinuse", "Win7\winui\shell\appplatform\fileisinuse\fileisinuse.csproj", "{5419B69C-7DBE-4006-B62F-38BC06935A6A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "fileisinuse", "Win7Samples\winui\shell\appplatform\fileisinuse\fileisinuse.csproj", "{5419B69C-7DBE-4006-B62F-38BC06935A6A}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "appshellintegration", "appshellintegration", "{DF85BF81-EE96-41EF-AA3F-ED1EAE463619}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AutomaticJumpList", "Win7\winui\shell\appshellintegration\AutomaticJumpList\AutomaticJumpList.csproj", "{095A4A6A-6A1D-4493-AC12-527199274635}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AutomaticJumpList", "Win7Samples\winui\shell\appshellintegration\AutomaticJumpList\AutomaticJumpList.csproj", "{095A4A6A-6A1D-4493-AC12-527199274635}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CustomJumpList", "Win7\winui\shell\appshellintegration\CustomJumpList\CustomJumpList.csproj", "{4BFC28A4-20D7-487E-AEFB-EAD48D7BB01C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CustomJumpList", "Win7Samples\winui\shell\appshellintegration\CustomJumpList\CustomJumpList.csproj", "{4BFC28A4-20D7-487E-AEFB-EAD48D7BB01C}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DropTargetVerb", "Win7\winui\shell\appshellintegration\DropTargetVerb\DropTargetVerb.csproj", "{614B6038-7A52-407E-B48C-79817C1F7669}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DropTargetVerb", "Win7Samples\winui\shell\appshellintegration\DropTargetVerb\DropTargetVerb.csproj", "{614B6038-7A52-407E-B48C-79817C1F7669}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PlaylistCreator", "Win7\winui\shell\appshellintegration\PlaylistCreator\PlaylistCreator.csproj", "{1294BA2E-698E-4B71-9437-55088B620849}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PlaylistCreator", "Win7Samples\winui\shell\appshellintegration\PlaylistCreator\PlaylistCreator.csproj", "{1294BA2E-698E-4B71-9437-55088B620849}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "fileoperations", "Win7\winui\shell\appplatform\fileoperations\fileoperations.csproj", "{C3176341-2229-42A7-A9DF-846CB8C360A9}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "fileoperations", "Win7Samples\winui\shell\appplatform\fileoperations\fileoperations.csproj", "{C3176341-2229-42A7-A9DF-846CB8C360A9}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ParsingWithParameters", "Win7\winui\shell\appplatform\ParsingWithParameters\ParsingWithParameters.csproj", "{4FBDBE52-2844-47F0-8D2E-CA06234E76A8}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ParsingWithParameters", "Win7Samples\winui\shell\appplatform\ParsingWithParameters\ParsingWithParameters.csproj", "{4FBDBE52-2844-47F0-8D2E-CA06234E76A8}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Sampler", "Sampler\Sampler.csproj", "{42D061DF-6C64-4907-B23B-38EAAE1EC701}"
 EndProject
@@ -43,57 +43,57 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "security", "security", "{3F
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "lsapolicy", "lsapolicy", "{057BB3A2-3548-4B4A-8D5E-B6E527D0BD3B}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "lsaprivs", "Win7\security\lsapolicy\lsaprivs\lsaprivs.csproj", "{0BF5C2B5-0F01-48B5-BE4E-5E3E13D149A6}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "lsaprivs", "Win7Samples\security\lsapolicy\lsaprivs\lsaprivs.csproj", "{0BF5C2B5-0F01-48B5-BE4E-5E3E13D149A6}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "machacct", "Win7\security\lsapolicy\machacct\machacct.csproj", "{9EC5AB81-93F6-4150-9F67-61A0C2207E27}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "machacct", "Win7Samples\security\lsapolicy\machacct\machacct.csproj", "{9EC5AB81-93F6-4150-9F67-61A0C2207E27}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "authorization", "authorization", "{EF89CDDF-DD30-43FF-A14D-05EFA08FE508}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "aclapi", "Win7\security\authorization\aclapi\aclapi.csproj", "{946AC805-126B-489D-BADF-D9823955E482}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "aclapi", "Win7Samples\security\authorization\aclapi\aclapi.csproj", "{946AC805-126B-489D-BADF-D9823955E482}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "audit", "Win7\security\authorization\audit\audit.csproj", "{B5CB45DC-4DED-4EE2-9242-3F7B0EAEAF58}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "audit", "Win7Samples\security\authorization\audit\audit.csproj", "{B5CB45DC-4DED-4EE2-9242-3F7B0EAEAF58}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "authz", "Win7\security\authorization\authz\authz.csproj", "{86EB6286-8842-4D4C-896B-BB7E5BB5D6D6}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "authz", "Win7Samples\security\authorization\authz\authz.csproj", "{86EB6286-8842-4D4C-896B-BB7E5BB5D6D6}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "azman", "Win7\security\authorization\azman\azman.csproj", "{69DA869D-1797-4417-8102-F02D3AD7C029}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "azman", "Win7Samples\security\authorization\azman\azman.csproj", "{69DA869D-1797-4417-8102-F02D3AD7C029}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "klist", "Win7\security\authorization\klist\klist.csproj", "{DF8723BA-89E4-455F-8D0D-61859E6F4631}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "klist", "Win7Samples\security\authorization\klist\klist.csproj", "{DF8723BA-89E4-455F-8D0D-61859E6F4631}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "mytoken", "Win7\security\authorization\mytoken\mytoken.csproj", "{50646A7D-3564-442A-A08C-CCAF3FAA64D4}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "mytoken", "Win7Samples\security\authorization\mytoken\mytoken.csproj", "{50646A7D-3564-442A-A08C-CCAF3FAA64D4}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "secprint", "Win7\security\authorization\secprint\secprint.csproj", "{D2EBE7E5-3679-471F-812D-77A3997C6BD3}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "secprint", "Win7Samples\security\authorization\secprint\secprint.csproj", "{D2EBE7E5-3679-471F-812D-77A3997C6BD3}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "securobj", "Win7\security\authorization\securobj\securobj.csproj", "{8FE2DF3A-4675-4577-AC0C-77D8BF8841CB}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "securobj", "Win7Samples\security\authorization\securobj\securobj.csproj", "{8FE2DF3A-4675-4577-AC0C-77D8BF8841CB}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "textsid", "Win7\security\authorization\textsid\textsid.csproj", "{DD455B6C-392A-4D04-A031-46D491722A9F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "textsid", "Win7Samples\security\authorization\textsid\textsid.csproj", "{DD455B6C-392A-4D04-A031-46D491722A9F}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "WindowsSearch", "WindowsSearch", "{3B612B74-8DF0-4B45-8C49-4883022467C2}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "StructuredQuerySample", "Win7\winui\WindowsSearch\StructuredQuerySample\StructuredQuerySample.csproj", "{88514BF5-4E9B-4781-8F11-5A181E287BA2}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "StructuredQuerySample", "Win7Samples\winui\WindowsSearch\StructuredQuerySample\StructuredQuerySample.csproj", "{88514BF5-4E9B-4781-8F11-5A181E287BA2}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DSearch", "Win7\winui\WindowsSearch\DSearch\DSearch.csproj", "{B0DAF5CC-6B09-48EE-9438-99BE81AC704C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DSearch", "Win7Samples\winui\WindowsSearch\DSearch\DSearch.csproj", "{B0DAF5CC-6B09-48EE-9438-99BE81AC704C}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "IFilterSample", "Win7\winui\WindowsSearch\IFilterSample\IFilterSample.csproj", "{CC44E5B9-E246-44FE-81B3-82394BF84707}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "IFilterSample", "Win7Samples\winui\WindowsSearch\IFilterSample\IFilterSample.csproj", "{CC44E5B9-E246-44FE-81B3-82394BF84707}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SearchEvents", "Win7\winui\WindowsSearch\SearchEvents\SearchEvents.csproj", "{A31CF827-F17B-48C1-9EB1-31D2EF87BD66}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SearchEvents", "Win7Samples\winui\WindowsSearch\SearchEvents\SearchEvents.csproj", "{A31CF827-F17B-48C1-9EB1-31D2EF87BD66}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "cryptoapi", "cryptoapi", "{5FFDBDCB-7524-438E-9C4F-4FA4A9CF13A8}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BuildChain", "Win7\security\cryptoapi\BuildChain\BuildChain.csproj", "{1721B3E2-4CE8-4FAF-A00B-766478F60B54}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BuildChain", "Win7Samples\security\cryptoapi\BuildChain\BuildChain.csproj", "{1721B3E2-4CE8-4FAF-A00B-766478F60B54}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CertSelect", "Win7\security\cryptoapi\CertSelect\CertSelect.csproj", "{6E4E4DF1-9A3E-4DB6-98BC-6784125A8FF5}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CertSelect", "Win7Samples\security\cryptoapi\CertSelect\CertSelect.csproj", "{6E4E4DF1-9A3E-4DB6-98BC-6784125A8FF5}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CertSign", "Win7\security\cryptoapi\CertSign\CertSign.csproj", "{6B9F3B39-7CDA-46ED-BAFC-F54A57792597}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CertSign", "Win7Samples\security\cryptoapi\CertSign\CertSign.csproj", "{6B9F3B39-7CDA-46ED-BAFC-F54A57792597}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CreateCertificate", "Win7\security\cryptoapi\CreateCertificate\CreateCertificate.csproj", "{17C03355-60EB-4A66-A62B-DF2A8407FF8F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CreateCertificate", "Win7Samples\security\cryptoapi\CreateCertificate\CreateCertificate.csproj", "{17C03355-60EB-4A66-A62B-DF2A8407FF8F}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "encrypt", "Win7\security\cryptoapi\encrypt\encrypt.csproj", "{38087D48-66EF-4379-9989-CA6F2CA7DAC9}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "encrypt", "Win7Samples\security\cryptoapi\encrypt\encrypt.csproj", "{38087D48-66EF-4379-9989-CA6F2CA7DAC9}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "encryptmessage", "Win7\security\cryptoapi\encryptmessage\encryptmessage.csproj", "{ADECA52F-A04F-4A8F-812E-59A9FBE3EC68}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "encryptmessage", "Win7Samples\security\cryptoapi\encryptmessage\encryptmessage.csproj", "{ADECA52F-A04F-4A8F-812E-59A9FBE3EC68}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "enumalgs", "Win7\security\cryptoapi\enumalgs\enumalgs.csproj", "{6AD1E7B2-B9A7-497C-A61D-21C6FCE9F3BC}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "enumalgs", "Win7Samples\security\cryptoapi\enumalgs\enumalgs.csproj", "{6AD1E7B2-B9A7-497C-A61D-21C6FCE9F3BC}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "signhash", "Win7\security\cryptoapi\signhash\signhash.csproj", "{097E5E27-6233-45BC-9C76-81C9ECF34DE2}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "signhash", "Win7Samples\security\cryptoapi\signhash\signhash.csproj", "{097E5E27-6233-45BC-9C76-81C9ECF34DE2}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WinsockBluetoothConnection", "WinsockBluetoothConnection\WinsockBluetoothConnection.csproj", "{5F006E2E-82A2-4696-81DF-DF7501622BFE}"
 EndProject
@@ -125,49 +125,49 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MagnificationWindowed", "Ma
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MagnificationFullscreen", "MagnificationFullscreen\MagnificationFullscreen.csproj", "{C1BE10FD-E8E1-47C7-94A9-90A24443A3CE}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GroupChat", "Win7\netds\peertopeer\GroupChat\GroupChat.csproj", "{934740D8-9853-4EF7-AD9E-1A090329E70E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GroupChat", "Win7Samples\netds\peertopeer\GroupChat\GroupChat.csproj", "{934740D8-9853-4EF7-AD9E-1A090329E70E}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "netds", "netds", "{E40CF076-974B-4882-8B68-2FE71A7266E3}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "peertopeer", "peertopeer", "{2CF2BB74-B979-4610-9A38-CAF45EEC27BD}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DrtSdkSample", "Win7\netds\peertopeer\DRT\DrtSdkSample.csproj", "{9CFD42DE-61AE-4FD0-BBAD-A85807025C19}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DrtSdkSample", "Win7Samples\netds\peertopeer\DRT\DrtSdkSample.csproj", "{9CFD42DE-61AE-4FD0-BBAD-A85807025C19}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "rpc", "rpc", "{BF9294FF-74C6-4777-9B69-7867F161F582}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "hello", "hello", "{0B3E0C08-2F75-40A4-A35B-0C335F9C1D61}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "helloc", "Win7\netds\rpc\hello\helloc\helloc.csproj", "{1521D741-3C9A-47D9-8CC2-062B881AA1D1}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "helloc", "Win7Samples\netds\rpc\hello\helloc\helloc.csproj", "{1521D741-3C9A-47D9-8CC2-062B881AA1D1}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "hellos", "Win7\netds\rpc\hello\hellos\hellos.csproj", "{C746B9BF-0DE6-4D3A-B537-EC132486C76A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "hellos", "Win7Samples\netds\rpc\hello\hellos\hellos.csproj", "{C746B9BF-0DE6-4D3A-B537-EC132486C76A}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ChooseFont", "Win7\winui\ChooseFont\ChooseFont.csproj", "{8075BE2B-9D61-42D9-B099-F5854AEA4C86}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ChooseFont", "Win7Samples\winui\ChooseFont\ChooseFont.csproj", "{8075BE2B-9D61-42D9-B099-F5854AEA4C86}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "sendto", "Win7\winui\sendto\sendto.csproj", "{3046E8E0-2116-4FA2-B4EC-9BAAA181069C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "sendto", "Win7Samples\winui\sendto\sendto.csproj", "{3046E8E0-2116-4FA2-B4EC-9BAAA181069C}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "winbase", "winbase", "{4A26BBA8-2CDF-47C2-9028-8197C45F5F2E}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ISCSICli", "Win7\winbase\ISCSI\ISCSICli.csproj", "{B352F52C-5091-4857-9BA8-3CD1221FC447}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ISCSICli", "Win7Samples\winbase\ISCSI\ISCSICli.csproj", "{B352F52C-5091-4857-9BA8-3CD1221FC447}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RmFilterApp", "Win7\winbase\RmFilterApp\RmFilterApp.csproj", "{C403C0EA-AB5D-4769-8D6D-C507BCBD2684}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RmFilterApp", "Win7Samples\winbase\RmFilterApp\RmFilterApp.csproj", "{C403C0EA-AB5D-4769-8D6D-C507BCBD2684}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "io", "io", "{B6D6F885-55E8-4A2C-A873-54953586E387}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DLEdit", "Win7\winbase\io\DLEdit\DLEdit.csproj", "{6ECDFE7A-CF7C-478B-922F-0CA23BE51A58}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DLEdit", "Win7Samples\winbase\io\DLEdit\DLEdit.csproj", "{6ECDFE7A-CF7C-478B-922F-0CA23BE51A58}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EnumMountPoints", "Win7\winbase\io\EnumMountPoints\EnumMountPoints.csproj", "{58C7C38B-63B8-485B-9051-7A804E7DC270}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EnumMountPoints", "Win7Samples\winbase\io\EnumMountPoints\EnumMountPoints.csproj", "{58C7C38B-63B8-485B-9051-7A804E7DC270}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ExtendedFileAPIs", "Win7\winbase\io\ExtendedFileAPIs\ExtendedFileAPIs.csproj", "{5323002C-F5BF-40A2-9732-23F9E25EB8AA}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ExtendedFileAPIs", "Win7Samples\winbase\io\ExtendedFileAPIs\ExtendedFileAPIs.csproj", "{5323002C-F5BF-40A2-9732-23F9E25EB8AA}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AsyncCreate", "Win7\winbase\io\AsyncCreate\AsyncCreate.csproj", "{77A8D383-EFCA-44E2-BFF0-F179B245E4A9}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AsyncCreate", "Win7Samples\winbase\io\AsyncCreate\AsyncCreate.csproj", "{77A8D383-EFCA-44E2-BFF0-F179B245E4A9}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FCopy", "Win7\winbase\io\FCopy\FCopy.csproj", "{E0B5CE9F-FB29-4873-A434-8D22F22EE84E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FCopy", "Win7Samples\winbase\io\FCopy\FCopy.csproj", "{E0B5CE9F-FB29-4873-A434-8D22F22EE84E}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Mount", "Win7\winbase\io\Mount\Mount.csproj", "{824E112B-6FD9-4E73-BC0F-7E9FFA089CB2}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Mount", "Win7Samples\winbase\io\Mount\Mount.csproj", "{824E112B-6FD9-4E73-BC0F-7E9FFA089CB2}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UnBufCp2", "Win7\winbase\io\UnBufCp2\UnBufCp2.csproj", "{B997EAFC-13A1-48EB-8581-B9E3074F7A26}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UnBufCp2", "Win7Samples\winbase\io\UnBufCp2\UnBufCp2.csproj", "{B997EAFC-13A1-48EB-8581-B9E3074F7A26}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CrawlScopeCommandLine", "Win7\winui\WindowsSearch\CrawlScopeCommandLine\CrawlScopeCommandLine.csproj", "{47736DBE-538F-4A65-8AD3-3DD803343C81}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CrawlScopeCommandLine", "Win7Samples\winui\WindowsSearch\CrawlScopeCommandLine\CrawlScopeCommandLine.csproj", "{47736DBE-538F-4A65-8AD3-3DD803343C81}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
