@@ -173,7 +173,9 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "dataaccess", "dataaccess", 
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "OPC", "OPC", "{3F73FB3A-9E0D-4777-8306-AEA1BD9FBF06}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MusicBundle", "Win7Samples\dataaccess\OPC\MusicBundle\MusicBundle.csproj", "{956E7526-FD0A-4E38-AF31-B99D4B1FE17F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MusicBundle", "Win7Samples\dataaccess\OPC\MusicBundle\MusicBundle.csproj", "{956E7526-FD0A-4E38-AF31-B99D4B1FE17F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WindowsConnectNow", "Win7Samples\netds\WindowsConnectNow\WindowsConnectNow.csproj", "{8B71A10A-B37F-447C-86DE-6460B5159BD0}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -1003,6 +1005,18 @@ Global
 		{956E7526-FD0A-4E38-AF31-B99D4B1FE17F}.Release|x64.Build.0 = Release|Any CPU
 		{956E7526-FD0A-4E38-AF31-B99D4B1FE17F}.Release|x86.ActiveCfg = Release|Any CPU
 		{956E7526-FD0A-4E38-AF31-B99D4B1FE17F}.Release|x86.Build.0 = Release|Any CPU
+		{8B71A10A-B37F-447C-86DE-6460B5159BD0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8B71A10A-B37F-447C-86DE-6460B5159BD0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8B71A10A-B37F-447C-86DE-6460B5159BD0}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{8B71A10A-B37F-447C-86DE-6460B5159BD0}.Debug|x64.Build.0 = Debug|Any CPU
+		{8B71A10A-B37F-447C-86DE-6460B5159BD0}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{8B71A10A-B37F-447C-86DE-6460B5159BD0}.Debug|x86.Build.0 = Debug|Any CPU
+		{8B71A10A-B37F-447C-86DE-6460B5159BD0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8B71A10A-B37F-447C-86DE-6460B5159BD0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8B71A10A-B37F-447C-86DE-6460B5159BD0}.Release|x64.ActiveCfg = Release|Any CPU
+		{8B71A10A-B37F-447C-86DE-6460B5159BD0}.Release|x64.Build.0 = Release|Any CPU
+		{8B71A10A-B37F-447C-86DE-6460B5159BD0}.Release|x86.ActiveCfg = Release|Any CPU
+		{8B71A10A-B37F-447C-86DE-6460B5159BD0}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -1077,6 +1091,7 @@ Global
 		{65BAA9ED-E48A-4868-9C6C-90DF2E00AA5D} = {F64D0F04-967C-4AC2-92C0-C93C4C04AFAA}
 		{3F73FB3A-9E0D-4777-8306-AEA1BD9FBF06} = {65BAA9ED-E48A-4868-9C6C-90DF2E00AA5D}
 		{956E7526-FD0A-4E38-AF31-B99D4B1FE17F} = {3F73FB3A-9E0D-4777-8306-AEA1BD9FBF06}
+		{8B71A10A-B37F-447C-86DE-6460B5159BD0} = {F64D0F04-967C-4AC2-92C0-C93C4C04AFAA}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {82D57A23-9C32-4014-9AFB-25B38D08E1D1}
