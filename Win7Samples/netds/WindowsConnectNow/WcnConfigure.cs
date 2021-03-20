@@ -11,7 +11,7 @@ namespace WindowsConnectNow
 {
 	static class Program
 	{
-		private const int DOT11_SSID_MAX_LENGTH = 32;
+		internal const int DOT11_SSID_MAX_LENGTH = 32;
 		const uint UUID_LENGTH = 36; // number of chars in a Guid string
 		const  uint Pin_Length_8 = 8; //valid max wcn pin length
 		const  uint Pin_Length_4 = 4; //valid min wcn pin length
@@ -209,34 +209,15 @@ namespace WindowsConnectNow
 		static HRESULT RunScenario(CONFIGURATION_PARAMETERS configParams)
 		{
 			//common declarations
-			uint status = Win32Error.ERROR_SUCCESS;
 			HRESULT hr = HRESULT.S_OK;
-			uint pinLen = Pin_Length_8;
+			int pinLen = (int)Pin_Length_8;
 
 			//pin needs to be a null terminated ascii byte[] for the IWCNDevice::SetPassword function 
-			byte pin[Pin_Length_8 + 1] = { 0 };
-
-
-			int result;
-
-			//WCN declarations
-			CComPtr<IWCNDevice> pDevice;
-			CComObject<WcnConnectNotification>* pWcnConNotif = default;
-			CComObject<CWcnFdDiscoveryNotify>* wcnFdDiscoveryNotify = default;
+			var pin = new StringBuilder(pinLen + 1);
 
 			//Wlan variable declarations
-			ushort profileBuffer[WCN_API_MAX_BUFFER_SIZE] = { 0 };
-			HANDLE wlanHandle;
-			uint negVersion;
-			Guid interfaceGuid = { 0 };
-			WLAN_INTERFACE_INFO_LIST* pInterfaceList;
-			uint wlanResult;
-			WLAN_CONNECTION_PARAMETERS connParams;
-			ZeroMemory(&connParams, sizeof(connParams));
-			WCN_DEVICE_INFO_PARAMETERS WCNDeviceInformation;
-			StringBuilder pWlanProfileXml = default;
-			uint dwFlags = WLAN_PROFILE_GET_PLAINTEXT_KEY;
-
+			StringBuilder profileBuffer = null;
+			WCN_DEVICE_INFO_PARAMETERS WCNDeviceInformation = new WCN_DEVICE_INFO_PARAMETERS();
 
 			//The following wlan profile xml is used to configure an unconfigured WCN enabled Router or device.
 			//See http://msdn.microsoft.com/en-us/library/bb525370(VS.85).aspx on how to generate a wlan profile.
@@ -245,11 +226,11 @@ namespace WindowsConnectNow
 				"<?xml version=\"1.0\" ?>" +
 				"" +
 				"<WLANProfile xmlns=\"http://www.microsoft.com/networking/WLAN/profile/v1\">" +
-				" <name>%s</name>" +
+				" <name>{0}</name>" +
 				"" +
 				" <SSIDConfig>" +
 				" <SSID>" +
-				" <name>%s</name>" +
+				" <name>{1}</name>" +
 				" </SSID>" +
 				" </SSIDConfig>" +
 				" " +
@@ -267,7 +248,7 @@ namespace WindowsConnectNow
 				" <sharedKey>" +
 				" <keyType>passPhrase</keyType>" +
 				" <protected>false</protected>" +
-				" <keyMaterial>%s</keyMaterial>" +
+				" <keyMaterial>{2}</keyMaterial>" +
 				" </sharedKey>" +
 				"" +
 				" </security>" +
@@ -275,36 +256,27 @@ namespace WindowsConnectNow
 				"</WLANProfile>";
 
 
-			std::wstring profileXML;
-
 			//open a wlan handle - this will be used later for saving the profile to the system
-			status = WlanOpenHandle(WLAN_API_VERSION_2_0,
-									default,
-									&negVersion,
-									&wlanHandle);
-
+			var status = WlanOpenHandle(WLAN_API_VERSION_2_0, default, out var negVersion, out var wlanHandle);
 			if (status != Win32Error.ERROR_SUCCESS)
 			{
-				Console.Write("\nERROR: WlanOpenHandle failed with the following error code [%d]", status);
+				Console.Write("\nERROR: WlanOpenHandle failed with the following error code [{0}]", status);
 				hr = HRESULT.S_FALSE;
 				goto cleanup;
 			}
 
 			// Get the first wlan device
 			// ideally you would want to be able to choose the wireless device you want to use
-			status = WlanEnumInterfaces(wlanHandle,
-										default,
-										&pInterfaceList);
-
+			status = WlanEnumInterfaces(wlanHandle, default, out var pInterfaceList);
 			if (status != Win32Error.ERROR_SUCCESS)
 			{
-				Console.Write("\nERROR: WlanEnumInterfaces failed with the following error code [0x%d]", status);
+				Console.Write("\nERROR: WlanEnumInterfaces failed with the following error code [0x{0:X}]", (uint)status);
 				hr = HRESULT.S_FALSE;
 				goto cleanup;
 			}
 
 			//Make sure there is at least one wlan interface on the system
-			if (pInterfaceList == 0 || pInterfaceList.dwNumberOfItems == 0)
+			if (pInterfaceList.dwNumberOfItems == 0)
 			{
 				Console.Write("\nERROR: No wireless network adapters on the system");
 				hr = HRESULT.S_FALSE;
@@ -312,30 +284,18 @@ namespace WindowsConnectNow
 			}
 
 			//get the wlan interface Guid
-			interfaceGuid = pInterfaceList.InterfaceInfo[0].InterfaceGuid;
+			var interfaceGuid = pInterfaceList.InterfaceInfo[0].InterfaceGuid;
 
 			//Create an instance of the IWCNConnectNotify Interface
-			hr = CComObject < WcnConnectNotification >::CreateInstance(&pWcnConNotif);
-			if (hr != HRESULT.S_OK)
-			{
-				Console.Write("\nERROR: Creating an instance of WcnConnectNotification failed with the following error hr=[0x%x]", hr);
-				goto cleanup;
-			}
-			pWcnConNotif.AddRef();
+			var pWcnConNotif = new WcnConnectNotification();
 
-			hr = CComObject < CWcnFdDiscoveryNotify >::CreateInstance(&wcnFdDiscoveryNotify);
-			if (hr != HRESULT.S_OK)
-			{
-				Console.Write("\nERROR: Creating an instance of CWcnFdDiscoveryNotify failed with the following error hr=[0x%x]", hr);
-				goto cleanup;
-			}
-			wcnFdDiscoveryNotify.AddRef();
+			var wcnFdDiscoveryNotify = new CWcnFdDiscoveryNotify();
 
 			//initialize WcnConnectNotification
 			hr = pWcnConNotif.Init();
 			if (hr != HRESULT.S_OK)
 			{
-				Console.Write("\nERROR: Creating a connection notification event failed with the following error hr=[0x%x]", hr);
+				Console.Write("\nERROR: Creating a connection notification event failed with the following error hr=[{0}]", hr);
 				goto cleanup;
 			}
 
@@ -343,15 +303,15 @@ namespace WindowsConnectNow
 			hr = wcnFdDiscoveryNotify.Init(configParams.bTurnOnSoftAP);
 			if (hr != HRESULT.S_OK)
 			{
-				Console.Write("\nERROR: Initializing Function Discovery notify failed with the following error hr=[0x%x].", hr);
+				Console.Write("\nERROR: Initializing Function Discovery notify failed with the following error hr=[{0}].", hr);
 				goto cleanup;
 			}
 
 			//Search for WCN device with function discovery
-			hr = wcnFdDiscoveryNotify.WcnFDSearchStart(&configParams.pDeviceUUID, configParams.pSearchSSID);
+			hr = wcnFdDiscoveryNotify.WcnFDSearchStart(configParams.pDeviceUUID, configParams.pSearchSSID);
 			if (hr != HRESULT.S_OK)
 			{
-				Console.Write("\nERROR: Function Discovery search failed to start with the following error hr=[0x%x].", hr);
+				Console.Write("\nERROR: Function Discovery search failed to start with the following error hr=[{0}].", hr);
 				goto cleanup;
 			}
 
@@ -359,14 +319,14 @@ namespace WindowsConnectNow
 			wcnFdDiscoveryNotify.WaitForAnyDiscoveryEvent(Discovery_Event_Wait_Time_MS);
 
 			//Attempt to get the IWCNDevice instance
-			if (wcnFdDiscoveryNotify.GetWCNDeviceInstance(&pDevice))
+			if (wcnFdDiscoveryNotify.GetWCNDeviceInstance(out var pDevice))
 			{
 				//get information about the device from the IWCNDevice instance
 				Console.Write("\nINFO: The following Device was found by Function Discovery.");
-				hr = GetWCNDeviceInformation(pDevice, &WCNDeviceInformation);
+				hr = GetWCNDeviceInformation(pDevice, WCNDeviceInformation);
 				if (hr != HRESULT.S_OK)
 				{
-					Console.Write("\nERROR: Failed to get the Device information from the IWCNDevice Instance, hr=[0x%x]", hr);
+					Console.Write("\nERROR: Failed to get the Device information from the IWCNDevice Instance, hr=[{0}]", hr);
 					goto cleanup;
 				}
 			}
@@ -382,30 +342,24 @@ namespace WindowsConnectNow
 			//The following segment generates a WLAN profile from the template above then saves it to the
 			//WLAN store. It the retrieves the profile from the WLAN store for use in configuring a router
 			//or device.
-			if (configParams.enumConfigScenario != PCConfigPin
-				&& configParams.enumConfigScenario != PCConfigPushButton)
+			if (configParams.enumConfigScenario != ConfigurationScenario.PCConfigPin && configParams.enumConfigScenario != ConfigurationScenario.PCConfigPushButton)
 			{
 				//add the profiles ssid and passphrase to the wlan profile template
-				swprintf_s(profileBuffer,
-						WCNConnectionProfileTemplate,
-						configParams.pProfileSSID,
-						configParams.pProfileSSID,
-						configParams.pProfilePassphrase);
-
+				profileBuffer = new StringBuilder(string.Format(WCNConnectionProfileTemplate, configParams.pProfileSSID, configParams.pProfileSSID, configParams.pProfilePassphrase));
 
 				//Add the created profile to the wlan store
 				status = WlanSetProfile(wlanHandle,
-										&interfaceGuid,
+										interfaceGuid,
 										0, //all-user profile
-										profileBuffer,
+										profileBuffer.ToString(),
 										default, // Default Security - All user profile
 										true, // Overwrite profile
 										default, // reserved
-										&wlanResult);
+										out var wlanResult);
 
 				if (status != Win32Error.ERROR_SUCCESS)
 				{
-					Console.Write("\nERROR: Failed to save the profile return code was [0x%x]", wlanResult);
+					Console.Write("\nERROR: Failed to save the profile return code was [{0}]", wlanResult);
 					hr = HRESULT.S_FALSE;
 					goto cleanup;
 				}
@@ -421,29 +375,30 @@ namespace WindowsConnectNow
 				//The wlan profile must be retrieved in plain text inorder for the IWCNDEVICE::SetNetWorkProfile
 				// method to succeede. In order to do this you need to be elevated to get the wlan profile
 				// in plain text.
+				WLAN_PROFILE_FLAGS dwFlags = WLAN_PROFILE_FLAGS.WLAN_PROFILE_GET_PLAINTEXT_KEY;
 				status = WlanGetProfile(wlanHandle,
-										&interfaceGuid,
+										interfaceGuid,
 										configParams.pProfileSSID,
 										default, //reserved
-										&pWlanProfileXml,
-										&dwFlags, // Flags - get profile in plain text 
-										default); // GrantedAccess - none
+										out var pWlanProfileXml,
+										ref dwFlags, // Flags - get profile in plain text 
+										out _); // GrantedAccess - none
 
 				if (status != Win32Error.ERROR_SUCCESS)
 				{
-					Console.Write("\nERROR: WlanGetprofile Failed to get profile [%s] with error code [0x%x]", configParams.pProfileSSID, status);
+					Console.Write("\nERROR: WlanGetprofile Failed to get profile [{0}] with error code [{1}]", configParams.pProfileSSID, status);
 					hr = HRESULT.S_FALSE;
 					goto cleanup;
 				}
 				else
 				{
-					Console.Write("\nINFO: Successfully retrieved profile [%s] from the wlan store.", configParams.pProfileSSID);
+					Console.Write("\nINFO: Successfully retrieved profile [{0}] from the wlan store.", configParams.pProfileSSID);
 				}
 
 				//check to make sure the profile from the wlan store is not a Group Policy profile
-				if (WLAN_PROFILE_GROUP_POLICY & dwFlags)
+				if (dwFlags.IsFlagSet(WLAN_PROFILE_FLAGS.WLAN_PROFILE_GROUP_POLICY))
 				{
-					Console.Write("\nERROR: Profile [%s] is a group policy WLAN profile which is not supported by WCN", configParams.pProfileSSID);
+					Console.Write("\nERROR: Profile [{0}] is a group policy WLAN profile which is not supported by WCN", configParams.pProfileSSID);
 					hr = HRESULT.S_FALSE;
 					goto cleanup;
 				}
@@ -454,40 +409,31 @@ namespace WindowsConnectNow
 				hr = pDevice.SetNetworkProfile(pWlanProfileXml);
 				if (hr != HRESULT.S_OK)
 				{
-					Console.Write("\nERROR: IWCNDevice::SetNetworkProfile failed with error code [0x%x]", hr);
+					Console.Write("\nERROR: IWCNDevice::SetNetworkProfile failed with error code [{0}]", hr);
 					goto cleanup;
 				}
 				else
 				{
-					Console.Write("\nINFO: IWCNDevice::SetNetworkProfile() succeeded with result [0x%x]", hr);
+					Console.Write("\nINFO: IWCNDevice::SetNetworkProfile() succeeded with result [{0}]", hr);
 				}
 			}
 
 			switch (configParams.enumConfigScenario)
 			{
-				case DeviceConfigPushButton:
-
-					pinLen;
+				case ConfigurationScenario.DeviceConfigPushButton:
+					pinLen = 0;
 					break;
 
-				case DeviceConfigPin:
-				case RouterConfig:
-					if (configParams.pDevicePin == 0)
+				case ConfigurationScenario.DeviceConfigPin:
+				case ConfigurationScenario.RouterConfig:
+					if (configParams.pDevicePin is null)
 					{
 						Console.Write("\nERROR: Pin must not be 0 when doing a pin configuration");
 						hr = HRESULT.S_FALSE;
 						goto cleanup;
 					}
 
-
-					result = WideCharToMultiByte(CP_UTF8,
-								 0,
-								 configParams.pDevicePin,
-								 -1,
-								 ([MarshalAs(UnmanagedType.LPStr)] StringBuilder)pin,
-								 sizeof(pin),
-								 default,
-								 default);
+					var result = WideCharToMultiByte(CP_UTF8, 0, configParams.pDevicePin, -1, pin, pin.Capacity);
 					if (result == 0)
 					{
 						Console.Write("\nERROR: Failed to convert the pin to multibyte.");
@@ -495,30 +441,29 @@ namespace WindowsConnectNow
 					}
 
 
-					pinLen = sizeof(pin) - 1;
+					pinLen = pin.Length;
 					break;
 
-				case PCConfigPushButton:
+				case ConfigurationScenario.PCConfigPushButton:
 					//check to make sure the device supports push button before doing the push button configuration
-					if (WCNDeviceInformation.uConfigMethods & WCN_VALUE_CM_PUSHBUTTON)
+					if ((WCNDeviceInformation.uConfigMethods & (uint)WCN_VALUE_TYPE_CONFIG_METHODS.WCN_VALUE_CM_PUSHBUTTON) != 0)
 					{
 						//set the pin length to 0 this is necessary for a Push button configuration scenario				
-						pinLen;
+						pinLen = 0;
 					}
 					else
 					{
-						Console.Write("ERROR: The [%s] device does not support the Push Button Method", WCNDeviceInformation.wszDeviceName);
+						Console.Write("ERROR: The [{0}] device does not support the Push Button Method", WCNDeviceInformation.wszDeviceName);
 						hr = HRESULT.S_FALSE;
 						goto cleanup;
 					}
 					break;
 
-				case PCConfigPin:
+				case ConfigurationScenario.PCConfigPin:
 					//check to make sure the device supports pin before doing the pin configuration
-					if ((WCNDeviceInformation.uConfigMethods & WCN_VALUE_CM_LABEL) ||
-						(WCNDeviceInformation.uConfigMethods & WCN_VALUE_CM_DISPLAY))
+					if ((WCNDeviceInformation.uConfigMethods & (uint)(WCN_VALUE_TYPE_CONFIG_METHODS.WCN_VALUE_CM_LABEL | WCN_VALUE_TYPE_CONFIG_METHODS.WCN_VALUE_CM_DISPLAY)) != 0)
 					{
-						if (configParams.pDevicePin == 0)
+						if (configParams.pDevicePin is null)
 						{
 							Console.Write("\nERROR: Pin must not be 0 when doing a pin configuration");
 							hr = HRESULT.S_FALSE;
@@ -529,22 +474,20 @@ namespace WindowsConnectNow
 									0, //Unmapped character flags
 									configParams.pDevicePin,
 									-1, //null terminated string
-									([MarshalAs(UnmanagedType.LPStr)] StringBuilder)pin,
-									sizeof(pin),
-									default, //lpDefaultChar - use system default value
-									default); //lpUsedDefaultChar ignored
+									pin,
+									pin.Capacity);
 						if (result == 0)
 						{
 							Console.Write("\nERROR: Failed to convert the pin to multibyte.");
 							goto cleanup;
 						}
 
-						pinLen = sizeof(pin) - 1;
+						pinLen = pin.Length;
 
 					}
 					else
 					{
-						Console.Write("\nERROR: The [%s] device does not supprot the pin method", WCNDeviceInformation.wszDeviceName);
+						Console.Write("\nERROR: The [{0}] device does not supprot the pin method", WCNDeviceInformation.wszDeviceName);
 						hr = HRESULT.S_FALSE;
 						goto cleanup;
 					}
@@ -556,18 +499,16 @@ namespace WindowsConnectNow
 
 			//The IWCNDevice::SetPassword method configures the authentication method value, and if required, 
 			//a password used for the pending session. This method may only be called prior to IWCNDevice::Connect.
-			hr = pDevice.SetPassword(configParams.enumConfigType,
-										pinLen,
-										(byte*)pin);
+			hr = pDevice.SetPassword(configParams.enumConfigType, (uint)pinLen, pin.ToString());
 
 			if (hr != HRESULT.S_OK)
 			{
-				Console.Write("\nERROR: IWCNDevice::SetPassword failed with error code [0x%x]", hr);
+				Console.Write("\nERROR: IWCNDevice::SetPassword failed with error code [{0}]", hr);
 				goto cleanup;
 			}
 			else
 			{
-				Console.Write("\nINFO: IWCNDevice::SetPassword succeeded with result [0x%x]", hr);
+				Console.Write("\nINFO: IWCNDevice::SetPassword succeeded with result [{0}]", hr);
 			}
 
 
@@ -576,28 +517,27 @@ namespace WindowsConnectNow
 			if (hr != HRESULT.S_OK)
 			{
 				//Device Push button configuration is only supported on SoftAP capable wireless Nics 
-				if (hr == HRESULT _FROM_WIN32(ERROR_CONNECTION_UNAVAIL)
-					&& configParams.enumConfigScenario == DeviceConfigPushButton)
+				if (hr == Win32Error.ERROR_CONNECTION_UNAVAIL && configParams.enumConfigScenario == ConfigurationScenario.DeviceConfigPushButton)
 				{
 					Console.Write("\nERROR: PushButton Configuration of non AP devices is only supported on");
 					Console.Write("\n SoftAP capable wireless network cards.");
 				}
 				else
 				{
-					Console.Write("\nERROR: IWCNDevice::Connect failed with error code [0x%x]", hr);
+					Console.Write("\nERROR: IWCNDevice::Connect failed with error code [{0}]", hr);
 				}
 				goto cleanup;
 			}
 			else
 			{
-				Console.Write("\nINFO: IWCNDevice::Connect succeeded with result [0x%x]", hr);
+				Console.Write("\nINFO: IWCNDevice::Connect succeeded with result [{0}]", hr);
 			}
 
 			//wait for the configuration result
 			hr = pWcnConNotif.WaitForConnectionResult();
 			if (hr != HRESULT.S_OK)
 			{
-				Console.Write("ERROR: WaitforconnectionResult returned the following error [ox%x]", hr);
+				Console.Write("ERROR: WaitforconnectionResult returned the following error [{0}]", hr);
 				goto cleanup;
 			}
 
@@ -618,13 +558,13 @@ namespace WindowsConnectNow
 			//or a PCConfigPin scenario
 
 			// this is the profile that was received from the router
-			if (configParams.enumConfigScenario == PCConfigPushButton || configParams.enumConfigScenario == PCConfigPin)
+			if (configParams.enumConfigScenario == ConfigurationScenario.PCConfigPushButton || configParams.enumConfigScenario == ConfigurationScenario.PCConfigPin)
 			{
 				//The IWCNDevice::GetNetworkProfile method gets a network profile from the device.
-				hr = pDevice.GetNetworkProfile(ARRAYSIZE(profileBuffer), profileBuffer);
+				hr = pDevice.GetNetworkProfile((uint)profileBuffer.Capacity, profileBuffer);
 				if (hr != HRESULT.S_OK)
 				{
-					Console.Write("\nERROR: IWCNDevice::GetNetworkProfile failed with [0x%x]", hr);
+					Console.Write("\nERROR: IWCNDevice::GetNetworkProfile failed with [{0}]", hr);
 					goto cleanup;
 				}
 
@@ -632,17 +572,17 @@ namespace WindowsConnectNow
 				//The SoftapConfig and DeviceConfig scenarios will generally use a profile that is already on the system
 				//save the profile to the wlan interface			
 				status = WlanSetProfile(wlanHandle,
-										&interfaceGuid,
+										interfaceGuid,
 										0, //Flags - none
-										profileBuffer,
+										profileBuffer.ToString(),
 										default, // Default Security - All user profile
 										true, // Overwrite profile
 										default, // reserved
-										&wlanResult);
+										out var wlanResult);
 
 				if (status != Win32Error.ERROR_SUCCESS)
 				{
-					Console.Write("\nERROR: Failed to save the profile to the WLAN store, return code was [0x%x]", wlanResult);
+					Console.Write("\nERROR: Failed to save the profile to the WLAN store, return code was [{0}]", wlanResult);
 					hr = HRESULT.S_FALSE;
 				}
 				else
@@ -652,35 +592,13 @@ namespace WindowsConnectNow
 			}
 
 			//Display the SSID and passphrase used to configure the Router or device
-			if (configParams.enumConfigScenario != PCConfigPin && configParams.enumConfigScenario != PCConfigPushButton)
+			if (configParams.enumConfigScenario != ConfigurationScenario.PCConfigPin && configParams.enumConfigScenario != ConfigurationScenario.PCConfigPushButton)
 			{
-				Console.Write("\nINFO: Profile SSID Used: [%s]", configParams.pProfileSSID);
-				Console.Write("\nINFO: Profile Passphrase Used: [%s]", configParams.pProfilePassphrase);
+				Console.Write("\nINFO: Profile SSID Used: [{0}]", configParams.pProfileSSID);
+				Console.Write("\nINFO: Profile Passphrase Used: [{0}]", configParams.pProfilePassphrase);
 			}
 
 			cleanup:
-
-			if (pWcnConNotif)
-			{
-				pWcnConNotif.Release();
-				pWcnConNotif;
-			}
-
-			if (wcnFdDiscoveryNotify)
-			{
-				wcnFdDiscoveryNotify.Release();
-				wcnFdDiscoveryNotify;
-			}
-
-			if (wlanHandle != default)
-			{
-				WlanCloseHandle(wlanHandle, default);
-			}
-
-			if (pInterfaceList != default)
-			{
-				WlanFreeMemory(pInterfaceList);
-			}
 
 			return hr;
 		}
