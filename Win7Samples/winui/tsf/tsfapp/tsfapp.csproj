@@ -1,0 +1,26 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net48</TargetFramework>
+	<LangVersion>latest</LangVersion>
+    <UseWindowsForms>true</UseWindowsForms>
+    <DocumentationFile>C:\Users\dahall\Documents\GitHubRepos\WinClassicSamplesCS\Win7Samples\winui\tsf\tsfapp\tsfapp.xml</DocumentationFile>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="mainicon.ico" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include="mainicon.ico" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Vanara.PInvoke.Ole" Version="3.3.9" />
+    <PackageReference Include="Vanara.PInvoke.User32" Version="3.3.9" />
+    <PackageReference Include="Vanara.PInvoke.TextServicesFramework" Version="3.3.9" />
+  </ItemGroup>
+
+</Project>

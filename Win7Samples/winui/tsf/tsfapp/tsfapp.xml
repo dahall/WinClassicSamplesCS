@@ -1,0 +1,43 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>tsfapp</name>
+    </assembly>
+    <members>
+        <member name="M:tsfapp.CTSFEditWnd.Dispose(System.Boolean)">
+            <summary>Clean up any resources being used.</summary>
+            <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
+        </member>
+        <member name="T:tsfapp.CTSFMainWnd">
+            <summary>The form.</summary>
+        </member>
+        <member name="M:tsfapp.CTSFMainWnd.#ctor">
+            <summary>Initializes a new instance of the <see cref="T:tsfapp.CTSFMainWnd"/> class.</summary>
+        </member>
+        <member name="M:tsfapp.CTSFMainWnd.PreProcessMessage(System.Windows.Forms.Message@)">
+            <summary>Pres the process message.</summary>
+            <param name="m">The m.</param>
+            <returns></returns>
+        </member>
+        <member name="F:tsfapp.CTSFMainWnd.components">
+            <summary>
+             Required designer variable.
+            </summary>
+        </member>
+        <member name="M:tsfapp.CTSFMainWnd.Dispose(System.Boolean)">
+            <summary>
+             Clean up any resources being used.
+            </summary>
+            <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
+        </member>
+        <member name="M:tsfapp.CTSFMainWnd.InitializeComponent">
+            <summary>
+             Required method for Designer support - do not modify
+             the contents of this method with the code editor.
+            </summary>
+        </member>
+        <member name="M:tsfapp.Program.Main">
+            <summary>The main entry point for the application.</summary>
+        </member>
+    </members>
+</doc>

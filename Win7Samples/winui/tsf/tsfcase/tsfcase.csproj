@@ -1,0 +1,16 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net48</TargetFramework>
+	<LangVersion>latest</LangVersion>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <RegisterForComInterop>true</RegisterForComInterop>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Vanara.PInvoke.Ole" Version="3.3.9" />
+    <PackageReference Include="Vanara.PInvoke.User32" Version="3.3.9" />
+    <PackageReference Include="Vanara.PInvoke.TextServicesFramework" Version="3.3.9" />
+  </ItemGroup>
+
+</Project>
