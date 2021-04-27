@@ -5,7 +5,9 @@ using System.ComponentModel;
 using System.IO;
 using System.Linq;
 using System.Runtime.CompilerServices;
+using System.Runtime.InteropServices;
 using System.Runtime.InteropServices.ComTypes;
+using Vanara.Extensions;
 using Vanara.InteropServices;
 using Vanara.PInvoke;
 using static Vanara.PInvoke.IMAPI;
@@ -139,6 +141,7 @@ namespace Vanara.Storage
 	public class OpticalStorageBootOptions
 	{
 		internal readonly IBootOptions options;
+		internal readonly ComFileStream bootImage;
 
 		/// <summary>Initializes a new instance of the <see cref="OpticalStorageBootOptions"/> class.</summary>
 		/// <param name="bootImage">An <c>IStream</c> interface of the data stream that contains the boot image.</param>
@@ -171,8 +174,8 @@ namespace Vanara.Storage
 		public OpticalStorageBootOptions(string bootImageFile)
 		{
 			options = new();
-			SHCreateStreamOnFile(bootImageFile, STGM.STGM_READ | STGM.STGM_SHARE_DENY_WRITE, out IStream bootImage).ThrowIfFailed();
-			options.AssignBootImage(bootImage);
+			bootImage = new(bootImageFile, true, 0);
+			options.AssignBootImage(bootImage.NativeInterface);
 		}
 
 		/// <summary>Sets the media type that the boot image is intended to emulate.</summary>
@@ -226,11 +229,7 @@ namespace Vanara.Storage
 		/// <param name="uid">String that contains the unique identifier for the device.</param>
 		public OpticalStorageDevice(string uid) : this() => recorder.InitializeDiscRecorder(uid);
 
-		private OpticalStorageDevice()
-		{
-			recorder = new();
-			//mediaImage = new() { Recorder = recorder };
-		}
+		private OpticalStorageDevice() => recorder = new();//mediaImage = new() { Recorder = recorder };
 
 		/// <summary>Determines if the device can eject and subsequently reload media.</summary>
 		/// <value>
@@ -537,10 +536,7 @@ namespace Vanara.Storage
 		/// cref="OpticalStorageDevice.ExclusiveAccessOwner"/> property contains the name of the client that has the lock. If <see
 		/// langword="null"/>, the name is pulled from the app domain.
 		/// </param>
-		public OpticalStorageEraseMediaOperation(bool fullErase = false, string clientName = null) : base(new(), clientName)
-		{
-			op.FullErase = fullErase;
-		}
+		public OpticalStorageEraseMediaOperation(bool fullErase = false, string clientName = null) : base(new(), clientName) => op.FullErase = fullErase;
 
 		/// <summary>Occurs during <see cref="EraseMedia"/> to indicate the progress.</summary>
 		public event EventHandler<ProgressChangedEventArgs> EraseProgress;
@@ -1623,11 +1619,7 @@ namespace Vanara.Storage
 		/// </remarks>
 		public OpticalStorageRawImageTrack Add(IStream data)
 		{
-			// Mod the size so that it is 2352 byte aligned
-			data.Stat(out STATSTG stat, 1 /*STATFLAG_DEFAULT*/);
-			data.SetSize(stat.cbSize - stat.cbSize % 2352);
-
-			//Add the track to the stream
+			// Add the track to the stream
 			var idx = image.AddTrack(IMAPI_CD_SECTOR_TYPE.IMAPI_CD_SECTOR_AUDIO, data);
 			return new OpticalStorageRawImageTrack(image.get_TrackInfo(idx));
 		}
@@ -1655,8 +1647,8 @@ namespace Vanara.Storage
 		/// </remarks>
 		public OpticalStorageRawImageTrack Add(string filePath)
 		{
-			SHCreateStreamOnFile(filePath, STGM.STGM_READWRITE, out IStream data).ThrowIfFailed();
-			return Add(data);
+			using var f = new AudioFile(filePath);
+			return Add(f.NativeInterface);
 		}
 
 		/// <summary>Gets the enumerator.</summary>
@@ -1910,15 +1902,10 @@ namespace Vanara.Storage
 				foreach (var fileName in AudioTrackPaths)
 				{
 					// get a stream to write to the disc
-					SHCreateStreamOnFile(fileName, STGM.STGM_READWRITE, out IStream audioStream).ThrowIfFailed();
+					using var audioStream = new AudioFile(fileName);
 
-					// Mod the size so that it is 2352 byte aligned
-					audioStream.Stat(out STATSTG stat, 1 /*STATFLAG_DEFAULT*/);
-					var newSize = stat.cbSize - stat.cbSize % 2352;
-					audioStream.SetSize(newSize);
-
-					//write the stream
-					op.AddAudioTrack(audioStream);
+					// Write the stream
+					op.AddAudioTrack(audioStream.NativeInterface);
 				}
 			}
 			finally
@@ -2730,5 +2717,130 @@ namespace Vanara.Storage
 		/// <value>Write speed of the current media, measured in sectors per second.</value>
 		/// <remarks>The write speed is based on the media write speeds. The value of this property can change when a media change occurs.</remarks>
 		public int WriteSpeed { get; }
+	}
+
+	public class AudioFile : IDisposable
+	{
+		private static readonly int hdrSize = Marshal.SizeOf(typeof(WAV_HEADER));
+		private const long SECTOR_SIZE = 2352;
+		private IStream stream;
+
+		public AudioFile(string fileName)
+		{
+			if (!File.Exists(fileName))
+				throw new FileNotFoundException("File not found.", fileName);
+			if (!IsValidIMAPIFormat(fileName))
+				throw new InvalidOperationException("The file does not match the required 44.1KHz, Stereo, Uncompressed WAV format.");
+
+			using (var hFile = Kernel32.CreateFile(fileName, Kernel32.FileAccess.FILE_GENERIC_READ, FileShare.Read, null, FileMode.Open, 0))
+			{
+				if (hFile.IsInvalid || !Kernel32.GetFileSizeEx(hFile, out var fileLen))
+					throw new ArgumentException("File is unavailable or empty.", nameof(fileName));
+				var sz = (int)fileLen - hdrSize;
+				var hMem = Marshal.AllocHGlobal(sz);
+				if (!Kernel32.SetFilePointerEx(hFile, hdrSize, out _, SeekOrigin.Begin) || !Kernel32.ReadFile(hFile, hMem, (uint)sz, out _))
+					throw new ArgumentException("Unable to read file.", nameof(fileName));
+				Ole32.CreateStreamOnHGlobal(hMem, true, out stream).ThrowIfFailed();
+			}
+
+			// Mod the size so that it is byte aligned
+			stream.Stat(out STATSTG stat, 1 /*STATFLAG_DEFAULT*/);
+			var newSize = ((stat.cbSize / SECTOR_SIZE) + 1) * SECTOR_SIZE;
+			stream.SetSize(newSize);
+
+			// Skip header
+			stream.Seek(hdrSize, 0, default);
+		}
+
+		public static bool IsValidIMAPIFormat(string fileName)
+		{
+			try
+			{
+				WAV_HEADER wavHeader = default;
+				using (FileStream fileStream = File.OpenRead(fileName))
+				{
+					// Read the header data
+					using BinaryReader binaryReader = new(fileStream);
+					var byteData = binaryReader.ReadBytes(hdrSize);
+					using var p = new PinnedObject(byteData);
+					wavHeader = ((IntPtr)p).ToStructure<WAV_HEADER>(byteData.Length);
+				}
+
+				// Verify the WAV file is a 44.1KHz, Stereo, Uncompressed Wav file.
+				return (wavHeader.chunkID == 0x46464952) && // "RIFF"
+				  (wavHeader.format == 0x45564157) && // "WAVE"
+				  (wavHeader.formatChunkId == 0x20746d66) && // "fmt "
+				  (wavHeader.audioFormat == 1) && // 1 = PCM (uncompressed)
+				  (wavHeader.numChannels == 2) && // 2 = Stereo
+				  (wavHeader.sampleRate == 44100); // 44.1 KHz
+			}
+			catch
+			{
+			}
+			return false;
+		}
+
+		public IStream NativeInterface => stream;
+
+		public IStream Release() { IStream s = stream; stream = null; return s; }
+
+		public void Dispose()
+		{
+			if (stream is null) return;
+#pragma warning disable CA1416 // Validate platform compatibility
+			System.Runtime.InteropServices.Marshal.ReleaseComObject(stream);
+#pragma warning restore CA1416 // Validate platform compatibility
+			stream = null;
+		}
+
+		[StructLayout(LayoutKind.Sequential)]
+		private struct WAV_HEADER
+		{
+			public uint chunkID;
+			public uint chunkSize;
+			public uint format;
+			public uint formatChunkId;
+			public uint formatChunkSize;
+			public ushort audioFormat;
+			public ushort numChannels;
+			public uint sampleRate;
+			public uint byteRate;
+			public ushort blockAlign;
+			public ushort bitsPerSample;
+			public uint dataChunkId;
+			public uint dataChunkSize;
+		}
+	}
+
+	internal class ComFileStream : IDisposable
+	{
+		private IStream stream;
+
+		public ComFileStream(string fileName, bool readOnly = true, long align = 0)
+		{
+			STGM mode = readOnly ? STGM.STGM_READ | STGM.STGM_SHARE_DENY_NONE : STGM.STGM_READWRITE;
+			SHCreateStreamOnFile(fileName, mode, out stream).ThrowIfFailed();
+
+			// Mod the size so that it is byte aligned
+			if (align > 0)
+			{
+				stream.Stat(out STATSTG stat, 1 /*STATFLAG_DEFAULT*/);
+				var newSize = ((stat.cbSize / align) + 1) * align;
+				stream.SetSize(newSize);
+			}
+		}
+
+		public IStream NativeInterface => stream;
+
+		public IStream Release() { IStream s = stream; stream = null; return s; }
+
+		public void Dispose()
+		{
+			if (stream is null) return;
+#pragma warning disable CA1416 // Validate platform compatibility
+			System.Runtime.InteropServices.Marshal.ReleaseComObject(stream);
+#pragma warning restore CA1416 // Validate platform compatibility
+			stream = null;
+		}
 	}
 }

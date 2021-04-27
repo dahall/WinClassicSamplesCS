@@ -80,7 +80,7 @@ namespace imapi2sample
 		private static void AudioWriter(in PROGRAM_OPTIONS options)
 		{
 			OpticalStorageWriteAudioOperation op = new(clientName) { Device = OpticalStorageManager.Devices[options.WriterIndex] };
-			op.AudioTrackPaths.AddRange(Directory.EnumerateFiles(options.FileName));
+			op.AudioTrackPaths.AddRange(Directory.EnumerateFiles(options.FileName, "*.wav"));
 			var timer = System.Diagnostics.Stopwatch.StartNew();
 			// hookup event sink
 			op.WriteAudioTrackProgress += WriteTrackProgress;
@@ -669,7 +669,7 @@ namespace imapi2sample
 			// set the image type
 			OpticalStorageRawImage raw = new(IMAPI_FORMAT2_RAW_CD_DATA_SECTOR_TYPE.IMAPI_FORMAT2_RAW_CD_SUBCODE_IS_RAW);
 			// Add tracks
-			foreach (var fileName in Directory.EnumerateFiles(options.FileName))
+			foreach (var fileName in Directory.EnumerateFiles(options.FileName, "*.wav"))
 			{
 				// We have a file, let's add it
 				Console.Write("Attempting to add {0}\n", fileName);
