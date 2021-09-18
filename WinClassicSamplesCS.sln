@@ -153,7 +153,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RmFilterApp", "Win7Samples\
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "io", "io", "{B6D6F885-55E8-4A2C-A873-54953586E387}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DLEdit", "Win7Samples\winbase\io\DLEdit\DLEdit.csproj", "{6ECDFE7A-CF7C-478B-922F-0CA23BE51A58}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DLEdit", "Win7Samples\winbase\io\DLEdit\DLEdit.csproj", "{6ECDFE7A-CF7C-478B-922F-0CA23BE51A58}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EnumMountPoints", "Win7Samples\winbase\io\EnumMountPoints\EnumMountPoints.csproj", "{58C7C38B-63B8-485B-9051-7A804E7DC270}"
 EndProject
@@ -165,7 +165,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FCopy", "Win7Samples\winbas
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Mount", "Win7Samples\winbase\io\Mount\Mount.csproj", "{824E112B-6FD9-4E73-BC0F-7E9FFA089CB2}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UnBufCp2", "Win7Samples\winbase\io\UnBufCp2\UnBufCp2.csproj", "{B997EAFC-13A1-48EB-8581-B9E3074F7A26}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UnBufCp2", "Win7Samples\winbase\io\UnBufCp2\UnBufCp2.csproj", "{B997EAFC-13A1-48EB-8581-B9E3074F7A26}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CrawlScopeCommandLine", "Win7Samples\winui\WindowsSearch\CrawlScopeCommandLine\CrawlScopeCommandLine.csproj", "{47736DBE-538F-4A65-8AD3-3DD803343C81}"
 EndProject
@@ -202,6 +202,10 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "audio", "audio", "{9BDA35D4-07CE-4BE2-B3D6-F33CA456875A}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DuckingMediaPlayer", "Win7Samples\multimedia\audio\DuckingMediaPlayer\DuckingMediaPlayer.csproj", "{6C01471F-C35B-4390-9C76-F71CD8BD227F}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "shellextensibility", "shellextensibility", "{87B5CB14-2AFF-40CA-B5B1-D9214D5A8ADF}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "deskbands", "Win7Samples\winui\shell\shellextensibility\deskbands\deskbands.csproj", "{D06AB451-D752-48A1-9A35-8AECCAE1AF61}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -1127,6 +1131,18 @@ Global
 		{6C01471F-C35B-4390-9C76-F71CD8BD227F}.Release|x64.Build.0 = Release|Any CPU
 		{6C01471F-C35B-4390-9C76-F71CD8BD227F}.Release|x86.ActiveCfg = Release|Any CPU
 		{6C01471F-C35B-4390-9C76-F71CD8BD227F}.Release|x86.Build.0 = Release|Any CPU
+		{D06AB451-D752-48A1-9A35-8AECCAE1AF61}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D06AB451-D752-48A1-9A35-8AECCAE1AF61}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D06AB451-D752-48A1-9A35-8AECCAE1AF61}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{D06AB451-D752-48A1-9A35-8AECCAE1AF61}.Debug|x64.Build.0 = Debug|Any CPU
+		{D06AB451-D752-48A1-9A35-8AECCAE1AF61}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{D06AB451-D752-48A1-9A35-8AECCAE1AF61}.Debug|x86.Build.0 = Debug|Any CPU
+		{D06AB451-D752-48A1-9A35-8AECCAE1AF61}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D06AB451-D752-48A1-9A35-8AECCAE1AF61}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D06AB451-D752-48A1-9A35-8AECCAE1AF61}.Release|x64.ActiveCfg = Release|Any CPU
+		{D06AB451-D752-48A1-9A35-8AECCAE1AF61}.Release|x64.Build.0 = Release|Any CPU
+		{D06AB451-D752-48A1-9A35-8AECCAE1AF61}.Release|x86.ActiveCfg = Release|Any CPU
+		{D06AB451-D752-48A1-9A35-8AECCAE1AF61}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -1215,6 +1231,8 @@ Global
 		{F7051618-E80F-4B53-B97D-D58147224630} = {9BDA35D4-07CE-4BE2-B3D6-F33CA456875A}
 		{9BDA35D4-07CE-4BE2-B3D6-F33CA456875A} = {C98EAE44-7B2D-4AC8-858C-D74C806225CA}
 		{6C01471F-C35B-4390-9C76-F71CD8BD227F} = {9BDA35D4-07CE-4BE2-B3D6-F33CA456875A}
+		{87B5CB14-2AFF-40CA-B5B1-D9214D5A8ADF} = {49EF5E85-E0CD-47CA-9489-2434649CA6FD}
+		{D06AB451-D752-48A1-9A35-8AECCAE1AF61} = {87B5CB14-2AFF-40CA-B5B1-D9214D5A8ADF}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {82D57A23-9C32-4014-9AFB-25B38D08E1D1}
