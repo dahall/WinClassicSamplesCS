@@ -205,7 +205,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DuckingMediaPlayer", "Win7S
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "shellextensibility", "shellextensibility", "{87B5CB14-2AFF-40CA-B5B1-D9214D5A8ADF}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "deskbands", "Win7Samples\winui\shell\shellextensibility\deskbands\deskbands.csproj", "{D06AB451-D752-48A1-9A35-8AECCAE1AF61}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "deskbands", "Win7Samples\winui\shell\shellextensibility\deskbands\deskbands.csproj", "{D06AB451-D752-48A1-9A35-8AECCAE1AF61}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "explorerdataprovider", "Win7Samples\winui\shell\shellextensibility\explorerdataprovider\explorerdataprovider.csproj", "{C893DDA9-D185-4C60-AF13-3719474D638A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -1143,6 +1145,18 @@ Global
 		{D06AB451-D752-48A1-9A35-8AECCAE1AF61}.Release|x64.Build.0 = Release|Any CPU
 		{D06AB451-D752-48A1-9A35-8AECCAE1AF61}.Release|x86.ActiveCfg = Release|Any CPU
 		{D06AB451-D752-48A1-9A35-8AECCAE1AF61}.Release|x86.Build.0 = Release|Any CPU
+		{C893DDA9-D185-4C60-AF13-3719474D638A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C893DDA9-D185-4C60-AF13-3719474D638A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C893DDA9-D185-4C60-AF13-3719474D638A}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{C893DDA9-D185-4C60-AF13-3719474D638A}.Debug|x64.Build.0 = Debug|Any CPU
+		{C893DDA9-D185-4C60-AF13-3719474D638A}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{C893DDA9-D185-4C60-AF13-3719474D638A}.Debug|x86.Build.0 = Debug|Any CPU
+		{C893DDA9-D185-4C60-AF13-3719474D638A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C893DDA9-D185-4C60-AF13-3719474D638A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C893DDA9-D185-4C60-AF13-3719474D638A}.Release|x64.ActiveCfg = Release|Any CPU
+		{C893DDA9-D185-4C60-AF13-3719474D638A}.Release|x64.Build.0 = Release|Any CPU
+		{C893DDA9-D185-4C60-AF13-3719474D638A}.Release|x86.ActiveCfg = Release|Any CPU
+		{C893DDA9-D185-4C60-AF13-3719474D638A}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -1233,6 +1247,7 @@ Global
 		{6C01471F-C35B-4390-9C76-F71CD8BD227F} = {9BDA35D4-07CE-4BE2-B3D6-F33CA456875A}
 		{87B5CB14-2AFF-40CA-B5B1-D9214D5A8ADF} = {49EF5E85-E0CD-47CA-9489-2434649CA6FD}
 		{D06AB451-D752-48A1-9A35-8AECCAE1AF61} = {87B5CB14-2AFF-40CA-B5B1-D9214D5A8ADF}
+		{C893DDA9-D185-4C60-AF13-3719474D638A} = {87B5CB14-2AFF-40CA-B5B1-D9214D5A8ADF}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {82D57A23-9C32-4014-9AFB-25B38D08E1D1}
