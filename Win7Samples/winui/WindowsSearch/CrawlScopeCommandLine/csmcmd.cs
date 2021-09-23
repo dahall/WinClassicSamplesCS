@@ -153,7 +153,7 @@ namespace CrawlScopeCommandLine
 				// Crawl scope manager for that catalog
 				ISearchCrawlScopeManager pSearchCrawlScopeManager = pCatalogManager.GetCrawlScopeManager();
 				var pISearchRoot = new ISearchRoot();
-				pISearchRoot.put_RootURL(pszURL);
+				pISearchRoot.RootURL = pszURL;
 				pSearchCrawlScopeManager.AddRoot(pISearchRoot);
 				pSearchCrawlScopeManager.SaveAll();
 				pCatalogManager.ReindexSearchRoot(pszURL);
@@ -260,14 +260,14 @@ namespace CrawlScopeCommandLine
 		{
 			try
 			{
-				Console.WriteLine("\t" + pSearchRoot.get_RootURL());
-				Console.WriteLine($"\t\tAuthenticationType={pSearchRoot.get_AuthenticationType()}");
-				Console.WriteLine($"\t\tEnumerationDepth={pSearchRoot.get_EnumerationDepth()}");
-				Console.WriteLine($"\t\tFollowDirectories={pSearchRoot.get_FollowDirectories()}");
-				Console.WriteLine($"\t\tHostDepth={pSearchRoot.get_HostDepth()}");
-				Console.WriteLine($"\t\tIsHierarchical={pSearchRoot.get_IsHierarchical()}");
-				Console.WriteLine($"\t\tProvidesNotifications={pSearchRoot.get_ProvidesNotifications()}");
-				Console.WriteLine($"\t\tUseNotificationsOnly={pSearchRoot.get_UseNotificationsOnly()}");
+				Console.WriteLine("\t" + pSearchRoot.RootURL);
+				Console.WriteLine($"\t\tAuthenticationType={pSearchRoot.AuthenticationType}");
+				Console.WriteLine($"\t\tEnumerationDepth={pSearchRoot.EnumerationDepth}");
+				Console.WriteLine($"\t\tFollowDirectories={pSearchRoot.FollowDirectories}");
+				Console.WriteLine($"\t\tHostDepth={pSearchRoot.HostDepth}");
+				Console.WriteLine($"\t\tIsHierarchical={pSearchRoot.IsHierarchical}");
+				Console.WriteLine($"\t\tProvidesNotifications={pSearchRoot.ProvidesNotifications}");
+				Console.WriteLine($"\t\tUseNotificationsOnly={pSearchRoot.UseNotificationsOnly}");
 				return HRESULT.S_OK;
 			}
 			catch (Exception ex)
