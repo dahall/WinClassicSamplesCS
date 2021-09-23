@@ -9,7 +9,7 @@
   <ItemGroup>
     <PackageReference Include="Microsoft.Toolkit.Uwp.Notifications" Version="7.0.2" />
     <PackageReference Include="Microsoft.Windows.SDK.Contracts" Version="10.0.19041.1" />
-    <PackageReference Include="Vanara.PInvoke.Shell32" Version="3.3.12" />
+    <PackageReference Include="Vanara.PInvoke.Shell32" Version="3.3.13" />
   </ItemGroup>
 
   <ItemGroup>

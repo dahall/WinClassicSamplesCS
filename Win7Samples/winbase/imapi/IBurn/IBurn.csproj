@@ -12,8 +12,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Vanara.PInvoke.Ole" Version="3.3.12" />
-    <PackageReference Include="Vanara.PInvoke.Shlwapi" Version="3.3.12" />
+    <PackageReference Include="Vanara.PInvoke.Ole" Version="3.3.13" />
+    <PackageReference Include="Vanara.PInvoke.Shlwapi" Version="3.3.13" />
   </ItemGroup>
 
 </Project>
