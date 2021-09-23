@@ -1,0 +1,19 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net5.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Include="..\..\IBurn\IMAPIv2Extensions.cs" Link="IMAPIv2Extensions.cs" />
+    <Compile Include="..\..\IBurn\OpticalStorage.cs" Link="OpticalStorage.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Vanara.PInvoke.IMAPI" Version="3.3.13" />
+    <PackageReference Include="Vanara.PInvoke.Ole" Version="3.3.13" />
+    <PackageReference Include="Vanara.PInvoke.Shlwapi" Version="3.3.13" />
+  </ItemGroup>
+
+</Project>

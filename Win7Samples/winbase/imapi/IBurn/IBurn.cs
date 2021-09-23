@@ -14,32 +14,71 @@
  *-----------------------------------------------------------------------*/
 
 using System;
-using System.ComponentModel;
 using Vanara.Storage;
+using static Vanara.PInvoke.IMAPI;
 
-OpticalStorageEraseMediaOperation op = new();
-op.EraseProgress += Device_EraseProgress;
+OpticalStorageWriteOperation op = new()
+{
+	Device = OpticalStorageManager.DefaultDevice,
+};
+op.WriteProgress += Device_WriteProgress;
+OpticalStorageFileSystemImage image = new(args[0], FsiFileSystems.FsiFileSystemJoliet | FsiFileSystems.FsiFileSystemISO9660, null, null)
+{
+	FreeMediaBlocks = op.FreeSectorsOnMedia,
+	MultisessionInterfaces = op.MultisessionInterfaces,
+};
+op.Data = image.GetImageStream();
 op.Execute();
 
-//device.DisplayCharacteristics();
-//device.NativeInterface.DisplayMediaCharacteristics();
-//device.Media.WriteDirectory(@"C:\Users\dahall\Dropbox\DKShared\Taxes");
-//device.NativeInterface.BurnDirectory(@"C:\Users\dahall\Dropbox\DKShared\Taxes", "Tax Backup");
-
-static void Device_EraseProgress(object sender, ProgressChangedEventArgs e)
+static void Device_WriteProgress(object sender, OpticalStorageWriteEventArgs progress)
 {
-	// each block is 2%
-	// ----=----1----=----2----=----3----=----4----=----5----=----6----=----7----=----8
-	// ±.....................
+	string timeStatus = $"Time: {progress.ElapsedTime} / {progress.TotalTime} ({progress.ElapsedTime / progress.TotalTime})";
 
-	for (var i = 1; i < 100; i += 2)
+	switch (progress.CurrentAction)
 	{
-		if (i < e.ProgressPercentage)
-			Console.Write((char)178);
-		else if (i == e.ProgressPercentage)
-			Console.Write((char)177);
-		else
-			Console.Write((char)176);
+		case IMAPI_FORMAT2_DATA_WRITE_ACTION.IMAPI_FORMAT2_DATA_WRITE_ACTION_VALIDATING_MEDIA:
+			{
+				Console.Write("Validating media. ");
+			}
+			break;
+		case IMAPI_FORMAT2_DATA_WRITE_ACTION.IMAPI_FORMAT2_DATA_WRITE_ACTION_FORMATTING_MEDIA:
+			{
+				Console.Write("Formatting media. ");
+			}
+			break;
+		case IMAPI_FORMAT2_DATA_WRITE_ACTION.IMAPI_FORMAT2_DATA_WRITE_ACTION_INITIALIZING_HARDWARE:
+			{
+				Console.Write("Initializing Hardware. ");
+			}
+			break;
+		case IMAPI_FORMAT2_DATA_WRITE_ACTION.IMAPI_FORMAT2_DATA_WRITE_ACTION_CALIBRATING_POWER:
+			{
+				Console.Write("Calibrating Power (OPC). ");
+			}
+			break;
+		case IMAPI_FORMAT2_DATA_WRITE_ACTION.IMAPI_FORMAT2_DATA_WRITE_ACTION_WRITING_DATA:
+			{
+				int totalSectors = progress.SectorCount;
+				int writtenSectors = progress.LastWrittenLba - progress.StartLba;
+				int percentDone = writtenSectors / totalSectors;
+				Console.Write("Progress: {0} - ", percentDone);
+			}
+			break;
+		case IMAPI_FORMAT2_DATA_WRITE_ACTION.IMAPI_FORMAT2_DATA_WRITE_ACTION_FINALIZATION:
+			{
+				Console.Write("Finishing the writing. ");
+			}
+			break;
+		case IMAPI_FORMAT2_DATA_WRITE_ACTION.IMAPI_FORMAT2_DATA_WRITE_ACTION_COMPLETED:
+			{
+				Console.Write("Completed the burn.");
+			}
+			break;
+		default:
+			{
+				Console.Write("Error!!!! Unknown Action: 0x{0:X}", progress.CurrentAction);
+			}
+			break;
 	}
-	Console.Write(" {0}%", e.ProgressPercentage);
+	Console.WriteLine(timeStatus);
 }
