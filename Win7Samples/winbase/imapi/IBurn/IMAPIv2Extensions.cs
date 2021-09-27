@@ -6,6 +6,7 @@ using Vanara.Extensions;
 using Vanara.InteropServices;
 using static Vanara.PInvoke.IMAPI;
 using Vanara.PInvoke;
+using System.Runtime.InteropServices;
 
 namespace Vanara.Storage
 {
@@ -256,6 +257,218 @@ namespace Vanara.Storage
 			}
 
 			Console.WriteLine("\n----- Finished content -----");
+		}
+
+		public static HRESULT GetPhysicalDvdStructure(this IDiscRecorder2Ex recorder, out DVD_LAYER_DESCRIPTOR dvdStructureInformation)
+		{
+			dvdStructureInformation = default;
+
+			try
+			{
+				// Read the DVD structure
+				recorder.ReadDvdStructure(0, 0, 0, 0, out var tmpDescriptor, out var tmpDescriptorSize);
+				if (tmpDescriptorSize < Marshal.SizeOf(typeof(DVD_LAYER_DESCRIPTOR)))
+					return HRESULT.E_IMAPI_RECORDER_INVALID_RESPONSE_FROM_DEVICE;
+
+				// save the results
+				dvdStructureInformation = tmpDescriptor.DangerousGetHandle().ToStructure<DVD_LAYER_DESCRIPTOR>(tmpDescriptorSize);
+
+				return HRESULT.S_OK;
+			}
+			catch (Exception ex)
+			{
+				return ex.HResult;
+			}
+		}
+
+		public static IMAPI_MEDIA_PHYSICAL_TYPE GetCurrentPhysicalMediaType(this IDiscRecorder2Ex recorder)
+		{
+			if (recorder is null) throw new ArgumentNullException(nameof(recorder));
+
+			bool supportsGetConfiguration = true; // avoid legacy checks by default
+			bool readDvdStructureCurrent = false;
+			bool readDvdStructureSupported = false;
+
+			recorder.GetDiscInformation(out var mem, out var memSz);
+			var discInfo = mem.DangerousGetHandle().ToStructure<DISC_INFORMATION>(memSz);
+
+			// determine if READ_DVD_STRUCTURE is a supported command
+			try
+			{
+				recorder.GetFeaturePage(IMAPI_FEATURE_PAGE_TYPE.IMAPI_FEATURE_PAGE_TYPE_DVD_READ, false, out var dvdRead, out var dvdReadSize);
+
+				// the feature page is supported
+				readDvdStructureSupported = true;
+
+				// check if DvdRead feature is current
+				// (Data is guaranteed to be the right size by GetFeaturePage)
+				readDvdStructureCurrent = dvdRead.ToStructure<FEATURE_HEADER>().Current;
+
+				dvdRead?.Dispose();
+			}
+			catch (COMException tmpHr) when (tmpHr.HResult == HRESULT.E_IMAPI_RECORDER_GET_CONFIGURATION_NOT_SUPPORTED)
+			{
+			}
+			catch
+			{
+				return IMAPI_MEDIA_PHYSICAL_TYPE.IMAPI_MEDIA_TYPE_UNKNOWN;
+			}
+
+			// discInfo is either initialized or mediaType has already been determined
+			if ((discInfo.DiscStatus == 0x02) && // complete, non-appendable
+			!discInfo.Erasable)
+			{
+				return readDvdStructureCurrent ? IMAPI_MEDIA_PHYSICAL_TYPE.IMAPI_MEDIA_TYPE_DVDROM : IMAPI_MEDIA_PHYSICAL_TYPE.IMAPI_MEDIA_TYPE_CDROM;
+			}
+
+			// check for DVD+RW media
+			try
+			{
+				recorder.GetFeaturePage(IMAPI_FEATURE_PAGE_TYPE.IMAPI_FEATURE_PAGE_TYPE_DVD_PLUS_RW, true, out var pfeature, out var featureSize);
+				return IMAPI_MEDIA_PHYSICAL_TYPE.IMAPI_MEDIA_TYPE_DVDPLUSRW;
+			}
+			catch (COMException tmpHr) when (tmpHr.HResult == HRESULT.E_IMAPI_RECORDER_GET_CONFIGURATION_NOT_SUPPORTED ||
+				tmpHr.HResult == HRESULT.E_IMAPI_RECORDER_FEATURE_IS_NOT_CURRENT || tmpHr.HResult == HRESULT.E_IMAPI_RECORDER_NO_SUCH_FEATURE)
+			{
+			}
+			catch
+			{
+				return IMAPI_MEDIA_PHYSICAL_TYPE.IMAPI_MEDIA_TYPE_UNKNOWN;
+			}
+
+			// check for DVD+R dual-layer media
+			try
+			{
+				recorder.GetFeaturePage(IMAPI_FEATURE_PAGE_TYPE.IMAPI_FEATURE_PAGE_TYPE_DVD_PLUS_R_DUAL_LAYER, true, out var pfeature, out var featureSize);
+				return IMAPI_MEDIA_PHYSICAL_TYPE.IMAPI_MEDIA_TYPE_DVDPLUSR_DUALLAYER;
+			}
+			catch (COMException tmpHr) when (tmpHr.HResult == HRESULT.E_IMAPI_RECORDER_GET_CONFIGURATION_NOT_SUPPORTED ||
+				tmpHr.HResult == HRESULT.E_IMAPI_RECORDER_FEATURE_IS_NOT_CURRENT || tmpHr.HResult == HRESULT.E_IMAPI_RECORDER_NO_SUCH_FEATURE)
+			{
+			}
+			catch
+			{
+				return IMAPI_MEDIA_PHYSICAL_TYPE.IMAPI_MEDIA_TYPE_UNKNOWN;
+			}
+
+			// check for DVD+R media
+			try
+			{
+				recorder.GetFeaturePage(IMAPI_FEATURE_PAGE_TYPE.IMAPI_FEATURE_PAGE_TYPE_DVD_PLUS_R, true, out var pfeature, out var featureSize);
+				return IMAPI_MEDIA_PHYSICAL_TYPE.IMAPI_MEDIA_TYPE_DVDPLUSR;
+			}
+			catch (COMException tmpHr) when (tmpHr.HResult == HRESULT.E_IMAPI_RECORDER_GET_CONFIGURATION_NOT_SUPPORTED ||
+				tmpHr.HResult == HRESULT.E_IMAPI_RECORDER_FEATURE_IS_NOT_CURRENT || tmpHr.HResult == HRESULT.E_IMAPI_RECORDER_NO_SUCH_FEATURE)
+			{
+			}
+			catch
+			{
+				return IMAPI_MEDIA_PHYSICAL_TYPE.IMAPI_MEDIA_TYPE_UNKNOWN;
+			}
+
+			// Use ReadDvdStructure (ignore errors)
+			if (readDvdStructureSupported)
+			{
+				HRESULT tmpHr = GetPhysicalDvdStructure(recorder, out var descriptor);
+
+				if (tmpHr.Failed)
+				{
+					// ignore this error, since it's possibly not even DVD media
+				}
+				else
+				{
+					switch (descriptor.BookType)
+					{
+						case 0x0:
+							return IMAPI_MEDIA_PHYSICAL_TYPE.IMAPI_MEDIA_TYPE_DVDROM;
+						case 0x1:
+							return IMAPI_MEDIA_PHYSICAL_TYPE.IMAPI_MEDIA_TYPE_DVDRAM;
+						case 0x2:
+							return descriptor.NumberOfLayers == 0x1
+								? IMAPI_MEDIA_PHYSICAL_TYPE.IMAPI_MEDIA_TYPE_DVDDASHR_DUALLAYER
+								: IMAPI_MEDIA_PHYSICAL_TYPE.IMAPI_MEDIA_TYPE_DVDDASHR;
+						case 0x3:
+							return IMAPI_MEDIA_PHYSICAL_TYPE.IMAPI_MEDIA_TYPE_DVDDASHRW;
+						case 0x9:
+							return IMAPI_MEDIA_PHYSICAL_TYPE.IMAPI_MEDIA_TYPE_DVDPLUSRW;
+						case 0xA:
+							return IMAPI_MEDIA_PHYSICAL_TYPE.IMAPI_MEDIA_TYPE_DVDPLUSR;
+						case 0xE:
+							return IMAPI_MEDIA_PHYSICAL_TYPE.IMAPI_MEDIA_TYPE_DVDPLUSR_DUALLAYER;
+					}
+				}
+			}
+
+			// use profiles to allow CD-R, CD-RW, randomly writable media to be detected
+			try
+			{
+				recorder.GetSupportedProfiles(true, out var pprofiles, out var profileCount);
+				IMAPI_PROFILE_TYPE[] profiles = pprofiles.ToArray<IMAPI_PROFILE_TYPE>((int)profileCount);
+
+				// according to the specs, the features shall be listed in order
+				// of drive's usage preference.
+				foreach (IMAPI_PROFILE_TYPE profile in profiles)
+				{
+					switch (profile)
+					{
+						case IMAPI_PROFILE_TYPE.IMAPI_PROFILE_TYPE_NON_REMOVABLE_DISK:
+						case IMAPI_PROFILE_TYPE.IMAPI_PROFILE_TYPE_REMOVABLE_DISK:
+							return IMAPI_MEDIA_PHYSICAL_TYPE.IMAPI_MEDIA_TYPE_DISK;
+
+						case IMAPI_PROFILE_TYPE.IMAPI_PROFILE_TYPE_CDROM:
+						case IMAPI_PROFILE_TYPE.IMAPI_PROFILE_TYPE_DDCDROM:
+							return IMAPI_MEDIA_PHYSICAL_TYPE.IMAPI_MEDIA_TYPE_CDROM;
+
+						case IMAPI_PROFILE_TYPE.IMAPI_PROFILE_TYPE_CD_RECORDABLE:
+						case IMAPI_PROFILE_TYPE.IMAPI_PROFILE_TYPE_DDCD_RECORDABLE:
+							return IMAPI_MEDIA_PHYSICAL_TYPE.IMAPI_MEDIA_TYPE_CDR;
+
+						case IMAPI_PROFILE_TYPE.IMAPI_PROFILE_TYPE_CD_REWRITABLE:
+						case IMAPI_PROFILE_TYPE.IMAPI_PROFILE_TYPE_DDCD_REWRITABLE:
+							return IMAPI_MEDIA_PHYSICAL_TYPE.IMAPI_MEDIA_TYPE_CDRW;
+
+						case IMAPI_PROFILE_TYPE.IMAPI_PROFILE_TYPE_DVDROM:
+							return IMAPI_MEDIA_PHYSICAL_TYPE.IMAPI_MEDIA_TYPE_DVDROM;
+
+						case IMAPI_PROFILE_TYPE.IMAPI_PROFILE_TYPE_DVD_RAM:
+							return IMAPI_MEDIA_PHYSICAL_TYPE.IMAPI_MEDIA_TYPE_DVDRAM;
+
+						case IMAPI_PROFILE_TYPE.IMAPI_PROFILE_TYPE_DVD_PLUS_R:
+							return IMAPI_MEDIA_PHYSICAL_TYPE.IMAPI_MEDIA_TYPE_DVDPLUSR;
+
+						case IMAPI_PROFILE_TYPE.IMAPI_PROFILE_TYPE_DVD_PLUS_RW:
+							return IMAPI_MEDIA_PHYSICAL_TYPE.IMAPI_MEDIA_TYPE_DVDPLUSRW;
+
+						case IMAPI_PROFILE_TYPE.IMAPI_PROFILE_TYPE_DVD_DASH_RECORDABLE:
+							return IMAPI_MEDIA_PHYSICAL_TYPE.IMAPI_MEDIA_TYPE_DVDDASHR;
+
+						case IMAPI_PROFILE_TYPE.IMAPI_PROFILE_TYPE_DVD_DASH_REWRITABLE:
+						case IMAPI_PROFILE_TYPE.IMAPI_PROFILE_TYPE_DVD_DASH_RW_SEQUENTIAL:
+							return IMAPI_MEDIA_PHYSICAL_TYPE.IMAPI_MEDIA_TYPE_DVDDASHRW;
+
+						default:
+							break;
+					}
+				} // end of loop through all profiles
+			}
+			catch (COMException tmpHr) when (tmpHr.HResult == HRESULT.E_IMAPI_RECORDER_GET_CONFIGURATION_NOT_SUPPORTED)
+			{
+				supportsGetConfiguration = false;
+			}
+			catch (COMException tmpHr) when (tmpHr.HResult == HRESULT.E_IMAPI_RECORDER_FEATURE_IS_NOT_CURRENT || tmpHr.HResult == HRESULT.E_IMAPI_RECORDER_NO_SUCH_FEATURE)
+			{
+			}
+			catch
+			{ }
+
+			// For the final, last-ditch attempt for legacy drives
+			if (!supportsGetConfiguration)
+			{
+				// NOTE: this works because -ROM media was determined earlier discInfo is either initialized or_ mediaType has already been determined
+				return discInfo.Erasable ? IMAPI_MEDIA_PHYSICAL_TYPE.IMAPI_MEDIA_TYPE_CDRW : IMAPI_MEDIA_PHYSICAL_TYPE.IMAPI_MEDIA_TYPE_CDR;
+			}
+
+			return IMAPI_MEDIA_PHYSICAL_TYPE.IMAPI_MEDIA_TYPE_UNKNOWN;
 		}
 	}
 }

@@ -7,6 +7,7 @@
 
   <ItemGroup>
     <Compile Include="..\..\IBurn\IMAPIv2Extensions.cs" Link="IMAPIv2Extensions.cs" />
+    <Compile Include="..\..\IBurn\ntddmmc.cs" Link="ntddmmc.cs" />
     <Compile Include="..\..\IBurn\OpticalStorage.cs" Link="OpticalStorage.cs" />
   </ItemGroup>
 

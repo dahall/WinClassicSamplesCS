@@ -6,15 +6,14 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <!--<PackageReference Include="Vanara.PInvoke.IMAPI" Version="3.3.8" />-->
+    <PackageReference Include="Vanara.PInvoke.IMAPI" Version="3.3.13" />
     <PackageReference Include="Vanara.PInvoke.Ole" Version="3.3.13" />
     <PackageReference Include="Vanara.PInvoke.Shlwapi" Version="3.3.13" />
   </ItemGroup>
 
   <ItemGroup>
-    <Compile Include="..\..\..\..\..\Vanara\PInvoke\IMAPI\IMAPIv2.cs" Link="IMAPIv2.cs" />
-    <Compile Include="..\..\..\..\..\Vanara\PInvoke\IMAPI\IMAPIv2.Enums.cs" Link="IMAPIv2.Enums.cs" />
-    <Compile Include="..\..\..\..\..\Vanara\PInvoke\IMAPI\IMAPIv2FS.cs" Link="IMAPIv2FS.cs" />
+    <Compile Include="..\IBurn\IMAPIv2Extensions.cs" Link="IMAPIv2Extensions.cs" />
+    <Compile Include="..\IBurn\ntddmmc.cs" Link="ntddmmc.cs" />
     <Compile Include="..\IBurn\OpticalStorage.cs" Link="OpticalStorage.cs" />
   </ItemGroup>
 

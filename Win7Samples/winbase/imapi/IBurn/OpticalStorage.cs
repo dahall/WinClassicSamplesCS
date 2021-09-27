@@ -222,14 +222,52 @@ namespace Vanara.Storage
 	/// </summary>
 	public class OpticalStorageDevice
 	{
-		//internal readonly IDiscFormat2Data mediaImage;
+		internal readonly IDiscFormat2Data mediaImage;
 		internal readonly IDiscRecorder2 recorder;
+		internal IDiscRecorder2Ex recorderEx;
 
 		/// <summary>Initializes a new instance of the <see cref="OpticalStorageDevice"/> class.</summary>
 		/// <param name="uid">String that contains the unique identifier for the device.</param>
 		public OpticalStorageDevice(string uid) : this() => recorder.InitializeDiscRecorder(uid);
 
-		private OpticalStorageDevice() => recorder = new();//mediaImage = new() { Recorder = recorder };
+		private OpticalStorageDevice()
+		{
+			recorder = new();
+			mediaImage = new() { Recorder = recorder };
+		}
+
+		/// <summary>Retrieves the adapter descriptor for the device.</summary>
+		/// <value>The adapter descriptor.</value>
+		public Kernel32.STORAGE_ADAPTER_DESCRIPTOR AdapterDescriptor
+		{
+			get
+			{
+				NativeInterfaceEx.GetAdapterDescriptor(out var data, out var size);
+				return data.DangerousGetHandle().ToStructure<Kernel32.STORAGE_ADAPTER_DESCRIPTOR>(size);
+			}
+		}
+
+		/// <summary>Retrieves the byte alignment mask for the device.</summary>
+		/// <value>
+		/// Byte alignment mask that you use to determine if the buffer is aligned to the correct byte boundary for the device. The byte
+		/// alignment value is always a number that is a power of 2.
+		/// </value>
+		public uint ByteAlignmentMask => NativeInterfaceEx.GetByteAlignmentMask();
+
+		/// <summary>Gets the type of the current physical media.</summary>
+		/// <value>The type of the current physical media.</value>
+		public IMAPI_MEDIA_PHYSICAL_TYPE CurrentPhysicalType => NativeInterfaceEx.GetCurrentPhysicalMediaType();
+
+		/// <summary>Retrieves the device descriptor for the device.</summary>
+		/// <value>The device descriptor.</value>
+		public Kernel32.STORAGE_ADAPTER_DESCRIPTOR DeviceDescriptor
+		{
+			get
+			{
+				NativeInterfaceEx.GetDeviceDescriptor(out var data, out var size);
+				return data.DangerousGetHandle().ToStructure<Kernel32.STORAGE_ADAPTER_DESCRIPTOR>(size);
+			}
+		}
 
 		/// <summary>Determines if the device can eject and subsequently reload media.</summary>
 		/// <value>
@@ -248,11 +286,15 @@ namespace Vanara.Storage
 		///// Gets the <see cref="OpticalStorageMedia"/> instance for the current media. This value is <see langword="null"/> if no media is loaded.
 		///// </summary>
 		///// <value>The <see cref="OpticalStorageMedia"/> instance for the current media..</value>
-		//public OpticalStorageMedia Media => OpticalStorageMedia.Create(recorder, mediaImage, null, false);
+		//public OpticalStorageMedia Media => OpticalStorageMedia.Create(recorder, mediaImage);
 
 		/// <summary>Gets the underlying native COM interface.</summary>
 		/// <value>The native interface.</value>
 		public IDiscRecorder2 NativeInterface => recorder;
+
+		/// <summary>Gets the extended underlying native COM interface.</summary>
+		/// <value>The extended native interface.</value>
+		public IDiscRecorder2Ex NativeInterfaceEx => recorderEx ??= (IDiscRecorder2Ex)recorder;
 
 		/// <summary>Retrieves the product revision code of the device.</summary>
 		/// <value>String that contains the product revision code of the device.</value>
@@ -469,8 +511,8 @@ namespace Vanara.Storage
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		private static void Validate(IDiscFormat2 fmtr)
 		{
-			try { _ = fmtr.GetCurrentPhysicalMediaType(); } catch { throw new InvalidOperationException("Media is not present."); }
-			if (!fmtr.IsCurrentMediaSupported(fmtr.GetRecorder())) throw new InvalidOperationException("Media is not supported for this operation.");
+			//try { _ = fmtr.GetCurrentPhysicalMediaType(); } catch { throw new InvalidOperationException("Media is not present."); }
+			//if (!fmtr.IsCurrentMediaSupported(fmtr.GetRecorder())) throw new InvalidOperationException("Media is not supported for this operation.");
 		}
 	}
 
@@ -2719,26 +2761,27 @@ namespace Vanara.Storage
 		public int WriteSpeed { get; }
 	}
 
-	public class AudioFile : IDisposable
+	internal class AudioFile : ComFileStream
 	{
 		private static readonly int hdrSize = Marshal.SizeOf(typeof(WAV_HEADER));
 		private const long SECTOR_SIZE = 2352;
-		private IStream stream;
 
 		public AudioFile(string fileName)
 		{
 			if (!File.Exists(fileName))
 				throw new FileNotFoundException("File not found.", fileName);
-			if (!IsValidIMAPIFormat(fileName))
-				throw new InvalidOperationException("The file does not match the required 44.1KHz, Stereo, Uncompressed WAV format.");
 
 			using (var hFile = Kernel32.CreateFile(fileName, Kernel32.FileAccess.FILE_GENERIC_READ, FileShare.Read, null, FileMode.Open, 0))
 			{
 				if (hFile.IsInvalid || !Kernel32.GetFileSizeEx(hFile, out var fileLen))
 					throw new ArgumentException("File is unavailable or empty.", nameof(fileName));
+
+				if (!IsValidIMAPIFormat(hFile))
+					throw new InvalidOperationException("The file does not match the required 44.1KHz, Stereo, Uncompressed WAV format.");
+
 				var sz = (int)fileLen - hdrSize;
 				var hMem = Marshal.AllocHGlobal(sz);
-				if (!Kernel32.SetFilePointerEx(hFile, hdrSize, out _, SeekOrigin.Begin) || !Kernel32.ReadFile(hFile, hMem, (uint)sz, out _))
+				if (!Kernel32.SetFilePointerEx(hFile, hdrSize, default, SeekOrigin.Begin) || !Kernel32.ReadFile(hFile, hMem, (uint)sz, out _))
 					throw new ArgumentException("Unable to read file.", nameof(fileName));
 				Ole32.CreateStreamOnHGlobal(hMem, true, out stream).ThrowIfFailed();
 			}
@@ -2752,21 +2795,12 @@ namespace Vanara.Storage
 			stream.Seek(hdrSize, 0, default);
 		}
 
-		public static bool IsValidIMAPIFormat(string fileName)
+		public static bool IsValidIMAPIFormat(HFILE hFile)
 		{
-			try
+			using var pwavHeader = new SafeHGlobalStruct<WAV_HEADER>();
+			if (Kernel32.SetFilePointerEx(hFile, 0, default, SeekOrigin.Begin) && Kernel32.ReadFile(hFile, pwavHeader, pwavHeader.Size, out _))
 			{
-				WAV_HEADER wavHeader = default;
-				using (FileStream fileStream = File.OpenRead(fileName))
-				{
-					// Read the header data
-					using BinaryReader binaryReader = new(fileStream);
-					var byteData = binaryReader.ReadBytes(hdrSize);
-					using var p = new PinnedObject(byteData);
-					wavHeader = ((IntPtr)p).ToStructure<WAV_HEADER>(byteData.Length);
-				}
-
-				// Verify the WAV file is a 44.1KHz, Stereo, Uncompressed Wav file.
+				var wavHeader = pwavHeader.Value;
 				return (wavHeader.chunkID == 0x46464952) && // "RIFF"
 				  (wavHeader.format == 0x45564157) && // "WAVE"
 				  (wavHeader.formatChunkId == 0x20746d66) && // "fmt "
@@ -2774,23 +2808,7 @@ namespace Vanara.Storage
 				  (wavHeader.numChannels == 2) && // 2 = Stereo
 				  (wavHeader.sampleRate == 44100); // 44.1 KHz
 			}
-			catch
-			{
-			}
 			return false;
-		}
-
-		public IStream NativeInterface => stream;
-
-		public IStream Release() { IStream s = stream; stream = null; return s; }
-
-		public void Dispose()
-		{
-			if (stream is null) return;
-#pragma warning disable CA1416 // Validate platform compatibility
-			System.Runtime.InteropServices.Marshal.ReleaseComObject(stream);
-#pragma warning restore CA1416 // Validate platform compatibility
-			stream = null;
 		}
 
 		[StructLayout(LayoutKind.Sequential)]
@@ -2814,7 +2832,7 @@ namespace Vanara.Storage
 
 	internal class ComFileStream : IDisposable
 	{
-		private IStream stream;
+		protected IStream stream;
 
 		public ComFileStream(string fileName, bool readOnly = true, long align = 0)
 		{
@@ -2830,6 +2848,8 @@ namespace Vanara.Storage
 			}
 		}
 
+		protected ComFileStream() { }
+
 		public IStream NativeInterface => stream;
 
 		public IStream Release() { IStream s = stream; stream = null; return s; }
@@ -2841,6 +2861,7 @@ namespace Vanara.Storage
 			System.Runtime.InteropServices.Marshal.ReleaseComObject(stream);
 #pragma warning restore CA1416 // Validate platform compatibility
 			stream = null;
+			GC.SuppressFinalize(this);
 		}
 	}
 }
