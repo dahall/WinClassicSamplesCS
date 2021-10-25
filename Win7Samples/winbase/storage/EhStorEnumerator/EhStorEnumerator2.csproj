@@ -5,30 +5,11 @@
     <TargetFramework>net50-windows</TargetFramework>
     <UseWindowsForms>true</UseWindowsForms>
     <RootNamespace>EhStorEnumerator</RootNamespace>
-  </PropertyGroup>
-
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
-  </PropertyGroup>
-
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
 
   <ItemGroup>
     <PackageReference Include="Vanara.PInvoke.EnhancedStorage" Version="3.3.14" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Compile Update="IDD_SET_PASSWORD - Copy.Designer.cs">
-      <DependentUpon>IDD_SET_PASSWORD.Designer.cs</DependentUpon>
-    </Compile>
-  </ItemGroup>
-
-  <ItemGroup>
-    <EmbeddedResource Update="IDD_SET_PASSWORD - Copy.resx">
-      <DependentUpon>IDD_SET_PASSWORD.resx</DependentUpon>
-    </EmbeddedResource>
   </ItemGroup>
 
 </Project>

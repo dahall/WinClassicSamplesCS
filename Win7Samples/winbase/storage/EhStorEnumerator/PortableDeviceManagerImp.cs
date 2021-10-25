@@ -53,7 +53,7 @@ namespace EhStorEnumerator
     {
         public static void CertDeviceAuthentication(this IPortableDevice device, int nCertificateIndex)
         {
-            device.SendCmd(ENHANCED_STORAGE_COMMAND_CERT_DEVICE_CERTIFICATE_AUTHENTICATION, v =>
+            device.SendCommand(ENHANCED_STORAGE_COMMAND_CERT_DEVICE_CERTIFICATE_AUTHENTICATION, v =>
             {
                 if (nCertificateIndex >= 0)
                     v.SetUnsignedIntegerValue(ENHANCED_STORAGE_PROPERTY_CERTIFICATE_INDEX, (uint)nCertificateIndex);
@@ -62,7 +62,7 @@ namespace EhStorEnumerator
 
         public static CCertProperties CertGetCertificate(this IPortableDevice device, uint nCertIndex)
         {
-            var results = device.SendCmd(ENHANCED_STORAGE_COMMAND_CERT_GET_CERTIFICATE, v => v.SetUnsignedIntegerValue(ENHANCED_STORAGE_PROPERTY_CERTIFICATE_INDEX, nCertIndex));
+            var results = device.SendCommand(ENHANCED_STORAGE_COMMAND_CERT_GET_CERTIFICATE, v => v.SetUnsignedIntegerValue(ENHANCED_STORAGE_PROPERTY_CERTIFICATE_INDEX, nCertIndex));
             results.GetBufferValue(ENHANCED_STORAGE_PROPERTY_CERTIFICATE, out var mem, out var nCertDataLen);
             return new CCertProperties()
             {
@@ -77,13 +77,13 @@ namespace EhStorEnumerator
 
         public static (uint nStoredCertCount, uint nMaxCertCount) CertGetCertificatesCount(this IPortableDevice device)
         {
-            var results = device.SendCmd(ENHANCED_STORAGE_COMMAND_CERT_GET_CERTIFICATE_COUNT);
+            var results = device.SendCommand(ENHANCED_STORAGE_COMMAND_CERT_GET_CERTIFICATE_COUNT);
             return (results.GetUnsignedIntegerValue(ENHANCED_STORAGE_PROPERTY_STORED_CERTIFICATE_COUNT), results.GetUnsignedIntegerValue(ENHANCED_STORAGE_PROPERTY_MAX_CERTIFICATE_COUNT));
         }
 
         public static string[] CertGetSiloCapablity(this IPortableDevice device, CERT_CAPABILITY nCapablityType)
         {
-            var results = device.SendCmd(ENHANCED_STORAGE_COMMAND_CERT_GET_SILO_CAPABILITY, v =>
+            var results = device.SendCommand(ENHANCED_STORAGE_COMMAND_CERT_GET_SILO_CAPABILITY, v =>
             {
                 v.SetUnsignedIntegerValue(ENHANCED_STORAGE_PROPERTY_CERTIFICATE_CAPABILITY_TYPE, (uint)nCapablityType);
             });
@@ -141,7 +141,7 @@ namespace EhStorEnumerator
 
         public static string CertGetState(this IPortableDevice device)
         {
-            var results = device.SendCmd(ENHANCED_STORAGE_COMMAND_SILO_GET_AUTHENTICATION_STATE);
+            var results = device.SendCommand(ENHANCED_STORAGE_COMMAND_SILO_GET_AUTHENTICATION_STATE);
             var state = (ENHANCED_STORAGE_AUTHN_STATE)results.GetUnsignedIntegerValue(ENHANCED_STORAGE_PROPERTY_AUTHENTICATION_STATE);
             return state switch
             {
@@ -155,12 +155,12 @@ namespace EhStorEnumerator
             };
         }
 
-        public static void CertHostAuthentication(this IPortableDevice device) => device.SendCmd(ENHANCED_STORAGE_COMMAND_CERT_HOST_CERTIFICATE_AUTHENTICATION);
+        public static void CertHostAuthentication(this IPortableDevice device) => device.SendCommand(ENHANCED_STORAGE_COMMAND_CERT_HOST_CERTIFICATE_AUTHENTICATION);
 
-        public static void CertInitializeToManufacturedState(this IPortableDevice device) => device.SendCmd(ENHANCED_STORAGE_COMMAND_CERT_INITIALIZE_TO_MANUFACTURER_STATE);
+        public static void CertInitializeToManufacturedState(this IPortableDevice device) => device.SendCommand(ENHANCED_STORAGE_COMMAND_CERT_INITIALIZE_TO_MANUFACTURER_STATE);
 
         public static void CertRemoveCertificate(this IPortableDevice device, uint nCertificateIndex) =>
-            device.SendCmd(ENHANCED_STORAGE_COMMAND_CERT_SET_CERTIFICATE, v =>
+            device.SendCommand(ENHANCED_STORAGE_COMMAND_CERT_SET_CERTIFICATE, v =>
             {
                 v.SetUnsignedIntegerValue(ENHANCED_STORAGE_PROPERTY_CERTIFICATE_INDEX, nCertificateIndex);
                 v.SetEnumValue(ENHANCED_STORAGE_PROPERTY_CERTIFICATE_TYPE, CERT_TYPE.CERT_TYPE_EMPTY);
@@ -168,7 +168,7 @@ namespace EhStorEnumerator
 
         public static void CertSetCertificate(this IPortableDevice device, uint nCertIndex, CCertProperties certProperties)
         {
-            device.SendCmd(ENHANCED_STORAGE_COMMAND_CERT_SET_CERTIFICATE, v =>
+            device.SendCommand(ENHANCED_STORAGE_COMMAND_CERT_SET_CERTIFICATE, v =>
             {
                 v.SetUnsignedIntegerValue(ENHANCED_STORAGE_PROPERTY_CERTIFICATE_INDEX, nCertIndex);
                 v.SetBufferValue(ENHANCED_STORAGE_PROPERTY_CERTIFICATE, certProperties.CertificateData, certProperties.CertificateData.Length);
@@ -181,52 +181,37 @@ namespace EhStorEnumerator
         public static void SetEnumValue<T>(this IPortableDeviceValues vals, in PROPERTYKEY key, T enumVal) where T : Enum, IConvertible =>
             vals.SetUnsignedIntegerValue(key, enumVal.ToUInt32(null));
 
-        public static void CertUnAuthentication(this IPortableDevice device) => device.SendCmd(ENHANCED_STORAGE_COMMAND_CERT_UNAUTHENTICATION);
+        public static void CertUnAuthentication(this IPortableDevice device) => device.SendCommand(ENHANCED_STORAGE_COMMAND_CERT_UNAUTHENTICATION);
 
         public static void PasswordChangePassword(this IPortableDevice device, bool isAdmin, string oldPassword, string newPassword, string passwordHint, string sid)
         {
-            IPortableDeviceValues vals = new();
-            vals.SetCommandPKey(ENHANCED_STORAGE_COMMAND_PASSWORD_CHANGE_PASSWORD);
-            vals.SetBoolValue(ENHANCED_STORAGE_PROPERTY_PASSWORD_INDICATOR, !isAdmin);
-            vals.SetStringValue(ENHANCED_STORAGE_PROPERTY_PASSWORD, oldPassword);
-            vals.SetBoolValue(ENHANCED_STORAGE_PROPERTY_NEW_PASSWORD_INDICATOR, !isAdmin);
-            vals.SetStringValue(ENHANCED_STORAGE_PROPERTY_NEW_PASSWORD, newPassword);
-            vals.SetStringValue(ENHANCED_STORAGE_PROPERTY_SECURITY_IDENTIFIER, sid);
-            if (isAdmin)
-                vals.SetStringValue(ENHANCED_STORAGE_PROPERTY_ADMIN_HINT, passwordHint);
-            else
-                vals.SetStringValue(ENHANCED_STORAGE_PROPERTY_USER_HINT, passwordHint);
-            IPortableDeviceValues results = device.SendCommand(0, vals);
-            results.GetErrorValue(WPD_PROPERTY_COMMON_HRESULT).ThrowIfFailed();
+            device.SendCommand(ENHANCED_STORAGE_COMMAND_PASSWORD_CHANGE_PASSWORD, vals =>
+            {
+                vals.SetBoolValue(ENHANCED_STORAGE_PROPERTY_PASSWORD_INDICATOR, !isAdmin);
+                vals.SetStringValue(ENHANCED_STORAGE_PROPERTY_PASSWORD, oldPassword);
+                vals.SetBoolValue(ENHANCED_STORAGE_PROPERTY_NEW_PASSWORD_INDICATOR, !isAdmin);
+                vals.SetStringValue(ENHANCED_STORAGE_PROPERTY_NEW_PASSWORD, newPassword);
+                vals.SetStringValue(ENHANCED_STORAGE_PROPERTY_SECURITY_IDENTIFIER, sid);
+                if (isAdmin)
+                    vals.SetStringValue(ENHANCED_STORAGE_PROPERTY_ADMIN_HINT, passwordHint);
+                else
+                    vals.SetStringValue(ENHANCED_STORAGE_PROPERTY_USER_HINT, passwordHint);
+            });
         }
 
         public static void PasswordInitializeToManufacturerState(this IPortableDevice device, string sid)
         {
-            IPortableDeviceValues vals = new();
-            vals.SetCommandPKey(ENHANCED_STORAGE_COMMAND_PASSWORD_START_INITIALIZE_TO_MANUFACTURER_STATE);
-            if (!string.IsNullOrEmpty(sid))
+            device.SendCommand(ENHANCED_STORAGE_COMMAND_PASSWORD_START_INITIALIZE_TO_MANUFACTURER_STATE, vals =>
             {
-                vals.SetStringValue(ENHANCED_STORAGE_PROPERTY_SECURITY_IDENTIFIER, sid);
-            }
-
-            IPortableDeviceValues results = device.SendCommand(0, vals);
-            results.GetErrorValue(WPD_PROPERTY_COMMON_HRESULT).ThrowIfFailed();
+                if (!string.IsNullOrEmpty(sid))
+                    vals.SetStringValue(ENHANCED_STORAGE_PROPERTY_SECURITY_IDENTIFIER, sid);
+            });
         }
 
         public static CPasswordSiloInformation PasswordQueryInformation(this IPortableDevice device) =>
-            new(device.SendCmd(ENHANCED_STORAGE_COMMAND_PASSWORD_QUERY_INFORMATION));
-
-        public static IPortableDeviceValues SendCmd(this IPortableDevice device, PROPERTYKEY cmd, Action<IPortableDeviceValues> addParams = null)
-        {
-            IPortableDeviceValues cmdParams = new();
-            cmdParams.SetCommandPKey(cmd);
-            addParams?.Invoke(cmdParams);
-            var cmdResults = device.SendCommand(0, cmdParams);
-            cmdResults.GetErrorValue(WPD_PROPERTY_COMMON_HRESULT).ThrowIfFailed();
-            return cmdResults;
-        }
+            new(device.SendCommand(ENHANCED_STORAGE_COMMAND_PASSWORD_QUERY_INFORMATION));
 
         private static string GetCmdStr(IPortableDevice device, PROPERTYKEY cmd, PROPERTYKEY pkStr) =>
-            device.SendCmd(cmd).GetStringValue(pkStr);
+            device.SendCommand(cmd).GetStringValue(pkStr);
     }
 }
