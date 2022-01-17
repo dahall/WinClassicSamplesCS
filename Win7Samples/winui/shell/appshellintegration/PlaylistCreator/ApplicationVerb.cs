@@ -191,7 +191,7 @@ namespace Vanara.PInvoke
 
 		HRESULT IExecuteCommand.SetParameters([In, MarshalAs(UnmanagedType.LPWStr)] string _) => HRESULT.S_OK;
 
-		HRESULT IExecuteCommand.SetPosition(Point _) => HRESULT.S_OK;
+		HRESULT IExecuteCommand.SetPosition(POINT _) => HRESULT.S_OK;
 
 		HRESULT IExecuteCommand.SetShowWindow(ShowWindowCommand nShow) => HRESULT.S_OK;
 

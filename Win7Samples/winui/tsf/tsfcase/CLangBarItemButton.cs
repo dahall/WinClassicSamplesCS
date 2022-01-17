@@ -60,7 +60,7 @@ namespace tsfcase
 			return HRESULT.S_OK;
 		}
 
-		HRESULT ITfLangBarItemButton.OnClick(TfLBIClick click, Point pt, in RECT prcArea) => HRESULT.S_OK;
+		HRESULT ITfLangBarItemButton.OnClick(TfLBIClick click, POINT pt, in RECT prcArea) => HRESULT.S_OK;
 
 		HRESULT ITfLangBarItemButton.InitMenu(ITfMenu pMenu)
 		{

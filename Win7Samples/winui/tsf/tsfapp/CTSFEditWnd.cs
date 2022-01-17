@@ -396,7 +396,7 @@ namespace tsfapp
 			return HRESULT.E_NOTIMPL;
 		}
 
-		HRESULT ITextStoreACP.GetACPFromPoint(uint vcView, in Point ptScreen, GXFPF dwFlags, out int pacp)
+		HRESULT ITextStoreACP.GetACPFromPoint(uint vcView, in POINT ptScreen, GXFPF dwFlags, out int pacp)
 		{
 			System.Diagnostics.Debug.WriteLine(System.Reflection.MethodBase.GetCurrentMethod().Name);
 			pacp = 0;
@@ -563,8 +563,8 @@ namespace tsfapp
 			GetCurrentSelection();
 
 			//find out which end of the selection the caret (insertion point) is
-			User32.GetCaretPos(out Point pt);
-			Point lPos = GetPositionFromCharIndex(m_acpStart);
+			User32.GetCaretPos(out POINT pt);
+			POINT lPos = GetPositionFromCharIndex(m_acpStart);
 
 			//if the caret position is the same as the start character, then the selection end is the start of the selection
 			m_ActiveSelEnd = pt == lPos ? TsActiveSelEnd.TS_AE_START : TsActiveSelEnd.TS_AE_END;
@@ -806,7 +806,7 @@ namespace tsfapp
 			rc.bottom = ptEnd.Y;
 
 			//calculate the line height
-			Gdi32.GetTextMetrics(hdc, out Gdi32.TEXTMETRIC tm);
+			Gdi32.GetTextMetrics(hdc, out TEXTMETRIC tm);
 			var lLineHeight = tm.tmHeight;
 
 			Gdi32.SelectObject(hdc, hfont);
