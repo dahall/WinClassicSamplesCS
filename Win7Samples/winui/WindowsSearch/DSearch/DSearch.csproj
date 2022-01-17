@@ -6,8 +6,8 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="System.Data.OleDb" Version="5.0.0" />
-    <PackageReference Include="Vanara.PInvoke.SearchApi" Version="3.3.13" />
+    <PackageReference Include="System.Data.OleDb" Version="6.0.0" />
+    <PackageReference Include="Vanara.PInvoke.SearchApi" Version="3.4.0" />
   </ItemGroup>
 
 </Project>
