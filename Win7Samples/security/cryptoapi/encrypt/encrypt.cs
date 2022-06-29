@@ -86,7 +86,7 @@ namespace encrypt
 					using (hXchgKey)
 					{
 						// Determine size of the key blob and allocate memory.
-						if (!CryptExportKey(hKey, hXchgKey, Crypt32.BlobType.SIMPLEBLOB, 0, default, ref dwKeyBlobLen))
+						if (!CryptExportKey(hKey, hXchgKey, Crypt32.BlobType.SIMPLEBLOB, 0, null, ref dwKeyBlobLen))
 							Win32Error.ThrowLastError();
 						if ((pbKeyBlob = Marshal.AllocHGlobal((int)dwKeyBlobLen)) == default)
 							Win32Error.ThrowLastError();

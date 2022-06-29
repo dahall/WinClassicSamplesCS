@@ -10,7 +10,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Vanara.PInvoke.SearchApi" Version="3.4.0" />
+    <PackageReference Include="Vanara.PInvoke.SearchApi" Version="3.4.3" />
   </ItemGroup>
 
 </Project>
