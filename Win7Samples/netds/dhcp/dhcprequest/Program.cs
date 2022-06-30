@@ -63,17 +63,13 @@ try
 
 	// first check subnet
 	if (requests[0].nBytesData >= Marshal.SizeOf<IN_ADDR>())
-	{
 		Console.Write("Subnet Mask: {0}\n", requests[0].Data.ToStructure<IN_ADDR>());
-	}
 	else
 		Console.Write("Subnet Mask NOT present!\n");
 
 	// check for router address
 	if (requests[1].nBytesData >= Marshal.SizeOf<IN_ADDR>())
-	{
 		Console.Write("Gateway Address: {0}\n", requests[1].Data.ToStructure<IN_ADDR>());
-	}
 	else
 		Console.Write("Gateway Address NOT present!\n");
 }
@@ -101,19 +97,7 @@ return 0;
 */
 static string DetermineAdapter()
 {
-	IP_INTERFACE_INFO pInfo = null; // adapter information structure
-	uint dwSize = 0; // size of required buffer
-
-	// get buffer size
-	var dwResult = GetInterfaceInfo(default, ref dwSize);
-	if (dwResult == Win32Error.ERROR_INSUFFICIENT_BUFFER)
-	{
-		// allocate buffer
-		pInfo = new(dwSize);
-
-		// make the actual call
-		GetInterfaceInfo(pInfo, ref dwSize).ThrowIfFailed();
-	}
+	IP_INTERFACE_INFO pInfo = GetInterfaceInfo();
 
 	// convert, parse, and convert back
 	var szAdapter = pInfo.Adapter[0].Name;
