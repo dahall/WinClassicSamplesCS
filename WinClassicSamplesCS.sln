@@ -237,6 +237,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "dhcpnotify", "Win7Samples\n
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "dhcppersist", "Win7Samples\netds\dhcp\dhcppersist\dhcppersist.csproj", "{F99B42FF-45A3-46E8-BE58-EC38C83E06E4}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "filehistory", "filehistory\filehistory.csproj", "{CE908E26-D36B-4849-BCCA-B98CBFD45B71}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -1289,6 +1291,18 @@ Global
 		{F99B42FF-45A3-46E8-BE58-EC38C83E06E4}.Release|x64.Build.0 = Release|Any CPU
 		{F99B42FF-45A3-46E8-BE58-EC38C83E06E4}.Release|x86.ActiveCfg = Release|Any CPU
 		{F99B42FF-45A3-46E8-BE58-EC38C83E06E4}.Release|x86.Build.0 = Release|Any CPU
+		{CE908E26-D36B-4849-BCCA-B98CBFD45B71}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CE908E26-D36B-4849-BCCA-B98CBFD45B71}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CE908E26-D36B-4849-BCCA-B98CBFD45B71}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{CE908E26-D36B-4849-BCCA-B98CBFD45B71}.Debug|x64.Build.0 = Debug|Any CPU
+		{CE908E26-D36B-4849-BCCA-B98CBFD45B71}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{CE908E26-D36B-4849-BCCA-B98CBFD45B71}.Debug|x86.Build.0 = Debug|Any CPU
+		{CE908E26-D36B-4849-BCCA-B98CBFD45B71}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CE908E26-D36B-4849-BCCA-B98CBFD45B71}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CE908E26-D36B-4849-BCCA-B98CBFD45B71}.Release|x64.ActiveCfg = Release|Any CPU
+		{CE908E26-D36B-4849-BCCA-B98CBFD45B71}.Release|x64.Build.0 = Release|Any CPU
+		{CE908E26-D36B-4849-BCCA-B98CBFD45B71}.Release|x86.ActiveCfg = Release|Any CPU
+		{CE908E26-D36B-4849-BCCA-B98CBFD45B71}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
