@@ -48,7 +48,7 @@ namespace recvmsg
 
 				SET_PORT(ref addr, DEFAULT_PORT);
 
-				if (SOCKET_ERROR == bind(sock, addr, addr.Size))
+				if (!bind(sock, addr, addr.Size))
 				{
 					ERR("bind");
 					return -1;
@@ -56,7 +56,7 @@ namespace recvmsg
 
 				IPV6_MREQ mreq = new() { ipv6mr_multiaddr = mcaddr.Ipv6.sin6_addr };
 
-				if (SOCKET_ERROR == setsockopt(sock, IPPROTO.IPPROTO_IPV6, 20 /*IPV6_ADD_MEMBERSHIP*/, mreq))
+				if (!setsockopt(sock, IPPROTO.IPPROTO_IPV6, 20 /*IPV6_ADD_MEMBERSHIP*/, mreq))
 				{
 					ERR("setsockopt IPV6_ADD_MEMBRESHIP");
 					return -1;
@@ -102,7 +102,7 @@ namespace recvmsg
 
 				if (SOCKET_ERROR == WSARecvMsg(sock, ref wsamsg, out var dwBytes, ref over, default))
 				{
-					if ((Win32Error)997 /*WSA_IO_PENDING*/ != WSAGetLastError())
+					if (WSRESULT.WSA_IO_PENDING != WSAGetLastError())
 					{
 						ERR("WSARecvMsg");
 						return -1;
@@ -111,7 +111,7 @@ namespace recvmsg
 
 				//set send interface
 
-				if (SOCKET_ERROR == SetSendInterface(sock, addr))
+				if (!SetSendInterface(sock, addr))
 				{
 					ERR("SetSendInterface");
 					return -1;
@@ -123,8 +123,8 @@ namespace recvmsg
 				//send a few packets
 				for (int i=0; i<5; i++)
 				{
-					int rc = 0;
-					if (SOCKET_ERROR == (rc = sendto(sock, TST_MSG, TST_MSG.Length, 0, mcaddr, mcaddr.Size)))
+					WSRESULT rc = 0;
+					if (!(rc = sendto(sock, TST_MSG, TST_MSG.Length, 0, mcaddr, mcaddr.Size)))
 					{
 						ERR("sendto");
 						return -1;
@@ -202,7 +202,7 @@ namespace recvmsg
 
 		static void InitMcastAddr(out SOCKADDR_INET pmcaddr)
 		{
-			WSAStringToAddress(MCAST_V6, ADDRESS_FAMILY.AF_INET6, default, out pmcaddr).ThrowIfFailed();
+			pmcaddr = WSAStringToAddress(MCAST_V6, ADDRESS_FAMILY.AF_INET6);
 			pmcaddr.Ipv6.sin6_port = htons(DEFAULT_PORT);
 		}
 
@@ -210,7 +210,7 @@ namespace recvmsg
 		{
 			uint dwEnableOption = 1;
 
-			if (SOCKET_ERROR == setsockopt(sock, IPPROTO.IPPROTO_IPV6, 2 /*IPV6_PKTINFO*/, dwEnableOption))
+			if (!setsockopt(sock, IPPROTO.IPPROTO_IPV6, 2 /*IPV6_PKTINFO*/, dwEnableOption))
 			{
 				ERR("setsockopt IPV6_PKTINFO");
 				return false;
@@ -256,14 +256,14 @@ namespace recvmsg
 				return false;
 			}
 
-			if (WSAIoctl(s, WinSockIOControlCode.SIO_ROUTING_INTERFACE_QUERY, destAddr, out localAddr).Failed)
+			if (!WSAIoctl(s, WinSockIOControlCode.SIO_ROUTING_INTERFACE_QUERY, destAddr, out localAddr))
 			{
 				ERR("WSAIoctl");
 				return false;
 			}
 
-			WSAAddressToString(destAddr, null, out _);
-			WSAAddressToString(localAddr, null, out _);
+			WSAAddressToString(destAddr);
+			WSAAddressToString(localAddr);
 
 			return true;
 		}
@@ -280,7 +280,7 @@ namespace recvmsg
 				};
 				if (Family == ADDRESS_FAMILY.AF_UNSPEC)
 				{
-					WSASetLastError(10047 /*WSAEAFNOSUPPORT*/);
+					WSASetLastError(WSRESULT.WSAEAFNOSUPPORT);
 					return unchecked((uint)-1);
 				}
 
@@ -294,7 +294,6 @@ namespace recvmsg
 						SOCKADDR uniAddr = new(tmpUniAddr.Address.lpSockaddr);
 						if (ADDRESS_FAMILY.AF_INET == uniAddr.sa_family)
 						{
-
 							if (pAddr.Ipv4.sin_addr == ((SOCKADDR_IN)uniAddr).sin_addr)
 							{
 								return pTmpAdaptAddr.IfIndex;
@@ -327,13 +326,13 @@ namespace recvmsg
 			return unchecked((uint)-1);
 		}
 
-		static int SetSendInterface(SOCKET s, in SOCKADDR_INET iface)
+		static WSRESULT SetSendInterface(SOCKET s, in SOCKADDR_INET iface)
 		{
 			if (iface.si_family == ADDRESS_FAMILY.AF_INET)
 			{
 				// Setup the v4 option values
 				var rc = setsockopt(s, IPPROTO.IPPROTO_IP, 9 /*IP_MULTICAST_IF*/, iface.Ipv4.sin_addr);
-				if (SOCKET_ERROR == rc)
+				if (!rc)
 					ERR("setsockopt");
 				return rc;
 			}
@@ -344,12 +343,12 @@ namespace recvmsg
 				if (SOCKET_ERROR == unchecked((int)dwIPv6Index))
 					return SOCKET_ERROR;
 				var rc = setsockopt(s, IPPROTO.IPPROTO_IPV6, 9 /*IPV6_MULTICAST_IF*/, dwIPv6Index);
-				if (SOCKET_ERROR == rc)
+				if (rc.Failed)
 					ERR("setsockopt");
 				return rc;
 			}
 
-			WSASetLastError(10047 /*WSAEAFNOSUPPORT*/);
+			WSASetLastError(WSRESULT.WSAEAFNOSUPPORT);
 			return SOCKET_ERROR;
 		}
 
