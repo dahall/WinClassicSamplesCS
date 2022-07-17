@@ -1,0 +1,14 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net6.0</TargetFramework>
+    <LangVersion>latest</LangVersion>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Vanara.PInvoke.Kernel32" Version="3.4.5" />
+    <PackageReference Include="Vanara.PInvoke.WinTrust" Version="3.4.5" />
+  </ItemGroup>
+
+</Project>
