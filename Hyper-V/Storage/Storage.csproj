@@ -8,7 +8,7 @@
 
   <ItemGroup>
     <PackageReference Include="System.Management" Version="6.0.0" />
-    <PackageReference Include="Vanara.VirtualDisk" Version="3.4.3" />
+    <PackageReference Include="Vanara.VirtualDisk" Version="3.4.5" />
   </ItemGroup>
 
 </Project>

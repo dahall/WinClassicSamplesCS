@@ -2,12 +2,12 @@
 
   <PropertyGroup>
     <OutputType>Exe</OutputType>
-    <TargetFramework>net5.0</TargetFramework>
+    <TargetFramework>net6.0</TargetFramework>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Vanara.PInvoke.Ole" Version="3.4.3" />
-    <PackageReference Include="Vanara.PInvoke.Shared" Version="3.4.3" />
+    <PackageReference Include="Vanara.PInvoke.Ole" Version="3.4.5" />
+    <PackageReference Include="Vanara.PInvoke.Shared" Version="3.4.5" />
   </ItemGroup>
 
   <ItemGroup>

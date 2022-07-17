@@ -9,7 +9,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Vanara.PInvoke.EnhancedStorage" Version="3.4.3" />
+    <PackageReference Include="Vanara.PInvoke.EnhancedStorage" Version="3.4.5" />
   </ItemGroup>
 
 </Project>

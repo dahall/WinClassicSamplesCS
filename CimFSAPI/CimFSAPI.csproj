@@ -2,15 +2,15 @@
 
   <PropertyGroup>
     <OutputType>Exe</OutputType>
-    <TargetFramework>net5.0</TargetFramework>
+    <TargetFramework>net6.0</TargetFramework>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <LangVersion>latest</LangVersion>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Vanara.PInvoke.CimFs" Version="3.4.4" />
-    <PackageReference Include="Vanara.PInvoke.Kernel32" Version="3.4.4" />
-    <PackageReference Include="Vanara.PInvoke.Security" Version="3.4.4" />
+    <PackageReference Include="Vanara.PInvoke.CimFs" Version="3.4.5" />
+    <PackageReference Include="Vanara.PInvoke.Kernel32" Version="3.4.5" />
+    <PackageReference Include="Vanara.PInvoke.Security" Version="3.4.5" />
   </ItemGroup>
 
 </Project>

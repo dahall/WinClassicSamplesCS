@@ -6,9 +6,9 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Vanara.PInvoke.NetApi32" Version="3.4.3" />
-    <PackageReference Include="Vanara.PInvoke.NTDSApi" Version="3.4.3" />
-    <PackageReference Include="Vanara.PInvoke.Rpc" Version="3.4.3" />
+    <PackageReference Include="Vanara.PInvoke.NetApi32" Version="3.4.5" />
+    <PackageReference Include="Vanara.PInvoke.NTDSApi" Version="3.4.5" />
+    <PackageReference Include="Vanara.PInvoke.Rpc" Version="3.4.5" />
   </ItemGroup>
 
 </Project>

@@ -7,11 +7,11 @@
 
   <ItemGroup>
     <PackageReference Include="CommandLineParser" Version="2.8.0" />
-    <PackageReference Include="Vanara.PInvoke.FunDisc" Version="3.4.3" />
-    <PackageReference Include="Vanara.PInvoke.IpHlpApi" Version="3.4.3" />
-    <PackageReference Include="Vanara.PInvoke.Ole" Version="3.4.3" />
-    <PackageReference Include="Vanara.PInvoke.WlanApi" Version="3.4.3" />
-    <PackageReference Include="Vanara.PInvoke.WcnApi" Version="3.4.3" />
+    <PackageReference Include="Vanara.PInvoke.FunDisc" Version="3.4.5" />
+    <PackageReference Include="Vanara.PInvoke.IpHlpApi" Version="3.4.5" />
+    <PackageReference Include="Vanara.PInvoke.Ole" Version="3.4.5" />
+    <PackageReference Include="Vanara.PInvoke.WlanApi" Version="3.4.5" />
+    <PackageReference Include="Vanara.PInvoke.WcnApi" Version="3.4.5" />
   </ItemGroup>
 
 </Project>
