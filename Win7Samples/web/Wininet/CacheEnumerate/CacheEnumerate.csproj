@@ -7,6 +7,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Vanara.PInvoke.Kernel32" Version="3.4.5" />
     <PackageReference Include="Vanara.PInvoke.WinINet" Version="3.4.5" />
   </ItemGroup>
 

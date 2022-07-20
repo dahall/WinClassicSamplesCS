@@ -1,7 +1,9 @@
 ﻿using System;
+using System.Text;
 using Vanara.InteropServices;
 using Vanara.PInvoke;
 
+using static Vanara.PInvoke.Kernel32;
 using static Vanara.PInvoke.WinINet;
 
 namespace CacheEnumerate;
@@ -238,11 +240,20 @@ internal class Program
 	This routine is used to log WinInet errors in human readable form.
 	Arguments:
 	err - Error number obtained from GetLastError()
-	str - String pointer holding caller-context information
+	str - String pointer holding caller-context information 
 	Return Value:
 	None.
 	--*/
-	private static void LogInetError(Win32Error err, string str) => Console.Error.Write("{0}: {1}\n", str, err.ToString());
+	static void LogInetError(Win32Error err, string str)
+	{
+		StringBuilder msgBuffer = new(512);
+		var dwResult = FormatMessage(FormatMessageFlags.FORMAT_MESSAGE_FROM_HMODULE, GetModuleHandle("wininet.dll"),
+			(uint)err, LANGID.LANG_USER_DEFAULT, msgBuffer, (uint)msgBuffer.Capacity, default);
+		if (dwResult != 0)
+			Console.Error.Write("{0}: {1}\n", str, msgBuffer);
+		else
+			Console.Error.Write("Error {0} while formatting message for {1} in {2}\n", GetLastError(), err, str);
+	}
 
 	/*++
 	Routine Description:

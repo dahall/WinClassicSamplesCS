@@ -1,7 +1,9 @@
 ﻿using System;
+using System.Linq;
 using System.Runtime.InteropServices;
 using Vanara.InteropServices;
 using Vanara.PInvoke;
+using static Vanara.PInvoke.Kernel32;
 using static Vanara.PInvoke.User32;
 using static Vanara.PInvoke.WinINet;
 
@@ -56,8 +58,8 @@ Done:
 	static Win32Error DoCustomUI(HINTERNET hConnect, HINTERNET hRequest)
 	{
 		Win32Error dwError = Win32Error.ERROR_SUCCESS;
-		using var rgbBuf = new SafeCoTaskMemHandle(1024);
-		uint cbBuf = rgbBuf.Size;
+		var rgbBuf = new byte[1024];
+		int cbBuf = rgbBuf.Length;
 
 		// Prompt for username and password.
 
@@ -72,14 +74,13 @@ Done:
 		InternetSetOption(hConnect, InternetOptionFlags.INTERNET_OPTION_PASSWORD, szPass);
 
 		// Drain the socket.
-		uint cbRead = 0;
+		int cbRead = 0;
 		while (InternetReadFile(hRequest, rgbBuf, cbBuf, out cbRead) && cbRead != 0)
 		{
 		}
 
 		return Win32Error.ERROR_INTERNET_FORCE_RETRY;
 	}
-
 
 	//==============================================================================
 	public static void Main(string[] args)
@@ -91,25 +92,17 @@ Done:
 		string pszObject = default;
 		string pszUser = default;
 		string pszPass = default;
-		byte rgbBuf[1024];
-		uint cbBuf = Marshal.SizeOf(typeof(rgbBuf));
-		uint cbRead;
 
 		// Check usage.
 		if (args.Length < 1)
 		{
-			Console.Error.Write("Usage: httpauth [-c] <server> [<object> [<user> [<pass>]]]\n");
-			Console.Error.Write(" -c: Use custom UI to prompt for user/pass");
-			exit(1);
+			Console.Write("Usage: httpauth [-c] <server> [<object> [<user> [<pass>]]]\n");
+			Console.Write(" -c: Use custom UI to prompt for user/pass");
+			Environment.Exit(1);
 		}
 
 		// Parse arguments.
-		if (args.Length >= 1 && strcmp(args[0], "-c") == 0)
-		{
-			fAllowCustomUI = true;
-			argv++;
-			args.Length--;
-		}
+		fAllowCustomUI = args.Any(a => a == "-c");
 
 		pszHost = args[0];
 
@@ -191,26 +184,24 @@ Done:
 			}
 		} while (dwError == Win32Error.ERROR_INTERNET_FORCE_RETRY);
 
-		SetLastError(dwError);
+		SetLastError((uint)dwError);
 		dwError.ThrowIfFailed("Authentication");
 
 		// Dump some bytes.
-		setmode(fileno(stdout), O_BINARY);
-		while (InternetReadFile(hRequest, rgbBuf, cbBuf, &cbRead))
+		byte[] rgbBuf = new byte[1024];
+		while (InternetReadFile(hRequest, rgbBuf, rgbBuf.Length, out var cbRead))
 		{
 			if (cbRead == 0)
 			{
 				break;
 			}
 
-			fwrite(rgbBuf, 1, cbRead, stdout);
+			Console.Write(string.Join(' ', rgbBuf.Take((int)cbRead).Select(b => $"{b:X}")));
 		}
-
-Done:
 
 		if (pszErr is not null)
 		{
-			Console.Error.Write("Failed on %s, last error %d\n", pszErr, GetLastError());
+			Console.Error.Write("Failed on {0}, last error {1}\n", pszErr, GetLastError());
 		}
 	}
 }
