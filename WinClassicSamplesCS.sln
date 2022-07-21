@@ -273,9 +273,13 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Security", "Security", "{BD
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CodeSigning", "Security\CodeSigning\CodeSigning.csproj", "{4E4EFE27-E464-477E-81EC-25C7494F3576}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CacheEnumerate", "Win7Samples\web\Wininet\CacheEnumerate\CacheEnumerate.csproj", "{EBCA4B00-6277-46D6-AF36-E638CCC610E2}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CacheEnumerate", "Win7Samples\web\Wininet\CacheEnumerate\CacheEnumerate.csproj", "{EBCA4B00-6277-46D6-AF36-E638CCC610E2}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "async", "Win7Samples\web\Wininet\async\async.csproj", "{C1A415DC-597E-4AD8-8A89-C6AF52F5026D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "async", "Win7Samples\web\Wininet\async\async.csproj", "{C1A415DC-597E-4AD8-8A89-C6AF52F5026D}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "winhttp", "winhttp", "{AC7213D9-5A97-429C-B1A0-964B8A9C2F1B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WinHttpPostSample", "Win7Samples\web\winhttp\WinHttpPostSample\WinHttpPostSample.csproj", "{211FD731-0F62-4910-8343-6AA5ADA9686E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -1473,6 +1477,18 @@ Global
 		{C1A415DC-597E-4AD8-8A89-C6AF52F5026D}.Release|x64.Build.0 = Release|Any CPU
 		{C1A415DC-597E-4AD8-8A89-C6AF52F5026D}.Release|x86.ActiveCfg = Release|Any CPU
 		{C1A415DC-597E-4AD8-8A89-C6AF52F5026D}.Release|x86.Build.0 = Release|Any CPU
+		{211FD731-0F62-4910-8343-6AA5ADA9686E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{211FD731-0F62-4910-8343-6AA5ADA9686E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{211FD731-0F62-4910-8343-6AA5ADA9686E}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{211FD731-0F62-4910-8343-6AA5ADA9686E}.Debug|x64.Build.0 = Debug|Any CPU
+		{211FD731-0F62-4910-8343-6AA5ADA9686E}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{211FD731-0F62-4910-8343-6AA5ADA9686E}.Debug|x86.Build.0 = Debug|Any CPU
+		{211FD731-0F62-4910-8343-6AA5ADA9686E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{211FD731-0F62-4910-8343-6AA5ADA9686E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{211FD731-0F62-4910-8343-6AA5ADA9686E}.Release|x64.ActiveCfg = Release|Any CPU
+		{211FD731-0F62-4910-8343-6AA5ADA9686E}.Release|x64.Build.0 = Release|Any CPU
+		{211FD731-0F62-4910-8343-6AA5ADA9686E}.Release|x86.ActiveCfg = Release|Any CPU
+		{211FD731-0F62-4910-8343-6AA5ADA9686E}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -1592,6 +1608,8 @@ Global
 		{4E4EFE27-E464-477E-81EC-25C7494F3576} = {BDA50AE4-E6AF-4861-A580-5A8ED29DBE37}
 		{EBCA4B00-6277-46D6-AF36-E638CCC610E2} = {16F97640-3694-4BA8-98E3-FF4A7C602BE1}
 		{C1A415DC-597E-4AD8-8A89-C6AF52F5026D} = {16F97640-3694-4BA8-98E3-FF4A7C602BE1}
+		{AC7213D9-5A97-429C-B1A0-964B8A9C2F1B} = {44938E1F-6821-476A-A9C1-8D35839D25AF}
+		{211FD731-0F62-4910-8343-6AA5ADA9686E} = {AC7213D9-5A97-429C-B1A0-964B8A9C2F1B}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {82D57A23-9C32-4014-9AFB-25B38D08E1D1}
