@@ -17,7 +17,7 @@ try
 	pJob.Files.Add(args[0], args[1]);
 
 	// Enable local caching for this job
-	BackgroundCopyManager.PeerCacheAdministration.ConfigurationFlags = PeerCaching.Enable | PeerCaching.EnableServer;
+	BackgroundCopyManager.PeerCacheAdministration.ConfigurationFlags = PeerCaching.EnableClient | PeerCaching.EnableServer;
 
 	// Set Max Cache Size to 2% of disk
 	BackgroundCopyManager.PeerCacheAdministration.MaximumCacheSize = 2;
