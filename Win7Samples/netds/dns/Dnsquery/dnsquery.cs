@@ -6,7 +6,7 @@ using Vanara.InteropServices;
 using static Vanara.PInvoke.DnsApi;
 using static Vanara.PInvoke.Ws2_32;
 
-SafeCoTaskMemStruct<IP4_ARRAY> pSrvList = SafeCoTaskMemStruct<IP4_ARRAY>.Null; //pinter to IP4_ARRAY structure
+IN_ADDR? dnsSvr = default;//pinter to IP4_ARRAY structure
 string pOwnerName = default; //owner name to be queried
 DNS_TYPE wType = 0; //Type of the record to be queried
 
@@ -36,17 +36,12 @@ if (args.Length is 4 or 6)
 					// Allocate memory for IP4_ARRAY structure
 					if (args[++i] is not null)
 					{
-						IP4_ARRAY srvList = new()
-						{
-							AddrCount = 1,
-							AddrArray = new[] { new IN_ADDR(inet_addr(args[i])) } //DNS server IP address
-						};
-						if (srvList.AddrArray[0] == IN_ADDR.INADDR_NONE)
+						dnsSvr = new IN_ADDR(inet_addr(args[i]));
+						if (dnsSvr.Value == IN_ADDR.INADDR_NONE || DnsValidateServerStatus(new SOCKADDR(dnsSvr.Value), null, out var stat).Failed || stat != DnsServerStatus.ERROR_SUCCESS)
 						{
 							Console.Write("Invalid DNS server IP address \n");
 							Usage();
 						}
-						pSrvList = new(srvList);
 					}
 					break;
 
@@ -58,15 +53,25 @@ if (args.Length is 4 or 6)
 		else
 			Usage();
 	}
+	if (wType == DNS_TYPE.DNS_TYPE_PTR)
+	{
+		var lookup = new IN_ADDR(inet_addr(pOwnerName));
+		if (lookup == IN_ADDR.INADDR_NONE)
+		{
+			Console.Write("Invalid IP address\n");
+			Usage();
+		}
+		pOwnerName = $"{lookup}.in-addr.arpa";
+	}
 }
 else
 	Usage();
 
 // Calling function DnsQuery_A() to query Host or PTR records
-
+using SafeCoTaskMemStruct<IP4_ARRAY> pSrvList = dnsSvr.HasValue ? new(new IP4_ARRAY(dnsSvr.Value)) : SafeCoTaskMemStruct<IP4_ARRAY>.Null;
 var status = DnsQuery(pOwnerName, //pointer to OwnerName
 	wType, //Type of the record to be queried
-	wType == DNS_TYPE.DNS_TYPE_A ? DNS_QUERY_OPTIONS.DNS_QUERY_BYPASS_CACHE : 0, // Bypasses the resolver cache on the lookup.
+	pSrvList.HasValue ? DNS_QUERY_OPTIONS.DNS_QUERY_BYPASS_CACHE : 0, // Bypasses the resolver cache on the lookup.
 	pSrvList, //contains DNS server IP address
 	out var pDnsRecord); //Resource record comprising the response
 

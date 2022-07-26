@@ -49,12 +49,8 @@ namespace DNSAsyncQuery
 
 			// Initiate asynchronous DnsQuery: Note that QueryResults and QueryCancelContext should be valid till query completes.
 			using var pqc = SafeCoTaskMemHandle.CreateFromStructure(QueryContext);
-			var DnsQueryRequest = new DNS_QUERY_REQUEST
+			var DnsQueryRequest = new DNS_QUERY_REQUEST(QueryContext.QueryType, QueryContext.QueryName, QueryContext.QueryOptions)
 			{
-				Version = DNS_QUERY_REQUEST_VERSION1,
-				QueryName = QueryContext.QueryName,
-				QueryType = QueryContext.QueryType,
-				QueryOptions = QueryContext.QueryOptions,
 				pQueryContext = pqc,
 				pQueryCompletionCallback = QueryCompleteCallback
 			};
@@ -103,16 +99,11 @@ namespace DNSAsyncQuery
 			return (int)Error.ToHRESULT();
 		}
 
-		private static void AllocateQueryContext(out QUERY_CONTEXT QueryContext)
-		{
-			QueryContext = new QUERY_CONTEXT();
-			QueryContext.QueryResults.Version = DNS_QUERY_REQUEST_VERSION1;
-		}
+		private static void AllocateQueryContext(out QUERY_CONTEXT QueryContext) => QueryContext = new() { QueryResults = DNS_QUERY_RESULT.Default };
 
 		// Wrapper function that creates DNS_ADDR_ARRAY from IP address string.
 		private static int CreateDnsServerList(string ServerIp, out SafeAllocatedMemoryHandle pDnsServerList)
 		{
-			DNS_ADDR_ARRAY DnsServerList = default;
 			pDnsServerList = null;
 			using var wsa = SafeWSA.Initialize();
 
@@ -131,10 +122,7 @@ namespace DNSAsyncQuery
 				goto exit;
 			}
 
-			DnsServerList.MaxCount = 1;
-			DnsServerList.AddrCount = 1;
-			DnsServerList.AddrArray = new DNS_ADDR[] { new DNS_ADDR { MaxSa = SockAddr.sa_data } };
-			pDnsServerList = SafeCoTaskMemHandle.CreateFromStructure(DnsServerList);
+			pDnsServerList = SafeCoTaskMemHandle.CreateFromStructure(new DNS_ADDR_ARRAY(SockAddr));
 
 			exit:
 
