@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
 using Vanara.Extensions;
@@ -38,14 +39,16 @@ namespace DrtSdkSample
 		//
 		private class DRT_CONTEXT
 		{
-			public HDRT hDrt;
+			public SafeHDRT hDrt;
 			public SafeEventHandle eventHandle;
 			public SafeRegisteredWaitHandle DrtWaitEvent;
 			public int BootstrapProviderType;
 			public int SecurityProviderType;
 			public ushort port;
 			public DRT_SETTINGS settings;
-			public REG_CONTEXT[] registrations;
+			public SafePCCERT_CONTEXT pRoot;
+			public SafePCCERT_CONTEXT pLocal;
+			public List<REG_CONTEXT> registrations = new List<REG_CONTEXT>();
 		}
 
 		//********************************************************************************************
@@ -216,8 +219,9 @@ namespace DrtSdkSample
 			// *Transport*
 			//
 
-			var hr = DrtCreateIpv6UdpTransport(DRT_SCOPE.DRT_GLOBAL_SCOPE, 0, 300, ref Drt.port, out Drt.settings.hTransport);
+			var hr = DrtCreateIpv6UdpTransport(DRT_SCOPE.DRT_GLOBAL_SCOPE, 0, 300, ref Drt.port, out var hTransport);
 			if (hr.Failed) { DisplayError(hr, "DrtCreateTransport"); goto Cleanup; }
+			Drt.settings.hTransport = hTransport.ReleaseOwnership();
 
 			//
 			// *Security Provider*
@@ -229,29 +233,27 @@ namespace DrtSdkSample
 			}
 			else if (Drt.SecurityProviderType == 1) //Derived Key Security Provider
 			{
-				hr = ReadCertFromFile("RootCertificate.cer", out var pRoot, out _);
+				hr = ReadCertFromFile("RootCertificate.cer", out Drt.pRoot, out _);
 				if (hr.Failed)
 				{
 					Console.Write("No RootCertificate.cer file found in the current directory, Creating a new root certificate.\n");
 					hr = MakeCert("RootCertificate.cer", "RootCert", default, default);
 					if (hr.Failed) { DisplayError(hr, "MakeCert"); goto Cleanup; }
-					hr = ReadCertFromFile("RootCertificate.cer", out pRoot, out _);
+					hr = ReadCertFromFile("RootCertificate.cer", out Drt.pRoot, out _);
 					if (hr.Failed) { DisplayError(hr, "ReadCertFromFile"); goto Cleanup; }
 				}
 
 				// We now have a root cert, read an existing local cert or create one based on root cert
-				hr = ReadCertFromFile("LocalCertificate.cer", out var pLocal, out _);
+				hr = ReadCertFromFile("LocalCertificate.cer", out Drt.pLocal, out _);
 				if (hr.Failed)
 				{
 					Console.Write("No LocalCertificate.cer file found in the current directory, Creating a new local certificate.\n");
 					hr = MakeCert("LocalCertificate.cer", "LocalCert", "RootCertificate.cer", "RootCert");
 					if (hr.Failed) { DisplayError(hr, "MakeCert"); goto Cleanup; }
-					hr = ReadCertFromFile("LocalCertificate.cer", out pLocal, out _);
+					hr = ReadCertFromFile("LocalCertificate.cer", out Drt.pLocal, out _);
 					if (hr.Failed) { DisplayError(hr, "ReadCertFromFile"); goto Cleanup; }
 				}
-				hr = DrtCreateDerivedKeySecurityProvider(pRoot, pLocal, out Drt.settings.pSecurityProvider);
-				pRoot.Dispose();
-				pLocal.Dispose();
+				hr = DrtCreateDerivedKeySecurityProvider(Drt.pRoot, Drt.pLocal, out Drt.settings.pSecurityProvider);
 			}
 			else if (Drt.SecurityProviderType == 2) //Custom Security Provider
 			{
@@ -372,7 +374,7 @@ namespace DrtSdkSample
 		{
 			Console.Write("Enter {0} as a string of hex digits, Example: 01 ff 0a b8 80 z\n", pcwszKeyName);
 			Console.Write("The current keysize is {0} bytes. Enter z as the last digit and the remainder of the key will be zero-filled (Most significant byte is first)\n", KEYSIZE);
-			int i;
+			uint i;
 			for (i = KEYSIZE - 1; i >= 0; i--)
 			{
 				if (!ReadHex(out var hexdigit, 2))
@@ -409,40 +411,22 @@ namespace DrtSdkSample
 			}
 		}
 
-		class SafeDRT_DATA : SafeNativeArray<byte>
-		{
-			public SafeDRT_DATA(int bufferSize) : base(bufferSize, 4)
-			{
-				handle.Write(cb);
-			}
-
-			public uint cb => (uint)Size - 4;
-
-			public IntPtr pb => handle.Offset(4);
-
-			public override void Fill(byte value) => handle.Offset(4).FillMemory(value, cb);
-
-			public static explicit operator DRT_DATA(SafeDRT_DATA d) => d.handle.ToStructure<DRT_DATA>();
-			public static implicit operator IntPtr(SafeDRT_DATA d) => d.handle;
-		}
-
 		//********************************************************************************************
 		// Function: PerformDrtSearch
 		//
 		// Description: Initializes and performs a search through the DRT
 		//
 		//********************************************************************************************
-		private static unsafe bool PerformDrtSearch(DRT_CONTEXT Drt, int SearchType)
+		private static unsafe bool PerformDrtSearch(in DRT_CONTEXT Drt, int SearchType)
 		{
 			HRESULT hr = HRESULT.S_OK;
 			uint dwSize = 1024;
 			bool fKeyFound = false;
-			DRT_SEARCH_INFO* pSearchInfo = default;
 			HDRT_SEARCH_CONTEXT SearchContext = default;
-			DRT_SEARCH_RESULT* pSearchResult = default;
-			SafeDRT_DATA searchKey = new SafeDRT_DATA(KEYSIZE);
-			SafeDRT_DATA minKey = new SafeDRT_DATA(KEYSIZE);
-			SafeDRT_DATA maxKey = new SafeDRT_DATA(KEYSIZE);
+			using SafeCoTaskMemStruct<DRT_SEARCH_RESULT> pSearchResult = new SafeCoTaskMemStruct<DRT_SEARCH_RESULT>();
+			using SafeDRT_DATA searchKey = new SafeDRT_DATA(KEYSIZE);
+			using SafeDRT_DATA minKey = new SafeDRT_DATA(KEYSIZE);
+			using SafeDRT_DATA maxKey = new SafeDRT_DATA(KEYSIZE);
 
 			//Create a manual reset event 
 			//The DRT will reset the event when the search result buffer has been consumed
@@ -454,56 +438,53 @@ namespace DrtSdkSample
 			}
 
 
-			//Set Some Defaults for SearchInfo
-			var SearchInfo = new DRT_SEARCH_INFO
-			{
-				dwSize = (uint)Marshal.SizeOf<DRT_SEARCH_INFO>(),
-				fIterative = false,
-				fAllowCurrentInstanceMatch = true,
-				fAnyMatchInRange = false,
-				cMaxEndpoints = 1,
-				pMinimumKey = minKey,
-				pMaximumKey = maxKey
-			};
-
 			if (!GetKeyFromUser("Search Key", searchKey))
 				goto Cleanup;
 
 			if (SearchType == 2) //Simple DRT Search
 			{
-				pSearchInfo = default;
-			}
-			else if (SearchType == 3) //Nearest Match Search
-			{
-				SearchInfo.fAnyMatchInRange = false;
-				pSearchInfo = &SearchInfo;
-				minKey.Fill(0, KEYSIZE);
-				maxKey.Fill(0xFF, KEYSIZE);
-			}
-			else if (SearchType == 4) //Iterative Search
-			{
-				SearchInfo.fIterative = true;
-				pSearchInfo = &SearchInfo;
-				minKey.pb = searchKey.pb;
-				maxKey.pb = searchKey.pb;
-			}
-			else if (SearchType == 5) //Range Search
-			{
-				SearchInfo.fAnyMatchInRange = true;
-				if (!GetKeyFromUser("Min Search Key (01 z)", minKeyData))
-					goto Cleanup;
-				if (!GetKeyFromUser("Max Search Key (ff z)", maxKeyData))
-					goto Cleanup;
-				pSearchInfo = &SearchInfo;
+				hr = DrtStartSearch(Drt.hDrt, (DRT_DATA)searchKey, IntPtr.Zero, 5000, hDrtSearchEvent, default, out SearchContext);
 			}
 			else
 			{
-				Console.Write("Invalid Search Type passed to DrtPerformSearch");
-				goto Cleanup;
+				//Set Some Defaults for SearchInfo
+				var SearchInfo = new DRT_SEARCH_INFO
+				{
+					dwSize = (uint)Marshal.SizeOf<DRT_SEARCH_INFO>(),
+					fIterative = false,
+					fAllowCurrentInstanceMatch = true,
+					fAnyMatchInRange = false,
+					cMaxEndpoints = 1,
+					pMinimumKey = minKey,
+					pMaximumKey = maxKey
+				};
+				if (SearchType == 3) //Nearest Match Search
+				{
+					SearchInfo.fAnyMatchInRange = false;
+					minKey.Fill(0, KEYSIZE);
+					maxKey.Fill(0xFF, KEYSIZE);
+				}
+				else if (SearchType == 4) //Iterative Search
+				{
+					SearchInfo.fIterative = true;
+					searchKey.AsSpan<byte>(searchKey.Size).CopyTo(minKey.AsSpan<byte>(minKey.Size));
+				}
+				else if (SearchType == 5) //Range Search
+				{
+					SearchInfo.fAnyMatchInRange = true;
+					if (!GetKeyFromUser("Min Search Key (01 z)", minKey))
+						goto Cleanup;
+					if (!GetKeyFromUser("Max Search Key (ff z)", maxKey))
+						goto Cleanup;
+				}
+				else
+				{
+					Console.Write("Invalid Search Type passed to DrtPerformSearch");
+					goto Cleanup;
+				}
+
+				hr = DrtStartSearch(Drt.hDrt, (DRT_DATA)searchKey, SearchInfo, 5000, hDrtSearchEvent, default, out SearchContext);
 			}
-
-			hr = DrtStartSearch(Drt.hDrt, (DRT_DATA)searchKey, *pSearchInfo, 5000, hDrtSearchEvent, default, out SearchContext);
-
 			if (hr.Failed) { DisplayError(hr, "DrtStartSearch"); goto Cleanup; }
 
 			do
@@ -517,42 +498,31 @@ namespace DrtSdkSample
 					{
 						continue;
 					}
-					pSearchResult = (DRT_SEARCH_RESULT*)malloc(dwSize);
-					if (pSearchResult == default)
-					{
-						Console.Write("Error: Out of memory\n");
-						break;
-					}
+					pSearchResult.Size = dwSize;
 					hr = DrtGetSearchResult(SearchContext, dwSize, pSearchResult);
-					if (hr != S_OK)
+					if (hr != HRESULT.S_OK)
 					{
 						continue;
 					}
-					if (pSearchResult.type == DRT_MATCH_EXACT)
+					if (pSearchResult.AsRef().type == DRT_MATCH_TYPE.DRT_MATCH_EXACT)
 					{
 						fKeyFound = true;
-						Console.Write("*Found Key*: ");
-						for (int i = pSearchResult.registration.key.cb - 1; i >= 0; i--)
-							Console.Write("%02x ", pSearchResult.registration.key.pb[i]);
-						Console.Write("\n");
+						Console.WriteLine("*Found Key*: ");
+						Console.Write(((byte[])pSearchResult.AsRef().registration.key).ToHexDumpString());
 						PrintSearchPath(SearchContext);
 					}
-					else if (pSearchResult.type == DRT_MATCH_NEAR)
+					else if (pSearchResult.AsRef().type == DRT_MATCH_TYPE.DRT_MATCH_NEAR)
 					{
-						Console.Write("*Found Near Match*: ");
-						for (int i = pSearchResult.registration.key.cb - 1; i >= 0; i--)
-							Console.Write("%02x ", pSearchResult.registration.key.pb[i]);
-						Console.Write("\n");
+						Console.WriteLine("*Found Near Match*: ");
+						Console.Write(((byte[])pSearchResult.AsRef().registration.key).ToHexDumpString());
 						if (SearchType == 3)
 							fKeyFound = true;
 						PrintSearchPath(SearchContext);
 					}
-					else if (pSearchResult.type == DRT_MATCH_INTERMEDIATE)
+					else if (pSearchResult.AsRef().type == DRT_MATCH_TYPE.DRT_MATCH_INTERMEDIATE)
 					{
-						Console.Write("Intermediate Match: ");
-						for (int i = pSearchResult.registration.key.cb - 1; i >= 0; i--)
-							Console.Write("%02x ", pSearchResult.registration.key.pb[i]);
-						Console.Write("\n");
+						Console.WriteLine("Intermediate Match: ");
+						Console.Write(((byte[])pSearchResult.AsRef().registration.key).ToHexDumpString());
 						DrtContinueSearch(SearchContext);
 					}
 				}
@@ -561,18 +531,13 @@ namespace DrtSdkSample
 					Console.Write("Drt Search Timed out\n");
 					break;
 				}
-				if (pSearchResult)
-				{
-					free(pSearchResult);
-					pSearchResult = default;
-				}
-			} while ((hr == DRT_E_SEARCH_IN_PROGRESS) || (hr == S_OK));
+			} while ((hr == HRESULT.DRT_E_SEARCH_IN_PROGRESS) || (hr == HRESULT.S_OK));
 			DrtEndSearch(SearchContext);
 
 			//
 			// When the search is finished, the HRESULT should be DRT_E_NO_MORE
 			//
-			if (hr != DRT_E_NO_MORE)
+			if (hr != HRESULT.DRT_E_NO_MORE)
 			{
 				Console.Write("Unexpected HRESULT from DrtGetSearchResult: 0x%x\n", hr);
 			}
@@ -581,10 +546,6 @@ namespace DrtSdkSample
 				Console.Write("Could not find key\n");
 
 			Cleanup:
-			if (pSearchResult)
-				free(pSearchResult);
-			if (hDrtSearchEvent)
-				CloseHandle(hDrtSearchEvent);
 
 			return true;
 		}
@@ -607,15 +568,14 @@ namespace DrtSdkSample
 			Console.Write("Search Path:\n");
 			for (uint i = 0; i < pSearchPath.Value.AddressCount; i++)
 			{
-				var addr = pSearchPath.Value.AddressList[i].socketAddress;
-				Console.Write("Port: %i Flags: 0x%x, Nearness: %i Latency: %i\n",
-				addr..sin6_port,
-				pSearchPath.AddressList[i].flags,
-				pSearchPath.AddressList[i].nearness,
-				pSearchPath.AddressList[i].latency);
+				var addr = pSearchPath.AsRef().AddressList[i].socketAddress;
+				Console.Write("Port: {0} Flags: {1}, Nearness: {2} Latency: {3}\n",
+					((Ws2_32.SOCKADDR_IN6)addr).sin6_port,
+					pSearchPath.AsRef().AddressList[i].flags,
+					pSearchPath.AsRef().AddressList[i].nearness,
+					pSearchPath.AsRef().AddressList[i].latency);
 			}
 		}
-
 
 		//********************************************************************************************
 		// Function: RegisterKey
@@ -623,27 +583,12 @@ namespace DrtSdkSample
 		// Description: Registers a key in the current DRT Instance
 		//
 		//********************************************************************************************
-		private static bool RegisterKey(DRT_CONTEXT Drt)
+		private static bool RegisterKey(in DRT_CONTEXT Drt)
 		{
-			HRESULT hr = S_OK;
-			byte* newKeyData = default;
-			byte* newPayloadData = default;
-			REG_CONTEXT reg = default;
-			CERT_CONTEXT* pRegCertContext = default;
-
-			newKeyData = (byte*)malloc(KEYSIZE);
-			newPayloadData = (byte*)malloc(KEYSIZE);
-			reg.regInfo.key.cb = KEYSIZE;
-			reg.regInfo.key.pb = newKeyData;
-			reg.regInfo.appData.cb = KEYSIZE;
-			reg.regInfo.appData.pb = newPayloadData;
-			reg.hDrtReg = default;
-
-			if (!newKeyData || !newPayloadData)
-			{
-				Console.Write("Not enough memory");
-				goto Cleanup;
-			}
+			HRESULT hr = HRESULT.S_OK;
+			using var newKey = new SafeDRT_DATA(KEYSIZE);
+			using var newPayload = new SafeDRT_DATA(KEYSIZE);
+			SafePCCERT_CONTEXT pRegCertContext = default;
 
 			if (Drt.SecurityProviderType == 1) // Derived Key Security Provider
 			{
@@ -651,42 +596,39 @@ namespace DrtSdkSample
 				hr = MakeCert("LastRegisteredCert.cer", "LocalCert", "RootCertificate.cer", "RootCert");
 				if (hr.Failed) { DisplayError(hr, "MakeCert"); goto Cleanup; }
 				Console.Write("Creating a new key based on the generated certificate...\n");
-				hr = ReadCertFromFile("LastRegisteredCert.cer", &pRegCertContext, default);
+				hr = ReadCertFromFile("LastRegisteredCert.cer", out pRegCertContext, out _);
 				if (hr.Failed) { DisplayError(hr, "ReadCertFromFile"); goto Cleanup; }
-				hr = DrtCreateDerivedKey(pRegCertContext, &reg.regInfo.key);
+				hr = DrtCreateDerivedKey(pRegCertContext, newKey);
 				if (hr.Failed) { DisplayError(hr, "DrtCreateDerivedKey"); goto Cleanup; }
 			}
 			else
 			{
-				if (!GetKeyFromUser("Registration Key", newKeyData))
+				if (!GetKeyFromUser("Registration Key", newKey))
 					goto Cleanup;
 			}
 
-			hr = DrtRegisterKey(Drt.hDrt, &reg.regInfo, pRegCertContext, &reg.hDrtReg);
+			REG_CONTEXT reg = new REG_CONTEXT();
+			reg.regInfo.appData = (DRT_DATA)newPayload;
+			reg.regInfo.key = (DRT_DATA)newKey;
+
+			hr = DrtRegisterKey(Drt.hDrt, reg.regInfo, pRegCertContext.DangerousGetHandle(), out reg.hDrtReg);
 			if (hr.Failed) { DisplayError(hr, "DrtRegisterKey"); goto Cleanup; }
 
 			if (hr.Succeeded)
 			{
-				Drt.registrations.push_back(reg);
+				Drt.registrations.Add(reg);
 
 				// newKeyData and newPayloadData will be freed on unregister
-				newKeyData = default;
-				newPayloadData = default;
+				newKey.TakeOwnership();
+				newPayload.TakeOwnership();
 
-				Console.Write("Successfully Registered: ");
-				for (int i = reg.regInfo.key.cb - 1; i >= 0; i--)
-					Console.Write("%02x ", reg.regInfo.key.pb[i]);
-				Console.Write("\n");
+				Console.WriteLine("Successfully Registered: ");
+				Console.Write(((byte[])reg.regInfo.key).ToHexDumpString());
 			}
 
-			Cleanup:
+		Cleanup:
 
-			if (newKeyData)
-				free(newKeyData);
-			if (newPayloadData)
-				free(newPayloadData);
-			if (pRegCertContext)
-				CertFreeCertificateContext(pRegCertContext);
+			pRegCertContext?.Dispose();
 			return true;
 		}
 
@@ -697,39 +639,21 @@ namespace DrtSdkSample
 		// Description: Unregisters a previously registered key
 		//
 		//********************************************************************************************
-		private static bool UnRegisterKey(DRT_CONTEXT Drt)
+		private static bool UnRegisterKey(in DRT_CONTEXT Drt)
 		{
-			int choice;
 			Console.Write("Current Registrations:\n");
-			for (uint i; i < Drt.registrations.size(); i++)
-			{
-				Console.Write("%i: ", i);
-				for (int k = Drt.registrations[i].regInfo.key.cb - 1; k >= 0; k--)
-					Console.Write(" %02x", Drt.registrations[i].regInfo.key.pb[k]);
-				Console.Write("\n");
-			}
-			Console.Write("Enter a registration to unregister (or c to cancel):");
-			if ((wscanf_s("%i", &choice) < 1) ||
-			(choice >= (int)Drt.registrations.size()) ||
-			(choice < 0))
-			{
-				FlushCurrentLine();
+			var choice = GetUserChoice(Drt.registrations.Select(r => ((byte[])r.regInfo.key).ToHexDumpString(KEYSIZE, KEYSIZE, 0)).Append("Cancel").ToArray()) - 1;
+			if (choice < 0 || choice == Drt.registrations.Count)
 				goto Cleanup;
-			}
-			FlushCurrentLine();
 
-			Console.Write("Unregistering key: ");
-			for (int k = Drt.registrations[choice].regInfo.key.cb; k <= 0; k++)
-				Console.Write(" %02x", Drt.registrations[choice].regInfo.key.pb[k]);
-			Console.Write("\n");
+			Console.WriteLine("Unregistering key: ");
+			Console.Write(((byte[])Drt.registrations[choice].regInfo.key).ToHexDumpString(KEYSIZE, KEYSIZE, 0));
 
 			DrtUnregisterKey(Drt.registrations[choice].hDrtReg);
 
-			if (Drt.registrations[choice].regInfo.key.pb)
-				free(Drt.registrations[choice].regInfo.key.pb);
-			if (Drt.registrations[choice].regInfo.appData.pb)
-				free(Drt.registrations[choice].regInfo.appData.pb);
-			Drt.registrations.erase(Drt.registrations.begin() + choice);
+			Marshal.FreeHGlobal(Drt.registrations[choice].regInfo.key.pb);
+			Marshal.FreeHGlobal(Drt.registrations[choice].regInfo.appData.pb);
+			Drt.registrations.RemoveAt(choice);
 
 			Cleanup:
 			return true;
@@ -744,33 +668,18 @@ namespace DrtSdkSample
 		//********************************************************************************************
 		private static void CleanupDrt(DRT_CONTEXT Drt)
 		{
-			for (uint i; i < Drt.registrations.size(); i++)
+			foreach (var reg in Drt.registrations)
 			{
-				DrtUnregisterKey(Drt.registrations[i].hDrtReg);
+				DrtUnregisterKey(reg.hDrtReg);
 
-				if (Drt.registrations[i].regInfo.key.pb)
-					free(Drt.registrations[i].regInfo.key.pb);
-				if (Drt.registrations[i].regInfo.appData.pb)
-					free(Drt.registrations[i].regInfo.appData.pb);
+				Marshal.FreeHGlobal(reg.regInfo.key.pb);
+				Marshal.FreeHGlobal(reg.regInfo.appData.pb);
 			}
-			Drt.registrations.clear();
+			Drt.registrations.Clear();
 
-			if (Drt.DrtWaitEvent != default)
-			{
-				UnregisterWait(Drt.DrtWaitEvent);
-			}
-
-			if (Drt.hDrt != default)
-			{
-				DrtClose(Drt.hDrt);
-				Drt.hDrt = default;
-			}
-
-			if (Drt.eventHandle != default)
-			{
-				CloseHandle(Drt.eventHandle);
-				Drt.eventHandle = default;
-			}
+			Drt.DrtWaitEvent?.Dispose();
+			Drt.hDrt?.Dispose();
+			Drt.eventHandle?.Dispose();
 
 			if (Drt.settings.pBootstrapProvider != default)
 			{
@@ -792,17 +701,25 @@ namespace DrtSdkSample
 					DrtDeleteCustomSecurityProvider(Drt.settings.pSecurityProvider);
 			}
 
-			if (Drt.pRoot != default)
-			{
-				CertFreeCertificateContext(Drt.pRoot);
-			}
-
-			if (Drt.pLocal != default)
-			{
-				CertFreeCertificateContext(Drt.pLocal);
-			}
+			Drt.pRoot?.Dispose();
+			Drt.pLocal?.Dispose();
 		}
 
+		private static void DrtDeleteCustomSecurityProvider(IntPtr pProvider)
+		{
+			if (pProvider == IntPtr.Zero)
+				return;
+
+			//DRT_SECURITY_PROVIDER pSecProvider = GetGCObject<DRT_SECURITY_PROVIDER>(pProvider);
+			FreeGCPtr(pProvider);
+		}
+
+		private static void DrtDeleteCustomBootstrapResolver(IntPtr pResolver)
+		{
+			CustomDnsBootStrapper pBootStrapper = GetGCObject<CustomDnsBootStrapper>(pResolver);
+			pBootStrapper.Release();
+			FreeGCPtr(pResolver);
+		}
 
 		//********************************************************************************************
 		// Function: Main

@@ -320,7 +320,7 @@ namespace DrtSdkSample
 			//Custom DNS resolver Register does nothing at this time
 			HRESULT.S_OK;
 
-		private void Release()
+		public void Release()
 		{
 			if (InterlockedDecrement(ref m_lRefCount) == 0)
 			{
