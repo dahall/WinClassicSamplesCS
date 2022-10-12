@@ -8,8 +8,8 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Vanara.PInvoke.Pdh" Version="3.4.5" />
-    <PackageReference Include="Vanara.Windows.Forms" Version="3.4.5" />
+    <PackageReference Include="Vanara.PInvoke.Pdh" Version="3.4.9" />
+    <PackageReference Include="Vanara.Windows.Forms" Version="3.4.9" />
   </ItemGroup>
 
 </Project>

@@ -1547,7 +1547,7 @@ namespace ISCSI
 						{
 							using var sockaddr = new SOCKADDR(0U);
 							int sockaddrlen = sockaddr.Size;
-							Status = WSAStringToAddress(IdText, ADDRESS_FAMILY.AF_INET, default, sockaddr, ref sockaddrlen);
+							Status = (Win32Error)WSAStringToAddress(IdText, ADDRESS_FAMILY.AF_INET, default, sockaddr, ref sockaddrlen);
 							if (Status != Win32Error.ERROR_SUCCESS)
 							{
 								return Status;
@@ -1560,7 +1560,7 @@ namespace ISCSI
 						{
 							using var sockaddr = new SOCKADDR(default(SOCKADDR_IN6));
 							int sockaddrlen = sockaddr.Size;
-							Status = WSAStringToAddress(IdText, ADDRESS_FAMILY.AF_INET6, default, sockaddr, ref sockaddrlen);
+							Status = (Win32Error)WSAStringToAddress(IdText, ADDRESS_FAMILY.AF_INET6, default, sockaddr, ref sockaddrlen);
 							if (Status != Win32Error.ERROR_SUCCESS)
 							{
 								return Status;
@@ -1653,7 +1653,7 @@ namespace ISCSI
 						{
 							using var sockaddr = new SOCKADDR(0U);
 							int sockaddrlen = sockaddr.Size;
-							Status = WSAStringToAddress(IdText, ADDRESS_FAMILY.AF_INET, default, sockaddr, ref sockaddrlen);
+							Status = (Win32Error)WSAStringToAddress(IdText, ADDRESS_FAMILY.AF_INET, default, sockaddr, ref sockaddrlen);
 							if (Status != Win32Error.ERROR_SUCCESS)
 							{
 								return Status;
@@ -1666,7 +1666,7 @@ namespace ISCSI
 						{
 							using var sockaddr = new SOCKADDR(default(SOCKADDR_IN6));
 							int sockaddrlen = sockaddr.Size;
-							Status = WSAStringToAddress(IdText, ADDRESS_FAMILY.AF_INET6, default, sockaddr, ref sockaddrlen);
+							Status = (Win32Error)WSAStringToAddress(IdText, ADDRESS_FAMILY.AF_INET6, default, sockaddr, ref sockaddrlen);
 							if (Status != Win32Error.ERROR_SUCCESS)
 							{
 								return Status;

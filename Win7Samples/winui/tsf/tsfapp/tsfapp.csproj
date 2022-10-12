@@ -5,7 +5,7 @@
     <TargetFramework>net48</TargetFramework>
 	<LangVersion>latest</LangVersion>
     <UseWindowsForms>true</UseWindowsForms>
-    <DocumentationFile>C:\Users\dahall\Documents\GitHubRepos\WinClassicSamplesCS\Win7Samples\winui\tsf\tsfapp\tsfapp.xml</DocumentationFile>
+    <DocumentationFile>.\tsfapp.xml</DocumentationFile>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
 
@@ -18,9 +18,9 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Vanara.PInvoke.Ole" Version="3.4.5" />
-    <PackageReference Include="Vanara.PInvoke.User32" Version="3.4.5" />
-    <PackageReference Include="Vanara.PInvoke.TextServicesFramework" Version="3.4.5" />
+    <PackageReference Include="Vanara.PInvoke.Ole" Version="3.4.9" />
+    <PackageReference Include="Vanara.PInvoke.User32" Version="3.4.9" />
+    <PackageReference Include="Vanara.PInvoke.TextServicesFramework" Version="3.4.9" />
   </ItemGroup>
 
 </Project>

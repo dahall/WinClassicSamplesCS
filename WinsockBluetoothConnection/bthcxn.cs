@@ -157,7 +157,7 @@ namespace WinsockBluetoothConnection
 					SOCKADDR_BTH RemoteBthAddr = default;
 					int iAddrLen = Marshal.SizeOf(RemoteBthAddr);
 					using var pRemoteBthAddr = new PinnedObject(RemoteBthAddr);
-					ulRetCode = (uint)WSAStringToAddress(g_szRemoteAddr, ADDRESS_FAMILY.AF_BTH, default, new SOCKADDR(pRemoteBthAddr), ref iAddrLen);
+					ulRetCode = (uint)(int)WSAStringToAddress(g_szRemoteAddr, ADDRESS_FAMILY.AF_BTH, default, new SOCKADDR(pRemoteBthAddr), ref iAddrLen);
 					if (CXN_SUCCESS != ulRetCode)
 					{
 						Console.Write("-FATAL- | Unable to get address of the remote radio having formated address-string {0}\n", g_szRemoteAddr);
@@ -247,7 +247,7 @@ namespace WinsockBluetoothConnection
 				iResult = CXN_SUCCESS;
 				var bContinueLookup = false;
 				uint ulPQSSize = (uint)Marshal.SizeOf(typeof(WSAQUERYSET));
-				iResult = (uint)WSALookupServiceBegin(new WSAQUERYSET(NS.NS_BTH), ulFlags, out var hLookup);
+				iResult = (Win32Error)WSALookupServiceBegin(new WSAQUERYSET(NS.NS_BTH), ulFlags, out var hLookup);
 
 				//
 				// Even if we have an error, we want to continue until we
@@ -299,15 +299,15 @@ namespace WinsockBluetoothConnection
 					}
 					else
 					{
-						iResult = WSAGetLastError();
-						if (Win32Error.WSA_E_NO_MORE == iResult)
+						var wResult = WSAGetLastError();
+						if (WSRESULT.WSA_E_NO_MORE == wResult)
 						{ //No more data
 						  //
 						  // No more devices found. Exit the lookup.
 						  //
 							bContinueLookup = false;
 						}
-						else if (Win32Error.WSAEFAULT == iResult)
+						else if (WSRESULT.WSAEFAULT == wResult)
 						{
 							//
 							// The buffer for QUERYSET was insufficient.
@@ -324,7 +324,7 @@ namespace WinsockBluetoothConnection
 						}
 						else
 						{
-							Console.Write("=CRITICAL= | WSALookupServiceNext() failed with error code {0}\n", iResult);
+							Console.Write("=CRITICAL= | WSALookupServiceNext() failed with error code {0}\n", wResult);
 							bContinueLookup = false;
 						}
 					}

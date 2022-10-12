@@ -55,7 +55,7 @@ namespace NetworkCost
 			var socketIoctl = WSASocket(ADDRESS_FAMILY.AF_INET6, SOCK.SOCK_DGRAM, 0, IntPtr.Zero, 0, WSA_FLAG.WSA_FLAG_OVERLAPPED);
 			if (socketIoctl == SOCKET.INVALID_SOCKET)
 			{
-				dwErr = WSAGetLastError();
+				dwErr = (Win32Error)WSAGetLastError();
 				Console.Write("WSASocket failed, (dwErr = {0}).", dwErr);
 				return dwErr;
 			}
@@ -67,12 +67,12 @@ namespace NetworkCost
 			// sort addresses
 			using var ppSocketAddrList = SafeHGlobalHandle.CreateFromStructure(pSocketAddrList);
 			uint dwSize = 4U + (uint)(Marshal.SizeOf<SOCKET_ADDRESS>() * pSocketAddrList.iAddressCount);
-			dwErr = WSAIoctl(socketIoctl, WinSockIOControlCode.SIO_ADDRESS_LIST_SORT, ppSocketAddrList, dwSize, ppSocketAddrList, dwSize, out var dwBytes);
+			WSRESULT err = WSAIoctl(socketIoctl, WinSockIOControlCode.SIO_ADDRESS_LIST_SORT, ppSocketAddrList, dwSize, ppSocketAddrList, dwSize, out var dwBytes);
 			pSocketAddrList = ppSocketAddrList.ToStructure<SOCKET_ADDRESS_LIST>();
 
-			if (dwErr == SOCKET_ERROR)
+			if (err == SOCKET_ERROR)
 			{
-				dwErr = WSAGetLastError();
+				dwErr = (Win32Error)err;
 				Console.Write("WSAIoctl sort address failed, (dwErr = {0}).", dwErr);
 				return dwErr;
 			}
@@ -134,11 +134,11 @@ namespace NetworkCost
 					}
 
 					// determine the preferred IP address
-					dwErr = GetPreferredAddress(destAddrList.ToArray(), out socketAddress);
-					if (dwErr != NO_ERROR)
+					var err = GetPreferredAddress(destAddrList.ToArray(), out socketAddress);
+					if (err != NO_ERROR)
 					{
-						Console.Write("WSAIoctl failed, (dwErr = {0}).", dwErr);
-						hr = (HRESULT)dwErr;
+						Console.Write("WSAIoctl failed, (err = {0}).", err);
+						hr = (HRESULT)err;
 					}
 				}
 				else

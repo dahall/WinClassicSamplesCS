@@ -6,8 +6,8 @@
 
   <ItemGroup>
     <PackageReference Include="Microsoft.Win32.Registry" Version="5.0.0" />
-    <PackageReference Include="Vanara.PInvoke.Shell32" Version="3.4.5" />
-    <PackageReference Include="Vanara.PInvoke.UxTheme" Version="3.4.5" />
+    <PackageReference Include="Vanara.PInvoke.Shell32" Version="3.4.9" />
+    <PackageReference Include="Vanara.PInvoke.UxTheme" Version="3.4.9" />
   </ItemGroup>
 
 </Project>

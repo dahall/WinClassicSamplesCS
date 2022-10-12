@@ -7,7 +7,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Vanara.BITS" Version="3.4.6" />
+    <PackageReference Include="Vanara.BITS" Version="3.4.9" />
   </ItemGroup>
 
 </Project>

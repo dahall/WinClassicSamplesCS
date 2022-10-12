@@ -65,7 +65,7 @@ namespace DNSAsyncNetworkNameResolution
 			// Asynchronous query context structure.
 			NativeOverlapped QueryOverlapped = default;
 			hEvent = CompleteEvent.DangerousGetHandle();
-			Error = GetAddrInfoExW(args[0], "http", NS.NS_ALL, default, &Hints, out var queryResults, default, &QueryOverlapped, QueryCompleteCallback, &CancelHandle);
+			Error = (Win32Error)GetAddrInfoExW(args[0], "http", NS.NS_ALL, default, &Hints, out var queryResults, default, &QueryOverlapped, QueryCompleteCallback, &CancelHandle);
 
 			// If GetAddrInfoExW() returns WSA_IO_PENDING, GetAddrInfoExW will invoke the completion routine. If GetAddrInfoExW returned
 			// anything else we must invoke the completion directly.

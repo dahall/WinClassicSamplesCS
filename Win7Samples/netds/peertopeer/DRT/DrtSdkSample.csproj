@@ -3,13 +3,13 @@
   <PropertyGroup>
 	<OutputType>Exe</OutputType>
 	<TargetFramework>netcoreapp3.1</TargetFramework>
-	  <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+	<AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Vanara.PInvoke.Drt" Version="3.4.5" />
-    <PackageReference Include="Vanara.PInvoke.FirewallApi" Version="3.4.5" />
-    <PackageReference Include="Vanara.PInvoke.Security" Version="3.4.5" />
+	<PackageReference Include="Vanara.PInvoke.Drt" Version="3.4.10" />
+	<PackageReference Include="Vanara.PInvoke.FirewallApi" Version="3.4.10" />
+	<PackageReference Include="Vanara.PInvoke.Security" Version="3.4.10" />
   </ItemGroup>
 
 </Project>
