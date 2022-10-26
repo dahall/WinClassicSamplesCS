@@ -6,9 +6,9 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Vanara.PInvoke.IMAPI" Version="3.4.9" />
-    <PackageReference Include="Vanara.PInvoke.Ole" Version="3.4.9" />
-    <PackageReference Include="Vanara.PInvoke.Shlwapi" Version="3.4.9" />
+    <PackageReference Include="Vanara.PInvoke.IMAPI" Version="3.4.10" />
+    <PackageReference Include="Vanara.PInvoke.Ole" Version="3.4.10" />
+    <PackageReference Include="Vanara.PInvoke.Shlwapi" Version="3.4.10" />
   </ItemGroup>
 
   <ItemGroup>

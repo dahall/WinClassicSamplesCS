@@ -7,10 +7,10 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Vanara.PInvoke.IScsiDsc" Version="3.4.9" />
-    <PackageReference Include="Vanara.PInvoke.Kernel32" Version="3.4.9" />
-    <PackageReference Include="Vanara.PInvoke.SetupAPI" Version="3.4.9" />
-    <PackageReference Include="Vanara.PInvoke.Ws2_32" Version="3.4.9" />
+    <PackageReference Include="Vanara.PInvoke.IScsiDsc" Version="3.4.10" />
+    <PackageReference Include="Vanara.PInvoke.Kernel32" Version="3.4.10" />
+    <PackageReference Include="Vanara.PInvoke.SetupAPI" Version="3.4.10" />
+    <PackageReference Include="Vanara.PInvoke.Ws2_32" Version="3.4.10" />
   </ItemGroup>
 
 </Project>

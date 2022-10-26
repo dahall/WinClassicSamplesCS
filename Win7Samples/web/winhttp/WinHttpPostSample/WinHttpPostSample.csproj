@@ -7,7 +7,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Vanara.PInvoke.WinHTTP" Version="3.4.9" />
+    <PackageReference Include="Vanara.PInvoke.WinHTTP" Version="3.4.10" />
   </ItemGroup>
 
 </Project>

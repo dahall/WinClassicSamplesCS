@@ -5,7 +5,7 @@
     <TargetFramework>net6.0</TargetFramework>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="Vanara.PInvoke.Kernel32" Version="3.4.9" />
+    <PackageReference Include="Vanara.PInvoke.Kernel32" Version="3.4.10" />
   </ItemGroup>
 
 </Project>

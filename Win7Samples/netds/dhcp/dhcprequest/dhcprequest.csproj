@@ -7,9 +7,9 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Vanara.PInvoke.Dhcp" Version="3.4.9" />
-    <PackageReference Include="Vanara.PInvoke.IpHlpApi" Version="3.4.9" />
-    <PackageReference Include="Vanara.PInvoke.Ws2_32" Version="3.4.9" />
+    <PackageReference Include="Vanara.PInvoke.Dhcp" Version="3.4.10" />
+    <PackageReference Include="Vanara.PInvoke.IpHlpApi" Version="3.4.10" />
+    <PackageReference Include="Vanara.PInvoke.Ws2_32" Version="3.4.10" />
   </ItemGroup>
 
 </Project>

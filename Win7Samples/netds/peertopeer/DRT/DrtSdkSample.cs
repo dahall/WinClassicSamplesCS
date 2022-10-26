@@ -374,7 +374,7 @@ namespace DrtSdkSample
 		{
 			Console.Write("Enter {0} as a string of hex digits, Example: 01 ff 0a b8 80 z\n", pcwszKeyName);
 			Console.Write("The current keysize is {0} bytes. Enter z as the last digit and the remainder of the key will be zero-filled (Most significant byte is first)\n", KEYSIZE);
-			uint i;
+			int i;
 			for (i = KEYSIZE - 1; i >= 0; i--)
 			{
 				if (!ReadHex(out var hexdigit, 2))
