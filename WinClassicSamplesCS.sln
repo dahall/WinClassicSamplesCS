@@ -319,7 +319,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WscApiSample", "WebSecurity
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WinhttpWebsocket", "WinhttpWebsocket\WinhttpWebsocket.csproj", "{E01C820C-E103-4387-B1E8-680ED4218600}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Websocket", "Websocket\Websocket.csproj", "{48D69FD8-942B-46A2-ADD4-068BC35D98C4}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Websocket", "Websocket\Websocket.csproj", "{48D69FD8-942B-46A2-ADD4-068BC35D98C4}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
