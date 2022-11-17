@@ -333,6 +333,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ClipboardChainImprovementAP
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MagnifierSample", "Win7Samples\winui\magnificiation\MagnifierSample.csproj", "{45EAC490-1351-4FB5-9E16-AAFEEDDB36AD}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NamedNlsFunctions", "Win7Samples\winui\NamedNlsFunctions\NamedNlsFunctions.csproj", "{79338A1C-5A2B-42D4-AF30-BBAB98613880}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -1793,6 +1795,18 @@ Global
 		{45EAC490-1351-4FB5-9E16-AAFEEDDB36AD}.Release|x64.Build.0 = Release|Any CPU
 		{45EAC490-1351-4FB5-9E16-AAFEEDDB36AD}.Release|x86.ActiveCfg = Release|Any CPU
 		{45EAC490-1351-4FB5-9E16-AAFEEDDB36AD}.Release|x86.Build.0 = Release|Any CPU
+		{79338A1C-5A2B-42D4-AF30-BBAB98613880}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{79338A1C-5A2B-42D4-AF30-BBAB98613880}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{79338A1C-5A2B-42D4-AF30-BBAB98613880}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{79338A1C-5A2B-42D4-AF30-BBAB98613880}.Debug|x64.Build.0 = Debug|Any CPU
+		{79338A1C-5A2B-42D4-AF30-BBAB98613880}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{79338A1C-5A2B-42D4-AF30-BBAB98613880}.Debug|x86.Build.0 = Debug|Any CPU
+		{79338A1C-5A2B-42D4-AF30-BBAB98613880}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{79338A1C-5A2B-42D4-AF30-BBAB98613880}.Release|Any CPU.Build.0 = Release|Any CPU
+		{79338A1C-5A2B-42D4-AF30-BBAB98613880}.Release|x64.ActiveCfg = Release|Any CPU
+		{79338A1C-5A2B-42D4-AF30-BBAB98613880}.Release|x64.Build.0 = Release|Any CPU
+		{79338A1C-5A2B-42D4-AF30-BBAB98613880}.Release|x86.ActiveCfg = Release|Any CPU
+		{79338A1C-5A2B-42D4-AF30-BBAB98613880}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -1937,6 +1951,7 @@ Global
 		{4D20BE29-3DB1-479D-B4E8-BA900BBB48B1} = {A74C6952-488E-4926-BE04-E17684FDAA0C}
 		{ABD44B89-6B8C-4902-8EB4-DB6F4F19C9D3} = {A74C6952-488E-4926-BE04-E17684FDAA0C}
 		{45EAC490-1351-4FB5-9E16-AAFEEDDB36AD} = {A74C6952-488E-4926-BE04-E17684FDAA0C}
+		{79338A1C-5A2B-42D4-AF30-BBAB98613880} = {A74C6952-488E-4926-BE04-E17684FDAA0C}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {82D57A23-9C32-4014-9AFB-25B38D08E1D1}
