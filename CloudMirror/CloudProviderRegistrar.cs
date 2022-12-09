@@ -20,7 +20,7 @@ namespace CloudMirror
 			{
 				var info = new StorageProviderSyncRootInfo();
 				info.Id = GetSyncRootId();
-				var folder = StorageFolder.GetFolderFromPathAsync(ProviderFolderLocations.ClientFolder).GetResults();
+				var folder = StorageFolder.GetFolderFromPathAsync(ProviderFolderLocations.ClientFolder).AsTask().Result;
 				info.Path = folder;
 				info.DisplayNameResource = "TestStorageProviderDisplayName";
 				info.IconResource = "%SystemRoot%\\system32\\charmap.exe,0"; // This icon is just for the sample. You should provide your own branded icon here

@@ -81,7 +81,7 @@ namespace CloudMirror
 				propStoreVolatile.Item.SetValue(PKEY_StorageProviderTransferProgress, new long[] { completed, total }, false);
 
 				// Set the sync transfer status accordingly
-				propStoreVolatile.Item.SetValue(PROPERTYKEY.System.SyncTransferStatus, (completed < total) ? SYNC_TRANSFER_STATUS.STS_TRANSFERRING : SYNC_TRANSFER_STATUS.STS_NONE, false);
+				propStoreVolatile.Item.SetValue(PROPERTYKEY.System.SyncTransferStatus, (uint)((completed < total) ? SYNC_TRANSFER_STATUS.STS_TRANSFERRING : SYNC_TRANSFER_STATUS.STS_NONE), false);
 
 				// Without this, all your hard work is wasted.
 				propStoreVolatile.Item.Commit();
