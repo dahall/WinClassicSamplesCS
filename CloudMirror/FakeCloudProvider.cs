@@ -1,5 +1,5 @@
 ﻿using System;
-using System.Threading.Tasks;
+using System.Threading;
 using static Vanara.PInvoke.CldApi;
 
 namespace CloudMirror
@@ -20,6 +20,8 @@ namespace CloudMirror
 
 			if (ProviderFolderLocations.Init(serverFolder, clientFolder))
 			{
+				var onStop  = new CancellationTokenSource();
+
 				try
 				{
 					// Stage 1: Setup
@@ -27,7 +29,7 @@ namespace CloudMirror
 					// The client folder (syncroot) must be indexed in order for states to properly display
 					Utilities.AddFolderToSearchIndexer(ProviderFolderLocations.ClientFolder);
 					// Start up the task that registers and hosts the services for the shell (such as custom states, menus, etc)
-					ShellServices.InitAndStartServiceTask();
+					ShellServices.InitAndStartServiceTask(onStop.Token);
 					// Register the provider with the shell so that the Sync Root shows up in File Explorer
 					CloudProviderRegistrar.RegisterWithShell();
 					// Hook up callback methods (in this class) for transferring files between client and server
@@ -50,6 +52,8 @@ namespace CloudMirror
 					// Stage 3: Done Running-- caused by CTRL-C
 					//--------------------------------------------------------------------------------------------
 					// Unhook up those callback methods
+					onStop.Cancel();
+
 					DisconnectSyncRootTransferCallbacks();
 
 					// A real sync engine should NOT unregister the sync root upon exit.

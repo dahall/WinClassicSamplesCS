@@ -194,6 +194,22 @@ namespace CloudMirror
 				readContext.StartOffset += numberOfBytesTransfered;
 				readContext.RemainingLength -= numberOfBytesTransfered;
 
+				Marshal.WriteInt64(
+					ptr: IntPtr.Add(
+						pointer: (IntPtr)overlapped,
+						offset: (int)Marshal.OffsetOf<READ_COMPLETION_CONTEXT>(nameof(readContext.StartOffset))
+					),
+					val: readContext.StartOffset
+				);
+
+				Marshal.WriteInt64(
+					ptr: IntPtr.Add(
+						pointer: (IntPtr)overlapped,
+						offset: (int)Marshal.OffsetOf<READ_COMPLETION_CONTEXT>(nameof(readContext.RemainingLength))
+					),
+					val: readContext.RemainingLength
+				);
+
 				// See if there is anything left to read
 				if (readContext.RemainingLength > 0)
 				{
@@ -244,7 +260,7 @@ namespace CloudMirror
 			};
 			var opParams = new CF_OPERATION_PARAMETERS
 			{
-				ParamSize = (uint)Marshal.SizeOf<CF_OPERATION_PARAMETERS.TRANSFERDATA>() + (uint)Marshal.SizeOf<uint>(),
+				ParamSize = (uint)CF_OPERATION_PARAMETERS.CF_SIZE_OF_OP_PARAM<CF_OPERATION_PARAMETERS.TRANSFERDATA>(),
 				TransferData = new CF_OPERATION_PARAMETERS.TRANSFERDATA
 				{
 					CompletionStatus = completionStatus,
