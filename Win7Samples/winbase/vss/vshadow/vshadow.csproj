@@ -6,16 +6,16 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Vanara.PInvoke.Ole" Version="3.4.10" />
-    <PackageReference Include="Vanara.PInvoke.Shared" Version="3.4.10" />
+    <PackageReference Include="Vanara.PInvoke.Ole" Version="3.4.13" />
+    <PackageReference Include="Vanara.PInvoke.Shared" Version="3.4.13" />
   </ItemGroup>
 
   <ItemGroup>
     <Reference Include="Vanara.PInvoke.VssApi">
-      <HintPath>..\..\..\..\..\Vanara\PInvoke\VssApi\bin\Debug\net5.0\Vanara.PInvoke.VssApi.dll</HintPath>
+      <HintPath>..\..\..\..\..\Vanara\PInvoke\VssApi\bin\Debug\net6.0\Vanara.PInvoke.VssApi.dll</HintPath>
     </Reference>
     <Reference Include="Vanara.PInvoke.VssApiMgd">
-      <HintPath>..\..\..\..\..\Vanara\PInvoke\VssApiMgd\bin\Debug\net5.0\Vanara.PInvoke.VssApiMgd.dll</HintPath>
+      <HintPath>..\..\..\..\..\Vanara\PInvoke\VssApiMgd\bin\Debug\net6.0\Vanara.PInvoke.VssApiMgd.dll</HintPath>
     </Reference>
   </ItemGroup>
 

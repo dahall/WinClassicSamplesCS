@@ -353,7 +353,7 @@ Done:
 
 		// Add a known header.
 		ADD_KNOWN_HEADER(ref response, HTTP_HEADER_ID.HttpHeaderContentType, "text/html");
-		using SafeLPSTR pEntityString = entityString;
+		using SafeLPSTR pEntityString = new(entityString);
 		SafeCoTaskMemStruct<HTTP_DATA_CHUNK> pDataChunk = SafeCoTaskMemStruct<HTTP_DATA_CHUNK>.Null;
 		if (!(pEntityString is null || pEntityString.IsNull))
 		{

@@ -101,7 +101,7 @@ bool AddBitmapDataToClipboard([In] HWND hWindow)
 
 	if (result)
 	{
-		if (SetClipboardData(CLIPFORMAT.CF_BITMAP, hBitmap) != default)
+		if (SetClipboardData(CLIPFORMAT.CF_BITMAP, hBitmap.DangerousGetHandle()) != default)
 		{
 			Console.Write("Cannot set clipboard data\n");
 			result = false;

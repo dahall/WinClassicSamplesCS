@@ -59,7 +59,7 @@ Console.Write("Succesfully upgraded to websocket protocol\n");
 // Send and receive data on the websocket protocol.
 //
 
-using SafeLPWSTR pcwszMessage = "Hello world";
+using SafeLPWSTR pcwszMessage = new("Hello world");
 WinHttpWebSocketSend(hWebSocketHandle, WINHTTP_WEB_SOCKET_BUFFER_TYPE.WINHTTP_WEB_SOCKET_BINARY_MESSAGE_BUFFER_TYPE, pcwszMessage, pcwszMessage.Size).ThrowIfFailed();
 
 Console.Write("Sent message to the server: '{0}'\n", pcwszMessage);

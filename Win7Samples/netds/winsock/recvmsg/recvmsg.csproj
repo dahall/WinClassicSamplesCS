@@ -7,7 +7,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Vanara.PInvoke.IpHlpApi" Version="3.4.10" />
+    <PackageReference Include="Vanara.PInvoke.IpHlpApi" Version="3.4.13" />
     <!--<Reference Include="Vanara.Core">
       <HintPath>..\..\..\..\..\Vanara\PInvoke\Shared\bin\Debug\net5.0\Vanara.Core.dll</HintPath>
     </Reference>

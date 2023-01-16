@@ -21,7 +21,7 @@ if (MSGFLTINFO_ERROR == ChangeFilter(hwnd, CWMFEX_CONTROL, MessageFilterExAction
 	return;
 }
 
-while (GetMessage(out var msg))
+while (GetMessage(out var msg) != 0)
 {
 	TranslateMessage(msg);
 	DispatchMessage(msg);

@@ -58,7 +58,7 @@ namespace AppVisibility
 
 			// Since the visibility notifications are delivered via COM, a message loop must be employed in order to receive notifications
 			MSG msg;
-			while (GetMessage(out msg))
+			while (GetMessage(out msg) != 0)
 			{
 				DispatchMessage(msg);
 			}

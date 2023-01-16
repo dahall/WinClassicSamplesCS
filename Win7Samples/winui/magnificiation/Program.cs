@@ -79,7 +79,7 @@ IntPtr timerId = SetTimer(hwndHost, default, timerInterval, UpdateMagWindow);
 
 // Main message loop.
 MSG msg;
-while (GetMessage(out msg, default, 0, 0))
+while (GetMessage(out msg, default, 0, 0) != 0)
 {
 	TranslateMessage(msg);
 	DispatchMessage(msg);

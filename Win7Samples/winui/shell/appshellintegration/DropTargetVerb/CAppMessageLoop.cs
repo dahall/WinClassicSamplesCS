@@ -46,7 +46,7 @@ namespace DropTargetVerb
 		protected void MessageLoop()
 		{
 			const uint WM_TIMER = 0x0113;
-			while (GetMessage(out var msg, default, 0, 0))
+			while (GetMessage(out var msg, default, 0, 0) != 0)
 			{
 				if (msg.message == WM_TIMER)
 				{

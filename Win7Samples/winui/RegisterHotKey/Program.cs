@@ -7,7 +7,7 @@ if (RegisterHotKey(default, 1, HotKeyModifiers.MOD_ALT | HotKeyModifiers.MOD_NOR
 }
 
 MSG msg;
-while (GetMessage(out msg))
+while (GetMessage(out msg) != 0)
 {
 	if (msg.message == (uint)WindowMessage.WM_HOTKEY)
 	{

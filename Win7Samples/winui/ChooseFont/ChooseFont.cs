@@ -56,7 +56,7 @@ internal static class Program
 		{
 			ShowWindow(g_hwndApp, ShowWindowCommand.SW_NORMAL);
 			UpdateWindow(g_hwndApp);
-			while (GetMessage(out msg))
+			while (GetMessage(out msg) != 0)
 			{
 				TranslateMessage(msg);
 				DispatchMessage(msg);

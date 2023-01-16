@@ -16,8 +16,8 @@
 
   <ItemGroup>
     <PackageReference Include="DirectShowLib.Standard" Version="2.1.0" />
-    <PackageReference Include="Vanara.PInvoke.Multimedia" Version="3.4.10" />
-    <PackageReference Include="Vanara.PInvoke.Ole" Version="3.4.10" />
+    <PackageReference Include="Vanara.PInvoke.Multimedia" Version="3.4.13" />
+    <PackageReference Include="Vanara.PInvoke.Ole" Version="3.4.13" />
   </ItemGroup>
 
 </Project>

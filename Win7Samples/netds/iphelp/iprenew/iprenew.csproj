@@ -6,7 +6,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Vanara.PInvoke.IpHlpApi" Version="3.4.10" />
+    <PackageReference Include="Vanara.PInvoke.IpHlpApi" Version="3.4.13" />
   </ItemGroup>
 
 </Project>

@@ -34,7 +34,7 @@ using SafeHWND hwnd = CreateWindow(wc.ClassName, wc.ClassName, WindowStyles.WS_O
 ShowWindow(hwnd, ShowWindowCommand.SW_NORMAL);
 
 MSG msg;
-while (GetMessage(out msg))
+while (GetMessage(out msg) != 0)
 {
 	TranslateMessage(msg);
 	DispatchMessage(msg);

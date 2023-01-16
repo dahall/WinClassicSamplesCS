@@ -9,7 +9,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Vanara.PInvoke.QoS" Version="3.4.11" />
+    <PackageReference Include="Vanara.PInvoke.QoS" Version="3.4.13" />
   </ItemGroup>
 
 </Project>

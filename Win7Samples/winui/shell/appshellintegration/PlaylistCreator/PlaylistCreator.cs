@@ -262,7 +262,7 @@ namespace PlaylistCreator
 				_verbCreateWPL.Register();
 				_verbCreateM3U.Register();
 
-				while (GetMessage(out var msg))
+				while (GetMessage(out var msg) != 0)
 				{
 					if (msg.message == WM_APP_CREATE_WPL)
 					{
