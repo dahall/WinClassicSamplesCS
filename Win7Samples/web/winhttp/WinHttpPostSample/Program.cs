@@ -84,7 +84,7 @@ internal class Program
 		//
 		// Make sure a file was passed in...
 		//
-		if (INVALID_FILE_ATTRIBUTES == (int)GetFileAttributes(szFilename))
+		if (INVALID_FILE_ATTRIBUTES == (uint)GetFileAttributes(szFilename))
 		{
 			Console.Write("\nThe specified file, \"{0}\", was not found.\n", szFilename);
 			fShowHelp = true;
