@@ -8,7 +8,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Vanara.PInvoke.P2P" Version="3.4.13" />
+    <PackageReference Include="Vanara.PInvoke.P2P" Version="3.4.17" />
   </ItemGroup>
 
   <ItemGroup>

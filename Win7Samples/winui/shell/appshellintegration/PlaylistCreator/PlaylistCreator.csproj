@@ -13,8 +13,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Vanara.PInvoke.Mpr" Version="3.4.13" />
-    <PackageReference Include="Vanara.PInvoke.Shell32" Version="3.4.13" />
+    <PackageReference Include="Vanara.PInvoke.Mpr" Version="3.4.17" />
+    <PackageReference Include="Vanara.PInvoke.Shell32" Version="3.4.17" />
   </ItemGroup>
 
 </Project>

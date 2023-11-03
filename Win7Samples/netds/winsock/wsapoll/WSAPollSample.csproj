@@ -8,21 +8,21 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Vanara.PInvoke.IpHlpApi" Version="3.4.13" />
+    <PackageReference Include="Vanara.PInvoke.IpHlpApi" Version="3.4.17" />
     <!--<Reference Include="Vanara.Core">
-      <HintPath>..\..\..\..\..\Vanara\PInvoke\Shared\bin\Debug\net5.0\Vanara.Core.dll</HintPath>
+      <HintPath>..\..\..\..\..\Vanara\PInvoke\Shared\bin\Debug\net6.0\Vanara.Core.dll</HintPath>
     </Reference>
     <Reference Include="Vanara.PInvoke.Shared">
-      <HintPath>..\..\..\..\..\Vanara\PInvoke\Shared\bin\Debug\net5.0\Vanara.PInvoke.Shared.dll</HintPath>
+      <HintPath>..\..\..\..\..\Vanara\PInvoke\Shared\bin\Debug\net6.0\Vanara.PInvoke.Shared.dll</HintPath>
     </Reference>
     <Reference Include="Vanara.PInvoke.Kernel32">
-      <HintPath>..\..\..\..\..\Vanara\PInvoke\Kernel32\bin\Debug\net5.0\Vanara.PInvoke.Kernel32.dll</HintPath>
+      <HintPath>..\..\..\..\..\Vanara\PInvoke\Kernel32\bin\Debug\net6.0\Vanara.PInvoke.Kernel32.dll</HintPath>
     </Reference>
     <Reference Include="Vanara.PInvoke.Ws2_32">
-      <HintPath>..\..\..\..\..\Vanara\PInvoke\Ws2_32\bin\Debug\net5.0\Vanara.PInvoke.Ws2_32.dll</HintPath>
+      <HintPath>..\..\..\..\..\Vanara\PInvoke\Ws2_32\bin\Debug\net6.0\Vanara.PInvoke.Ws2_32.dll</HintPath>
     </Reference>
     <Reference Include="Vanara.PInvoke.IpHlpApi">
-      <HintPath>..\..\..\..\..\Vanara\PInvoke\IpHlpApi\bin\Debug\net5.0\Vanara.PInvoke.IpHlpApi.dll</HintPath>
+      <HintPath>..\..\..\..\..\Vanara\PInvoke\IpHlpApi\bin\Debug\net6.0\Vanara.PInvoke.IpHlpApi.dll</HintPath>
     </Reference>-->
   </ItemGroup>
 
