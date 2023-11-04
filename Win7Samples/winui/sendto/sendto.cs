@@ -1,15 +1,12 @@
-﻿using System;
-using System.Text;
-using Vanara.PInvoke;
-using static Vanara.PInvoke.Ole32;
-using static Vanara.PInvoke.ComDlg32;
-using static Vanara.PInvoke.Kernel32;
-using static Vanara.PInvoke.Shell32;
-using static Vanara.PInvoke.ShlwApi;
-using static Vanara.PInvoke.User32;
-using System.Runtime.InteropServices;
+﻿using System.Runtime.InteropServices;
 using System.Runtime.InteropServices.ComTypes;
 using Vanara.InteropServices;
+using Vanara.PInvoke;
+using static Vanara.PInvoke.ComDlg32;
+using static Vanara.PInvoke.Kernel32;
+using static Vanara.PInvoke.Ole32;
+using static Vanara.PInvoke.Shell32;
+using static Vanara.PInvoke.User32;
 
 namespace sendto
 {
@@ -461,7 +458,7 @@ namespace sendto
 		*****************************************************************************/
 		static bool InitApp()
 		{
-			WNDCLASS wc = new WNDCLASS
+			WNDCLASS wc = new()
 			{
 				lpfnWndProc = SendTo_WndProc,
 				hInstance = g_hinst,

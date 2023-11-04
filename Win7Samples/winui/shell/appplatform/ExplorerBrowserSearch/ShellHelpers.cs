@@ -1,5 +1,4 @@
-﻿using System;
-using System.Runtime.InteropServices;
+﻿using System.Runtime.InteropServices;
 using static Vanara.PInvoke.Ole32;
 using static Vanara.PInvoke.Shell32;
 

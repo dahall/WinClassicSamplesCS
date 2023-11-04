@@ -1,17 +1,12 @@
-﻿using System;
-using System.Runtime.InteropServices;
+﻿using System.Runtime.InteropServices;
 using System.Runtime.InteropServices.ComTypes;
-using System.Windows.Forms;
-
+using Vanara.PInvoke;
 using static Vanara.PInvoke.COMHelpers;
 using static Vanara.PInvoke.Kernel32;
 using static Vanara.PInvoke.Ole32;
 using static Vanara.PInvoke.Shell32;
 using static Vanara.PInvoke.ShellHelpers;
-using static Vanara.PInvoke.ShlwApi;
 using static Vanara.PInvoke.User32;
-
-using Vanara.PInvoke;
 
 namespace PlaylistCreator
 {
@@ -226,11 +221,11 @@ namespace PlaylistCreator
 	{
 		internal const uint WM_APP_CREATE_M3U = WM_APP + 101;
 		internal const uint WM_APP_CREATE_WPL = WM_APP + 100;
-		private readonly CM3UPlaylistCreator _M3UCreator = new CM3UPlaylistCreator();
+		private readonly CM3UPlaylistCreator _M3UCreator = new();
 		private IShellItemArray _psia;
-		private readonly CCreateM3UPlaylistVerb _verbCreateM3U = new CCreateM3UPlaylistVerb();
-		private readonly CCreateWPLPlaylistVerb _verbCreateWPL = new CCreateWPLPlaylistVerb();
-		private readonly CWPLPlaylistCreator _WPLCreator = new CWPLPlaylistCreator();
+		private readonly CCreateM3UPlaylistVerb _verbCreateM3U = new();
+		private readonly CCreateWPLPlaylistVerb _verbCreateWPL = new();
+		private readonly CWPLPlaylistCreator _WPLCreator = new();
 
 		public CPlaylistCreatorApp()
 		{

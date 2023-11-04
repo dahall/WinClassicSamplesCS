@@ -2,21 +2,18 @@
 
   <PropertyGroup>
     <OutputType>Exe</OutputType>
-    <TargetFramework>netcoreapp3.1</TargetFramework>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
-    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Vanara.PInvoke.NetApi32" Version="3.4.9" />
-    <PackageReference Include="Vanara.PInvoke.NTDSApi" Version="3.4.9" />
-    <PackageReference Include="Vanara.PInvoke.Rpc" Version="3.4.9" />
+    <PackageReference Include="Vanara.PInvoke.NetApi32" Version="4.0.0" />
+    <PackageReference Include="Vanara.PInvoke.NTDSApi" Version="4.0.0" />
+    <PackageReference Include="Vanara.PInvoke.Rpc" Version="4.0.0" />
   </ItemGroup>
 
 </Project>

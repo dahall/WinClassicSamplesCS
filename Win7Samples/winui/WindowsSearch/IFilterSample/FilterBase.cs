@@ -1,5 +1,4 @@
-﻿using System;
-using System.Runtime.InteropServices;
+﻿using System.Runtime.InteropServices;
 using System.Runtime.InteropServices.ComTypes;
 using System.Text;
 using Vanara.PInvoke;
@@ -13,7 +12,7 @@ namespace IFilterSample
 	{
 		private STAT_CHUNK m_chunk;
 		private bool m_fIsValid = false;
-		private PROPVARIANT m_propVariant = new PROPVARIANT();
+		private PROPVARIANT m_propVariant = new();
 		private string m_pszValue = null;
 
 		public CChunkValue()

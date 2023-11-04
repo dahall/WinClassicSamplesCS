@@ -1,15 +1,10 @@
-﻿using System;
-using System.Runtime.InteropServices;
+﻿using System.Runtime.InteropServices;
 using System.Text;
-using System.Windows.Forms;
-
-using IServiceProvider = Vanara.PInvoke.Shell32.IServiceProvider;
-
-using static Vanara.PInvoke.Ole32;
-using static Vanara.PInvoke.Shell32;
-
 using Vanara.PInvoke;
+using static Vanara.PInvoke.Ole32;
 using static Vanara.PInvoke.SearchApi;
+using static Vanara.PInvoke.Shell32;
+using IServiceProvider = Vanara.PInvoke.Shell32.IServiceProvider;
 
 namespace ExplorerBrowserSearch
 {
@@ -18,7 +13,7 @@ namespace ExplorerBrowserSearch
 		private static string[] g_rgGenericProperties = { "System.Generic.String", "System.StructuredQueryType.String", "System.Generic.Integer",
 			"System.StructuredQueryType.Integer", "System.Generic.DateTime", "System.StructuredQueryType.DateTime", "System.Generic.Boolean",
 			"System.StructuredQueryType.Boolean", "System.Generic.FloatingPoint", "System.StructuredQueryType.FloatingPoint" };
-		private static readonly Guid IID_ICommDlgBrowser = new Guid("000214F1-0000-0000-C000-000000000046");
+		private static readonly Guid IID_ICommDlgBrowser = new("000214F1-0000-0000-C000-000000000046");
 
 		private uint _dwCookie;
 		private bool _fPerformRenavigate;

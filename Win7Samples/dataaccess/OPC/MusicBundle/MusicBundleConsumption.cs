@@ -1,5 +1,4 @@
-﻿using System;
-using System.Runtime.InteropServices.ComTypes;
+﻿using System.Runtime.InteropServices.ComTypes;
 using Vanara.PInvoke;
 using static Vanara.PInvoke.Opc;
 using static Vanara.PInvoke.UrlMon;

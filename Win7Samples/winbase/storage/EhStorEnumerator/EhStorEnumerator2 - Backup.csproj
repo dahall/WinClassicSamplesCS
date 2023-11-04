@@ -2,10 +2,8 @@
 
   <PropertyGroup>
     <OutputType>WinExe</OutputType>
-    <TargetFramework>net50-windows</TargetFramework>
     <UseWindowsForms>true</UseWindowsForms>
     <RootNamespace>EhStorEnumerator</RootNamespace>
-    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
 
   <ItemGroup>

@@ -1,7 +1,4 @@
-﻿using System;
-using System.Linq;
-using System.Runtime.InteropServices;
-using System.Threading;
+﻿using System.Runtime.InteropServices;
 using Vanara.Extensions;
 using Vanara.PInvoke;
 using static Vanara.PInvoke.FunDisc;
@@ -273,7 +270,7 @@ namespace fdsample
 					object val = null;
 					try
 					{
-						using PROPVARIANT pv = new PROPVARIANT();
+						using PROPVARIANT pv = new();
 						pPStore.GetValue(key, pv);
 						val = pv.Value;
 					}

@@ -2,13 +2,13 @@
 
   <PropertyGroup>
     <OutputType>Library</OutputType>
-    <TargetFramework>net472</TargetFramework>
+    <!--<TargetFramework>net472</TargetFramework>-->
     <ApplicationIcon />
     <StartupObject />
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Vanara.PInvoke.SearchApi" Version="3.4.17" />
+    <PackageReference Include="Vanara.PInvoke.SearchApi" Version="4.0.0" />
   </ItemGroup>
 
 </Project>

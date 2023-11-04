@@ -1,5 +1,4 @@
-﻿using System;
-using System.Runtime.InteropServices;
+﻿using System.Runtime.InteropServices;
 using Vanara.InteropServices;
 using Vanara.PInvoke;
 using static Vanara.PInvoke.Kernel32;
@@ -29,8 +28,8 @@ namespace MagnificationWindowed
 		private static RECT hostWindowRect;
 		private static HWND hwndHost;
 		private static HWND hwndMag;
-		private static SafeHWND safeHwndHost;
-		private static SafeHWND safeHwndMag;
+		private static SafeHWND? safeHwndHost;
+		private static SafeHWND? safeHwndMag;
 		private static bool isFullScreen = false;
 		private static RECT magWindowRect;
 
@@ -54,7 +53,7 @@ namespace MagnificationWindowed
 
 			// Create a timer to update the control.
 			var timerId = SetTimer(hwndHost, default, timerInterval, UpdateMagWindow);
-			if (timerId == IntPtr.Zero)
+			if (timerId == 0)
 				return -1;
 			using var killTimer = new GenericSafeHandle(p => KillTimer(default, timerId));
 
@@ -165,7 +164,7 @@ namespace MagnificationWindowed
 		// FUNCTION: RegisterHostWindowClass()
 		//
 		// PURPOSE: Registers the window class for the window that contains the magnification control.
-		private static ushort RegisterHostWindowClass(HINSTANCE hInstance)
+		private static ATOM RegisterHostWindowClass(HINSTANCE hInstance)
 		{
 			var wcex = new WNDCLASSEX
 			{
@@ -239,7 +238,7 @@ namespace MagnificationWindowed
 		// FUNCTION: UpdateMagWindow()
 		//
 		// PURPOSE: Sets the source rectangle and updates the window. Called by a timer.
-		private static void UpdateMagWindow(HWND hwnd, uint msg, IntPtr lp, uint id)
+		private static void UpdateMagWindow(HWND hwnd, uint msg, nuint lp, uint id)
 		{
 			GetCursorPos(out var mousePoint);
 

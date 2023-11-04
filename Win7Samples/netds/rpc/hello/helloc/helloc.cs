@@ -1,5 +1,4 @@
-﻿using System;
-using Vanara.PInvoke;
+﻿using Vanara.PInvoke;
 using static Vanara.PInvoke.Rpc;
 
 namespace hello
@@ -111,7 +110,7 @@ namespace hello
 				}
 				catch (Exception)
 				{
-					((((RpcExceptionCode() != STATUS_ACCESS_VIOLATION) &&
+					ulCode = ((((RpcExceptionCode() != STATUS_ACCESS_VIOLATION) &&
 					(RpcExceptionCode() != STATUS_DATATYPE_MISALIGNMENT) &&
 					(RpcExceptionCode() != STATUS_PRIVILEGED_INSTRUCTION) &&
 					(RpcExceptionCode() != STATUS_BREAKPOINT) &&
@@ -120,8 +119,6 @@ namespace hello
 					(RpcExceptionCode() != STATUS_GUARD_PAGE_VIOLATION)
 					)
 					? EXCEPTION_EXECUTE_HANDLER : EXCEPTION_CONTINUE_SEARCH))
-
-				ulCode = RpcExceptionCode();
 					Console.Write("Runtime reported exception 0x%lx = %ld\n", ulCode, ulCode);
 				}
 			}

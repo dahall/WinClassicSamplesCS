@@ -1,20 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Runtime.InteropServices;
-using System.Text;
+﻿using System.Runtime.InteropServices;
 using Vanara.Extensions;
 using Vanara.InteropServices;
 using Vanara.PInvoke;
 using static Vanara.PInvoke.AdvApi32;
 using static Vanara.PInvoke.Crypt32;
-using static Vanara.PInvoke.Drt;
 using static Vanara.PInvoke.Kernel32;
 
 namespace DrtSdkSample
 {
 	static class CAPIWrappers
 	{
-		public static readonly SafeCoTaskMemString DEFAULT_ALGORITHM = new SafeCoTaskMemString(AlgOID.szOID_RSA_SHA1RSA, CharSet.Ansi);
+		public static readonly SafeCoTaskMemString DEFAULT_ALGORITHM = new(AlgOID.szOID_RSA_SHA1RSA, CharSet.Ansi);
 		public const CertKeySpec DEFAULT_KEY_SPEC = CertKeySpec.AT_KEYEXCHANGE;
 		public const CertEncodingType DEFAULT_ENCODING = CertEncodingType.X509_ASN_ENCODING | CertEncodingType.PKCS_7_ASN_ENCODING;
 		public const int MAX_CONTAINER_NAME_LEN = 256;
@@ -39,9 +35,9 @@ namespace DrtSdkSample
 		public const uint SIXTEEN_K = 16 * 1024;
 		public const uint ONE_K = 1024;
 
-		public static SafeCoTaskMemHandle s_keyDataBuf = new SafeCoTaskMemHandle(16 * 1024);
-		public static SafeCoTaskMemHandle s_certBuf = new SafeCoTaskMemHandle(16 * 1024);
-		public static SafeCoTaskMemHandle s_fileBuf = new SafeCoTaskMemHandle(64 * 1024);
+		public static SafeCoTaskMemHandle s_keyDataBuf = new(16 * 1024);
+		public static SafeCoTaskMemHandle s_certBuf = new(16 * 1024);
+		public static SafeCoTaskMemHandle s_fileBuf = new(64 * 1024);
 
 		/****************************************************************************++
 
@@ -925,8 +921,8 @@ namespace DrtSdkSample
 		// export a root cert to the file <currentDir>\RootCert.cer (if one does not already exist)
 		public static HRESULT MakeCert(string pwzLocalCertFileName, string pwzLocalCertName, string pwzIssuerCertFileName, string pwzIssuerCertName)
 		{
-			SafeHCRYPTPROV hCryptProvIssuer = new SafeHCRYPTPROV(IntPtr.Zero, false);
-			SafePCCERT_CONTEXT pIssuerCert = new SafePCCERT_CONTEXT(IntPtr.Zero, false);
+			SafeHCRYPTPROV hCryptProvIssuer = new(IntPtr.Zero, false);
+			SafePCCERT_CONTEXT pIssuerCert = new(IntPtr.Zero, false);
 
 			// If there is an issuer cert, make sure it exists
 			if (pwzIssuerCertFileName != null)

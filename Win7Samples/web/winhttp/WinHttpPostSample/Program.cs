@@ -1,6 +1,4 @@
-﻿using System;
-using System.Runtime.InteropServices;
-using Vanara.Extensions;
+﻿using System.Runtime.InteropServices;
 using Vanara.InteropServices;
 using Vanara.PInvoke;
 

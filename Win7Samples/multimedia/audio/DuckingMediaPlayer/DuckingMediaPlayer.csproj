@@ -3,7 +3,6 @@
   <PropertyGroup>
     <OutputType>WinExe</OutputType>
     <TargetFramework>net48</TargetFramework>
-    <LangVersion>latest</LangVersion>
     <UseWindowsForms>true</UseWindowsForms>
   </PropertyGroup>
 
@@ -16,8 +15,8 @@
 
   <ItemGroup>
     <PackageReference Include="DirectShowLib.Standard" Version="2.1.0" />
-    <PackageReference Include="Vanara.PInvoke.Multimedia" Version="3.4.17" />
-    <PackageReference Include="Vanara.PInvoke.Ole" Version="3.4.17" />
+    <PackageReference Include="Vanara.PInvoke.Multimedia" Version="4.0.0" />
+    <PackageReference Include="Vanara.PInvoke.Ole" Version="4.0.0" />
   </ItemGroup>
 
 </Project>

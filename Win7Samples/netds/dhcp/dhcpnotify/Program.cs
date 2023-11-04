@@ -1,5 +1,4 @@
-﻿using System;
-using Vanara.InteropServices;
+﻿using Vanara.InteropServices;
 using Vanara.PInvoke;
 using static Vanara.PInvoke.Dhcp;
 using static Vanara.PInvoke.IpHlpApi;

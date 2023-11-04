@@ -1,14 +1,11 @@
-﻿using System;
-using System.ComponentModel;
+﻿using System.ComponentModel;
 using System.IO;
-using System.Runtime.InteropServices;
 using System.Runtime.InteropServices.ComTypes;
-using Vanara.InteropServices;
+using Vanara.Extensions;
 using Vanara.PInvoke;
 using Vanara.Storage;
-using static Vanara.PInvoke.IMAPI;
 using static imapi2sample.ConsoleUtil;
-using Vanara.Extensions;
+using static Vanara.PInvoke.IMAPI;
 
 namespace imapi2sample
 {

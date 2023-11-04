@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Reflection;
+﻿using System.Reflection;
 using System.Runtime.InteropServices;
 using Vanara.InteropServices;
 using Vanara.PInvoke;
@@ -12,7 +10,7 @@ namespace ProjectedFileSystem
 	{
 		// An enumeration session starts when StartDirEnum is invoked and ends when EndDirEnum is invoked. This tracks the active
 		// enumeration sessions.
-		private Dictionary<Guid, DirInfo> _activeEnumSessions = new Dictionary<Guid, DirInfo>();
+		private Dictionary<Guid, DirInfo> _activeEnumSessions = new();
 
 		// If this flag is set to true, RegFS will block file content modifications for placeholder files.
 		//private bool _readOnlyFileContent = true;

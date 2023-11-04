@@ -16,7 +16,7 @@ namespace System
 
 		public static implicit operator ulong(ULARGE_INTEGER ul) => ul.QuadPart;
 
-		public static implicit operator ULARGE_INTEGER(ulong ul) => new ULARGE_INTEGER { QuadPart = ul };
+		public static implicit operator ULARGE_INTEGER(ulong ul) => new() { QuadPart = ul };
 
 		public static bool operator ==(ULARGE_INTEGER left, ULARGE_INTEGER right) => left.Equals(right);
 		public static bool operator !=(ULARGE_INTEGER left, ULARGE_INTEGER right) => !(left == right);

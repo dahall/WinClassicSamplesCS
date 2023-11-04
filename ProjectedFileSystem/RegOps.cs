@@ -1,7 +1,4 @@
 ﻿using Microsoft.Win32;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Reflection;
 using Vanara.PInvoke;
 
@@ -16,7 +13,7 @@ namespace ProjectedFileSystem
 
 	internal static class RegOps
 	{
-		public static readonly Dictionary<string, RegistryKey> _regRootKeyMap = new Dictionary<string, RegistryKey>
+		public static readonly Dictionary<string, RegistryKey> _regRootKeyMap = new()
 		{
 			{ "HKEY_CLASSES_ROOT", Registry.ClassesRoot },
 			{ "HKEY_CURRENT_USER", Registry.CurrentUser },

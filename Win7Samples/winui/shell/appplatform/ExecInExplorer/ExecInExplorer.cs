@@ -1,6 +1,4 @@
-﻿using System;
-using System.Windows.Forms;
-using Vanara.PInvoke;
+﻿using Vanara.PInvoke;
 using static Vanara.PInvoke.OleAut32;
 using static Vanara.PInvoke.Shell32;
 
@@ -8,7 +6,7 @@ namespace ExecInExplorer
 {
 	internal static class ExecInExplorer
 	{
-		private static readonly Guid SID_STopLevelBrowser = new Guid(0x4C96BE40, 0x915C, 0x11CF, 0x99, 0xD3, 0x00, 0xAA, 0x00, 0x4A, 0xE8, 0x37);
+		private static readonly Guid SID_STopLevelBrowser = new(0x4C96BE40, 0x915C, 0x11CF, 0x99, 0xD3, 0x00, 0xAA, 0x00, 0x4A, 0xE8, 0x37);
 
 		// From a shell view object gets its automation interface and from that gets the shell application object that implements
 		// IShellDispatch2 and related interfaces.

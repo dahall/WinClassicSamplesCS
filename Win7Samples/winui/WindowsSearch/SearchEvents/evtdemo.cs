@@ -1,5 +1,4 @@
-﻿using System;
-using System.Data.OleDb;
+﻿using System.Data.OleDb;
 using System.Runtime.InteropServices;
 using Vanara.PInvoke;
 using static Vanara.PInvoke.Kernel32;
@@ -9,7 +8,7 @@ using static Vanara.PInvoke.ShlwApi;
 
 namespace SearchEvents
 {
-    static class evtdemo
+	static class evtdemo
     {
         static void Main(string[] args)
         {

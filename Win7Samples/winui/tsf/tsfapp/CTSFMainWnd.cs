@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections;
-using System.Linq;
-using System.Windows.Forms;
-using Vanara.PInvoke;
+﻿using Vanara.PInvoke;
 using static Vanara.PInvoke.MSCTF;
 
 namespace tsfapp

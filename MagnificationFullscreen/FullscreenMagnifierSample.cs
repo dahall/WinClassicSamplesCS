@@ -1,6 +1,4 @@
-﻿using System;
-using System.Data;
-using System.Linq;
+﻿using System.Data;
 using System.Runtime.InteropServices;
 using System.Windows.Forms;
 using Vanara.PInvoke;
@@ -14,7 +12,7 @@ namespace MagnificationFullscreen
 		// Global variables and strings.
 		private const string g_pszAppTitle = "Fullscreen Magnifier Sample";
 
-		private static readonly MAGCOLOREFFECT g_MagEffectGrayscale = new MAGCOLOREFFECT(new[,] { {0.3f, 0.3f, 0.3f, 0.0f, 0.0f },
+		private static readonly MAGCOLOREFFECT g_MagEffectGrayscale = new(new[,] { {0.3f, 0.3f, 0.3f, 0.0f, 0.0f },
 			{ 0.6f, 0.6f, 0.6f, 0.0f, 0.0f },
 			{ 0.1f, 0.1f, 0.1f, 0.0f, 0.0f },
 			{ 0.0f, 0.0f, 0.0f, 1.0f, 0.0f },

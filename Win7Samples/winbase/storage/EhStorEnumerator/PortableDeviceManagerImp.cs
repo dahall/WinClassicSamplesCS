@@ -1,5 +1,4 @@
-﻿using System;
-using System.Text;
+﻿using System.Text;
 using Vanara.Extensions;
 using static Vanara.PInvoke.EnhancedStorage;
 using static Vanara.PInvoke.Ole32;
@@ -7,13 +6,13 @@ using static Vanara.PInvoke.PortableDeviceApi;
 
 namespace EhStorEnumerator
 {
-    //public enum PASSWD_INDICATOR
-    //{
-    //    PASSWD_INDICATOR_ADMIN,
-    //    PASSWD_INDICATOR_USER,
-    //}
+	//public enum PASSWD_INDICATOR
+	//{
+	//    PASSWD_INDICATOR_ADMIN,
+	//    PASSWD_INDICATOR_USER,
+	//}
 
-    public class CCertProperties
+	public class CCertProperties
     {
         public byte[] CertificateData;
 

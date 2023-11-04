@@ -1,12 +1,10 @@
-﻿using System;
-using System.Windows.Forms;
-using Vanara.Extensions;
+﻿using Vanara.Extensions;
 using static Vanara.PInvoke.EnhancedStorage;
 using static Vanara.PInvoke.PortableDeviceApi;
 
 namespace EhStorEnumerator
 {
-    public class CPasswordSiloInformation
+	public class CPasswordSiloInformation
     {
         public CPasswordSiloInformation(IPortableDeviceValues results)
         {

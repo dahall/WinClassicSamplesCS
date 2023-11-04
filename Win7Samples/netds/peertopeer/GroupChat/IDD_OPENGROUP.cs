@@ -1,19 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
-using Vanara.PInvoke;
-using static Vanara.PInvoke.Kernel32;
+﻿using Vanara.PInvoke;
 using static Vanara.PInvoke.P2P;
 
 namespace GroupChat
 {
-    public partial class IDD_OPENGROUP : Form
+	public partial class IDD_OPENGROUP : Form
     {
         public IDD_OPENGROUP()
         {

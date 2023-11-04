@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace CloudMirror
+﻿namespace CloudMirror
 {
 	class Program
 	{

@@ -1,6 +1,4 @@
-﻿using System;
-using System.Threading;
-using Vanara.PInvoke;
+﻿using Vanara.PInvoke;
 using static Vanara.PInvoke.Kernel32;
 using static Vanara.PInvoke.Ole32;
 
@@ -48,7 +46,7 @@ namespace CloudMirror
 			}
 
 			private readonly Func<object> _generator;
-			private static readonly Guid IID_IUnknown = new Guid("{00000000-0000-0000-c000-000000000046}");
+			private static readonly Guid IID_IUnknown = new("{00000000-0000-0000-c000-000000000046}");
 
 			HRESULT IClassFactory.CreateInstance(object pUnkOuter, in Guid riid, out object ppvObject)
 			{

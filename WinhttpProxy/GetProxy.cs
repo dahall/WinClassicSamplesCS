@@ -1,7 +1,4 @@
-﻿using System.Collections.Generic;
-using Vanara.InteropServices;
-
-internal class ProxyResolver
+﻿internal class ProxyResolver
 {
 	// m_dwError - WIN32 Error codes returned from call back function. It's used by extended APIs.
 	private Win32Error m_dwError;

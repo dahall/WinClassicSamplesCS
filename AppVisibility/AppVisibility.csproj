@@ -2,12 +2,11 @@
 
   <PropertyGroup>
     <OutputType>Exe</OutputType>
-    <TargetFramework>netcoreapp3.1</TargetFramework>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Vanara.PInvoke.Shell32" Version="3.4.17" />
-    <PackageReference Include="Vanara.PInvoke.User32" Version="3.4.17" />
+    <PackageReference Include="Vanara.PInvoke.Shell32" Version="4.0.0" />
+    <PackageReference Include="Vanara.PInvoke.User32" Version="4.0.0" />
   </ItemGroup>
 
 </Project>

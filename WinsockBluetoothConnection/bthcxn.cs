@@ -1,6 +1,4 @@
-﻿using System;
-using System.Runtime.InteropServices;
-using System.Text;
+﻿using System.Runtime.InteropServices;
 using Vanara.Extensions;
 using Vanara.InteropServices;
 using Vanara.PInvoke;
@@ -77,7 +75,7 @@ namespace WinsockBluetoothConnection
 	static class BthCxn
 	{
 		// {B62C4E8D-62CC-404b-BBBF-BF3E3BBB1374}
-		static Guid g_guidServiceClass = new Guid(0xb62c4e8d, 0x62cc, 0x404b, 0xbb, 0xbf, 0xbf, 0x3e, 0x3b, 0xbb, 0x13, 0x74);
+		static Guid g_guidServiceClass = new(0xb62c4e8d, 0x62cc, 0x404b, 0xbb, 0xbf, 0xbf, 0x3e, 0x3b, 0xbb, 0x13, 0x74);
 
 		const string CXN_TEST_DATA_STRING = "~!@#$%^&*()-_=+?<>1234567890abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
 		static readonly int CXN_TRANSFER_DATA_LENGTH = CXN_TEST_DATA_STRING.Length;

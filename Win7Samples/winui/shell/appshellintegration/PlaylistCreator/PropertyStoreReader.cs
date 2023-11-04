@@ -1,6 +1,4 @@
-﻿using System.Linq;
-
-using static Vanara.PInvoke.Ole32;
+﻿using static Vanara.PInvoke.Ole32;
 using static Vanara.PInvoke.PropSys;
 using static Vanara.PInvoke.Shell32;
 

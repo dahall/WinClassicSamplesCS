@@ -1,8 +1,4 @@
-﻿using System;
-using System.IO;
-using System.Linq;
-using Vanara.Extensions;
-using Vanara.InteropServices;
+﻿using Vanara.Extensions;
 using Vanara.PInvoke;
 using static Vanara.PInvoke.Shell32;
 

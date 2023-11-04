@@ -1,6 +1,4 @@
-﻿using System;
-using System.IO;
-using System.Runtime.InteropServices;
+﻿using System.Runtime.InteropServices;
 using System.Runtime.InteropServices.ComTypes;
 using Vanara.Extensions;
 using Vanara.InteropServices;
@@ -18,7 +16,7 @@ namespace CloudMirror
 	internal static class Utilities
 	{
 		private const string MSSEARCH_INDEX = "SystemIndex";
-		private static readonly PROPERTYKEY PKEY_StorageProviderTransferProgress = new PROPERTYKEY(new Guid(0xE77E90DF, 0x6271, 0x4F5B, 0x83, 0x4F, 0x2D, 0xD1, 0xF2, 0x45, 0xDD, 0xA4), 4);
+		private static readonly PROPERTYKEY PKEY_StorageProviderTransferProgress = new(new Guid(0xE77E90DF, 0x6271, 0x4F5B, 0x83, 0x4F, 0x2D, 0xD1, 0xF2, 0x45, 0xDD, 0xA4), 4);
 
 		public static void AddFolderToSearchIndexer(string folder)
 		{
@@ -108,6 +106,7 @@ namespace CloudMirror
 		public static ulong LongLongToLargeInteger(long longlong) => Convert.ToUInt64(longlong);
 
 		public static CF_OPERATION_INFO ToOperationInfo(in CF_CALLBACK_INFO info, [In] CF_OPERATION_TYPE operationType) =>
-			new CF_OPERATION_INFO { StructSize = (uint)Marshal.SizeOf<CF_OPERATION_INFO>(), Type = operationType, ConnectionKey = info.ConnectionKey, TransferKey = info.TransferKey };
+			new()
+			{ StructSize = (uint)Marshal.SizeOf<CF_OPERATION_INFO>(), Type = operationType, ConnectionKey = info.ConnectionKey, TransferKey = info.TransferKey };
 	}
 }

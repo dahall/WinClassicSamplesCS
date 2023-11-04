@@ -1,6 +1,4 @@
-﻿using System;
-using System.Threading;
-using static Vanara.PInvoke.CldApi;
+﻿using static Vanara.PInvoke.CldApi;
 
 namespace CloudMirror
 {

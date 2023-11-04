@@ -1,5 +1,4 @@
-﻿using System;
-using System.Runtime.InteropServices;
+﻿using System.Runtime.InteropServices;
 using Vanara.PInvoke;
 using static Vanara.PInvoke.BITS;
 using static Vanara.PInvoke.Kernel32;

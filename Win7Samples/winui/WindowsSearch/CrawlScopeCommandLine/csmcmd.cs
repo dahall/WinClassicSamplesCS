@@ -1,8 +1,5 @@
 ﻿using std;
-using System;
-using System.Runtime.InteropServices;
 using Vanara.PInvoke;
-using static Vanara.PInvoke.Ole32;
 using static Vanara.PInvoke.SearchApi;
 
 namespace CrawlScopeCommandLine

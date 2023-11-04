@@ -1,23 +1,16 @@
-﻿using System;
-using System.Runtime.InteropServices;
+﻿using System.Runtime.InteropServices;
 using System.Runtime.InteropServices.ComTypes;
 using System.Text;
-using System.Threading;
-using System.Windows.Forms;
-
-using IServiceProvider = Vanara.PInvoke.Shell32.IServiceProvider;
-
+using Vanara.PInvoke;
 using static Vanara.PInvoke.Ole32;
 using static Vanara.PInvoke.Shell32;
-
-using Vanara.PInvoke;
-using System.Linq;
+using IServiceProvider = Vanara.PInvoke.Shell32.IServiceProvider;
 
 namespace ExplorerBrowserCustomContents
 {
 	public partial class CExplorerBrowserHostDialog : Form, IServiceProvider, ICommDlgBrowser3
 	{
-		private static readonly Guid IID_ICommDlgBrowser = new Guid("000214F1-0000-0000-C000-000000000046");
+		private static readonly Guid IID_ICommDlgBrowser = new("000214F1-0000-0000-C000-000000000046");
 
 		private bool _fEnumerated;
 		private IExplorerBrowser _peb;

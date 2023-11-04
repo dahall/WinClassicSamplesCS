@@ -1,5 +1,4 @@
 ﻿using Microsoft.Win32;
-using System;
 using System.Drawing;
 using System.Runtime.InteropServices;
 using System.Runtime.InteropServices.ComTypes;
@@ -63,7 +62,6 @@ namespace deskbands
 
 		public void Dispose()
 		{
-#pragma warning disable CA1416 // Validate platform compatibility
 			if (m_pSite is not null)
 			{
 				Marshal.ReleaseComObject(m_pSite);
@@ -72,7 +70,7 @@ namespace deskbands
 			{
 				Marshal.ReleaseComObject(m_pInputObjectSite);
 			}
-#pragma warning restore CA1416 // Validate platform compatibility
+
 			System.GC.SuppressFinalize(this);
 		}
 
@@ -250,8 +248,6 @@ namespace deskbands
 			HRESULT hr = HRESULT.S_OK;
 
 			m_hwndParent = default;
-
-#pragma warning disable CA1416 // Validate platform compatibility
 			if (m_pSite is not null)
 			{
 				Marshal.ReleaseComObject(m_pSite);
@@ -262,7 +258,6 @@ namespace deskbands
 				Marshal.ReleaseComObject(m_pInputObjectSite);
 				m_pInputObjectSite = default;
 			}
-#pragma warning restore CA1416 // Validate platform compatibility
 
 			if (pUnkSite is not null)
 			{
@@ -365,7 +360,6 @@ namespace deskbands
 			return lResult;
 		}
 
-#pragma warning disable CA1416 // Validate platform compatibility
 		[ComRegisterFunction]
 		public static void Register(Type t)
 		{
@@ -384,6 +378,5 @@ namespace deskbands
 
 			Registry.ClassesRoot.DeleteSubKeyTree($@"CLSID\{t.GUID:B}");
 		}
-#pragma warning restore CA1416 // Validate platform compatibility
 	}
 }

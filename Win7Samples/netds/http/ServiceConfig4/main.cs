@@ -5,7 +5,6 @@ global using Vanara.InteropServices;
 global using Vanara.PInvoke;
 global using static Vanara.PInvoke.HttpApi;
 global using static Vanara.PInvoke.Ws2_32;
-using System.Linq;
 
 namespace ServiceConfig4;
 

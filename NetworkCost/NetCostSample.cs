@@ -1,5 +1,4 @@
-﻿using System;
-using Vanara.InteropServices;
+﻿using Vanara.InteropServices;
 using Vanara.PInvoke;
 using Vanara.PInvoke.NetListMgr;
 

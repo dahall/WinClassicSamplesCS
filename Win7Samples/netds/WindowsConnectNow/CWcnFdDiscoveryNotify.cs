@@ -1,13 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Runtime.InteropServices;
+﻿using System.Runtime.InteropServices;
 using System.Text;
-using System.Threading.Tasks;
 using Vanara.PInvoke;
 using static Vanara.PInvoke.FunDisc;
 using static Vanara.PInvoke.Kernel32;
-using static Vanara.PInvoke.Ole32;
 using static Vanara.PInvoke.WcnApi;
 
 namespace WindowsConnectNow

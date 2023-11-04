@@ -1,5 +1,4 @@
-﻿using System;
-using System.Runtime.InteropServices;
+﻿using System.Runtime.InteropServices;
 using System.Runtime.InteropServices.ComTypes;
 using Vanara.InteropServices;
 using Vanara.PInvoke;
@@ -17,7 +16,7 @@ namespace NetworkCost
 			public int m_dwCookie;
 			public IConnectionPoint m_pConnectionPoint;
 			public Guid m_riid;
-			public DESTINATION_INFO m_destSockAddr = new DESTINATION_INFO();
+			public DESTINATION_INFO m_destSockAddr = new();
 			public static ComReleaser<INetworkCostManager> s_pCostManager = ComReleaserFactory.Create(new INetworkCostManager());
 			public static INetworkCostManager m_pCostManager => s_pCostManager.Item;
 

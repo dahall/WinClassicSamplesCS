@@ -1,6 +1,4 @@
 ﻿using System;
-using System.IO;
-using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
 using System.Windows.Forms;
@@ -108,7 +106,7 @@ namespace GroupChat
 		{
 			HRESULT hr = HRESULT.S_OK;
 			pwzCloudName = null;
-			SafeHGlobalStruct<WSAQUERYSET> pResults = new SafeHGlobalStruct<WSAQUERYSET>(IntPtr.Zero);
+			SafeHGlobalStruct<WSAQUERYSET> pResults = new(IntPtr.Zero);
 
 			// Fill out information for WSA query
 			var CloudInfo = new PNRPCLOUDINFO
@@ -359,7 +357,7 @@ namespace GroupChat
 			{
 				CleanupGroup();
 
-				PEER_GROUP_PROPERTIES props = new PEER_GROUP_PROPERTIES
+				PEER_GROUP_PROPERTIES props = new()
 				{
 					dwSize = (uint)Marshal.SizeOf<PEER_GROUP_PROPERTIES>(),
 					pwzClassifier = "SampleChatGroup",

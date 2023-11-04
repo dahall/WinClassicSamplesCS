@@ -1,14 +1,11 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-	<TargetFramework>net48</TargetFramework>
-	<LangVersion>latest</LangVersion>
-	<Nullable>enable</Nullable>
   </PropertyGroup>
 
   <ItemGroup>
-	<PackageReference Include="Vanara.PInvoke.Kernel32" Version="3.4.17" />
-	<PackageReference Include="Vanara.PInvoke.Ole" Version="3.4.17" />
+	<PackageReference Include="Vanara.PInvoke.Kernel32" Version="4.0.0" />
+	<PackageReference Include="Vanara.PInvoke.Ole" Version="4.0.0" />
   </ItemGroup>
 
 </Project>

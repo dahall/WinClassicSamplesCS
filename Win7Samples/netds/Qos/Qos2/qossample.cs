@@ -1,5 +1,4 @@
-﻿#pragma warning disable CA1416 // Validate platform compatibility
-using System.Net;
+﻿using System.Net;
 using System.Runtime.InteropServices;
 using Vanara;
 using Vanara.InteropServices;
@@ -102,7 +101,7 @@ void socketCreate([In] string destination, out SOCKET socket, out ADDRESS_FAMILY
 	socket = WSASocket(addressFamily = destAddr.sa_family, SOCK.SOCK_DGRAM, 0, default, 0, WSA_FLAG.WSA_FLAG_OVERLAPPED);
 	if (socket.IsNull)
 	{
-		throw WSAGetLastError().GetException();
+		throw WSAGetLastError().GetException()!;
 	}
 
 	// Connect the new socket to the destination
@@ -212,7 +211,7 @@ void client([In] string[] args)
 	}
 
 	// Create a flow for our socket
-	Win32Error.ThrowLastErrorIfFalse(QOSAddSocketToFlow(qosHandle, socket, default, QOS_TRAFFIC_TYPE.QOSTrafficTypeExcellentEffort, 0, ref flowID));
+	Win32Error.ThrowLastErrorIfFalse(QOSAddSocketToFlow(qosHandle, socket, IntPtr.Zero, QOS_TRAFFIC_TYPE.QOSTrafficTypeExcellentEffort, 0, ref flowID));
 
 	// Read the data rate in bits/s passed on the command line
 	if (!uint.TryParse(args[2], out targetBitRate))
@@ -827,7 +826,7 @@ void server()
 
 		// Post a receive operation
 		// We only have one receive outstanding at a time. 
-		result = WSARecv(socket, buf, 1, out var numberOfBytesReceived, ref dwFlags, ref recvOverlapped, default);
+		result = WSARecv(socket, buf, 1, default, ref dwFlags, ref recvOverlapped, default);
 
 		if (result.Failed)
 		{
@@ -859,7 +858,7 @@ void server()
 				{
 					// The receive operation completed.
 					// Determine the true result of the receive call.
-					bool overlappedResult = WSAGetOverlappedResult(socket, recvOverlapped, out numberOfBytesReceived, false, out _);
+					bool overlappedResult = WSAGetOverlappedResult(socket, recvOverlapped, out var numberOfBytesReceived, false, out _);
 
 					if (overlappedResult == false)
 					{

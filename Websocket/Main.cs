@@ -2,7 +2,6 @@
 global using Vanara.Extensions;
 global using Vanara.InteropServices;
 global using Vanara.PInvoke;
-global using static Vanara.PInvoke.Kernel32;
 global using static Vanara.PInvoke.WebSocket;
 
 namespace Websocket;
@@ -17,14 +16,14 @@ internal class Program
 			goto quit;
 		}
 
-		hr = PerformHandshake(clientHandle, serverHandle);
+		hr = PerformHandshake(clientHandle!, serverHandle!);
 		if (hr.Failed)
 		{
 			goto quit;
 		}
 
 		Transport transport = new();
-		hr = PerformDataExchange(clientHandle, serverHandle, transport);
+		hr = PerformDataExchange(clientHandle!, serverHandle!, transport);
 		if (hr.Failed)
 		{
 			goto quit;
@@ -61,8 +60,10 @@ internal class Program
 		Console.Write("\n");
 	}
 
-	private static void DumpHeaders(WEB_SOCKET_HTTP_HEADER[] headers)
+	private static void DumpHeaders(WEB_SOCKET_HTTP_HEADER[]? headers)
 	{
+		if (headers is null)
+			return;
 		foreach (WEB_SOCKET_HTTP_HEADER hdr in headers)
 		{
 			Console.Write("{0}: {1}\n", hdr.pcName, hdr.pcValue);
@@ -137,27 +138,23 @@ internal class Program
 
 		// Start a client side of the handshake - 'additionalHeaders' will hold an array of websocket specific headers. Production
 		// applications must add these headers to the outgoing HTTP request.
-		HRESULT hr = WebSocketBeginClientHandshake(clientHandle, null, 0, null, 0, null, 0,
-			out WEB_SOCKET_HTTP_HEADER[]? clientAdditionalHeaders, out uint clientAdditionalHeaderCount);
+		HRESULT hr = WebSocketBeginClientHandshake(clientHandle, null, 0, null, 0, null, 0, out WEB_SOCKET_HTTP_HEADER[]? clientAdditionalHeaders);
 		if (hr.Failed)
 		{
 			return hr;
 		}
 
 		// Concatenate list of headers that the HTTP stack must send (the Host header) with a list returned by WebSocketBeginClientHandshake.
-		uint clientHeaderCount = clientAdditionalHeaderCount + 1;
-		WEB_SOCKET_HTTP_HEADER[] clientHeaders = new WEB_SOCKET_HTTP_HEADER[clientHeaderCount];
-
-		Array.Copy(clientAdditionalHeaders, clientHeaders, clientAdditionalHeaderCount);
-		clientHeaders[clientAdditionalHeaderCount] = host;
+		Array.Resize(ref clientAdditionalHeaders, (clientAdditionalHeaders?.Length ?? 0) + 1);
+		clientAdditionalHeaders[^1] = host;
 
 		Console.Write("-- Client side headers that need to be send with a request --\n");
-		DumpHeaders(clientHeaders);
+		DumpHeaders(clientAdditionalHeaders);
 
 		// Start a server side of the handshake. Production applications must parse the incoming HTTP request and pass all headers to the
 		// function. The function will return an array websocket specific headers that must be added to the outgoing HTTP response.
-		hr = WebSocketBeginServerHandshake(serverHandle, null, null, 0, clientHeaders, clientHeaderCount,
-			out WEB_SOCKET_HTTP_HEADER[]? serverAdditionalHeaders, out uint serverAdditionalHeaderCount);
+		hr = WebSocketBeginServerHandshake(serverHandle, null, null, 0, clientAdditionalHeaders, (uint)clientAdditionalHeaders.Length,
+			out WEB_SOCKET_HTTP_HEADER[]? serverAdditionalHeaders);
 		if (hr.Failed)
 		{
 			return hr;
@@ -168,7 +165,7 @@ internal class Program
 
 		// Finish handshake. Once the client/server handshake is completed, memory allocated by ref the ref Begin functions is reclaimed and
 		// must not be used by the application.
-		hr = WebSocketEndClientHandshake(clientHandle, serverAdditionalHeaders, serverAdditionalHeaderCount);
+		hr = WebSocketEndClientHandshake(clientHandle, serverAdditionalHeaders!, (uint)serverAdditionalHeaders!.Length);
 		if (hr.Failed)
 		{
 			return hr;

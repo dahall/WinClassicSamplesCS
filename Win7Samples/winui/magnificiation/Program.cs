@@ -1,5 +1,5 @@
-﻿using System.Runtime.InteropServices;
-using Vanara.PInvoke;
+﻿using Vanara.PInvoke;
+using static Vanara.PInvoke.Kernel32;
 using static Vanara.PInvoke.Magnification;
 using static Vanara.PInvoke.User32;
 
@@ -75,7 +75,7 @@ ShowWindow(hwndHost, ShowWindowCommand.SW_NORMAL);
 UpdateWindow(hwndHost);
 
 // Create a timer to update the control.
-IntPtr timerId = SetTimer(hwndHost, default, timerInterval, UpdateMagWindow);
+var timerId = SetTimer(hwndHost, default, timerInterval, UpdateMagWindow);
 
 // Main message loop.
 MSG msg;
@@ -146,7 +146,7 @@ static SysCommand GET_SC_WPARAM(IntPtr wParam) => (SysCommand)(wParam.ToInt32() 
 //
 // PURPOSE: Registers the window class for the window that contains the magnification control.
 //
-ushort RegisterHostWindowClass()
+ATOM RegisterHostWindowClass()
 {
 	WNDCLASSEX wcex = new()
 	{
@@ -221,7 +221,7 @@ bool SetupMagnifier()
 //
 // PURPOSE: Sets the source rectangle and updates the window. Called by a timer.
 //
-void UpdateMagWindow(HWND hwnd, uint uMsg, IntPtr idEvent, uint dwTime)
+void UpdateMagWindow(HWND hwnd, uint uMsg, nuint idEvent, uint dwTime)
 {
 	GetCursorPos(out POINT mousePoint);
 

@@ -3,14 +3,16 @@
   <PropertyGroup>
     <OutputType>WinExe</OutputType>
     <TargetFramework>net48</TargetFramework>
-	<LangVersion>latest</LangVersion>
     <UseWindowsForms>true</UseWindowsForms>
-    <DocumentationFile>.\tsfapp.xml</DocumentationFile>
-    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
 
   <ItemGroup>
     <None Remove="mainicon.ico" />
+    <Using Include="System" />
+    <Using Include="System.Collections.Generic" />
+    <Using Include="System.IO" />
+    <Using Include="System.Linq" />
+    <Using Include="System.Windows.Forms" />
   </ItemGroup>
 
   <ItemGroup>
@@ -18,9 +20,9 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Vanara.PInvoke.Ole" Version="3.4.17" />
-    <PackageReference Include="Vanara.PInvoke.User32" Version="3.4.17" />
-    <PackageReference Include="Vanara.PInvoke.TextServicesFramework" Version="3.4.17" />
+    <PackageReference Include="Vanara.PInvoke.Ole" Version="4.0.0" />
+    <PackageReference Include="Vanara.PInvoke.User32" Version="4.0.0" />
+    <PackageReference Include="Vanara.PInvoke.TextServicesFramework" Version="4.0.0" />
   </ItemGroup>
 
 </Project>

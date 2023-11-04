@@ -13,7 +13,6 @@
  * PURPOSE.                                                              *
  *-----------------------------------------------------------------------*/
 
-using System;
 using Vanara.Storage;
 using static Vanara.PInvoke.IMAPI;
 

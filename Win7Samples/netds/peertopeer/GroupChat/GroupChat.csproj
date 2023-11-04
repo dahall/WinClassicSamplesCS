@@ -4,11 +4,14 @@
     <OutputType>WinExe</OutputType>
     <TargetFramework>net48</TargetFramework>
     <UseWindowsForms>true</UseWindowsForms>
-    <LangVersion>8.0</LangVersion>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Vanara.PInvoke.P2P" Version="3.4.17" />
+    <PackageReference Include="Vanara.PInvoke.P2P" Version="4.0.0" />
+    <Using Include="System"/>
+    <Using Include="System.IO"/>
+    <Using Include="System.Linq"/>
+    <Using Include="System.Windows.Forms"/>
   </ItemGroup>
 
   <ItemGroup>

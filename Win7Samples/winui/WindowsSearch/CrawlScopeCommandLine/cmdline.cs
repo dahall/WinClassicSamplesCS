@@ -1,5 +1,4 @@
-﻿using System;
-using Vanara.PInvoke;
+﻿using Vanara.PInvoke;
 
 namespace std
 {

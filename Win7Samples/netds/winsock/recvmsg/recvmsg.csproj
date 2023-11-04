@@ -2,12 +2,10 @@
 
   <PropertyGroup>
     <OutputType>Exe</OutputType>
-    <TargetFramework>net6.0</TargetFramework>
-    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Vanara.PInvoke.IpHlpApi" Version="3.4.17" />
+    <PackageReference Include="Vanara.PInvoke.IpHlpApi" Version="4.0.0" />
     <!--<Reference Include="Vanara.Core">
       <HintPath>..\..\..\..\..\Vanara\PInvoke\Shared\bin\Debug\net6.0\Vanara.Core.dll</HintPath>
     </Reference>

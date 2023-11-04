@@ -2,15 +2,21 @@
 
   <PropertyGroup>
     <TargetFramework>net48</TargetFramework>
-	<LangVersion>latest</LangVersion>
-    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <LangVersion>latest</LangVersion>
     <RegisterForComInterop>true</RegisterForComInterop>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Vanara.PInvoke.Ole" Version="3.4.9" />
-    <PackageReference Include="Vanara.PInvoke.User32" Version="3.4.9" />
-    <PackageReference Include="Vanara.PInvoke.TextServicesFramework" Version="3.4.9" />
+    <PackageReference Include="Vanara.PInvoke.Ole" Version="4.0.0" />
+    <PackageReference Include="Vanara.PInvoke.User32" Version="4.0.0" />
+    <PackageReference Include="Vanara.PInvoke.TextServicesFramework" Version="4.0.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Using Include="System" />
+    <Using Include="System.Collections.Generic" />
+    <Using Include="System.IO" />
+    <Using Include="System.Linq" />
   </ItemGroup>
 
 </Project>

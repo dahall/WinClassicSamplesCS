@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Runtime.InteropServices;
+﻿using System.Runtime.InteropServices;
 using System.Text;
 using Vanara.Extensions;
 using Vanara.InteropServices;
@@ -16,7 +13,7 @@ namespace DrtSdkSample
 	internal static partial class Program
 	{
 		private const int KEYSIZE = 32;
-		private static readonly Dictionary<int, DRT_CONTEXT> contexts = new Dictionary<int, DRT_CONTEXT>();
+		private static readonly Dictionary<int, DRT_CONTEXT> contexts = new();
 
 		private static IntPtr AddCtx(DRT_CONTEXT ctx) { var id = System.Diagnostics.Process.GetCurrentProcess().Id; contexts.Add(id, ctx); return new IntPtr(id); }
 
@@ -48,7 +45,7 @@ namespace DrtSdkSample
 			public DRT_SETTINGS settings;
 			public SafePCCERT_CONTEXT pRoot;
 			public SafePCCERT_CONTEXT pLocal;
-			public List<REG_CONTEXT> registrations = new List<REG_CONTEXT>();
+			public List<REG_CONTEXT> registrations = new();
 		}
 
 		//********************************************************************************************
@@ -423,10 +420,10 @@ namespace DrtSdkSample
 			uint dwSize = 1024;
 			bool fKeyFound = false;
 			HDRT_SEARCH_CONTEXT SearchContext = default;
-			using SafeCoTaskMemStruct<DRT_SEARCH_RESULT> pSearchResult = new SafeCoTaskMemStruct<DRT_SEARCH_RESULT>();
-			using SafeDRT_DATA searchKey = new SafeDRT_DATA(KEYSIZE);
-			using SafeDRT_DATA minKey = new SafeDRT_DATA(KEYSIZE);
-			using SafeDRT_DATA maxKey = new SafeDRT_DATA(KEYSIZE);
+			using SafeCoTaskMemStruct<DRT_SEARCH_RESULT> pSearchResult = new();
+			using SafeDRT_DATA searchKey = new(KEYSIZE);
+			using SafeDRT_DATA minKey = new(KEYSIZE);
+			using SafeDRT_DATA maxKey = new(KEYSIZE);
 
 			//Create a manual reset event 
 			//The DRT will reset the event when the search result buffer has been consumed
@@ -607,7 +604,7 @@ namespace DrtSdkSample
 					goto Cleanup;
 			}
 
-			REG_CONTEXT reg = new REG_CONTEXT();
+			REG_CONTEXT reg = new();
 			reg.regInfo.appData = (DRT_DATA)newPayload;
 			reg.regInfo.key = (DRT_DATA)newKey;
 

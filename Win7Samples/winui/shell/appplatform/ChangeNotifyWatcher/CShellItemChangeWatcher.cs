@@ -1,10 +1,7 @@
-﻿using System;
-using System.Data;
-using System.Linq;
+﻿using System.Data;
 using System.Runtime.InteropServices;
 using System.Runtime.InteropServices.ComTypes;
 using System.Text;
-using System.Windows.Forms;
 using Vanara.Extensions;
 using Vanara.PInvoke;
 using static Vanara.PInvoke.Shell32;
@@ -17,7 +14,7 @@ namespace ChangeNotifyWatcher
 	{
 		private const uint c_notifyMessage = 0x04C8; // WM_USER + 200
 
-		private readonly CShellItemChangeWatcher _watcher = new CShellItemChangeWatcher();
+		private readonly CShellItemChangeWatcher _watcher = new();
 		private IShellItem2 psiDrop;
 
 		public CChangeNotifyApp()

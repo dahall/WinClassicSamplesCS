@@ -1,13 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Runtime.InteropServices;
-using System.Text;
-using Vanara.Extensions;
-using Vanara.InteropServices;
-using Vanara.PInvoke;
+﻿using Vanara.PInvoke;
 using static Vanara.PInvoke.Kernel32;
-using FILETIME = System.Runtime.InteropServices.ComTypes.FILETIME;
 
 namespace AsyncCreate
 {

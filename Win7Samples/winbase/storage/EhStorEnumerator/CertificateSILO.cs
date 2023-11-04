@@ -1,13 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Windows.Forms;
-using Vanara.Extensions;
-using static Vanara.PInvoke.EnhancedStorage;
-using static Vanara.PInvoke.PortableDeviceApi;
+﻿using static Vanara.PInvoke.PortableDeviceApi;
 
 namespace EhStorEnumerator
 {
-    public static class g_DeviceCertData
+	public static class g_DeviceCertData
     {
         public static string m_szDevicePNPID;
         public static IPortableDevice m_iDevice;

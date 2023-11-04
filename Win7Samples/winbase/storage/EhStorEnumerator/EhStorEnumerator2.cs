@@ -1,10 +1,8 @@
-﻿using System;
-using System.Windows.Forms;
-using static Vanara.PInvoke.PortableDeviceApi;
+﻿using static Vanara.PInvoke.PortableDeviceApi;
 
 namespace EhStorEnumerator
 {
-    public partial class EhStorEnumerator2 : Form
+	public partial class EhStorEnumerator2 : Form
     {
         private static readonly Lazy<IPortableDeviceValues> clientInfo = new(InitClientInfo);
         private IPortableDeviceManager g_DevManager;

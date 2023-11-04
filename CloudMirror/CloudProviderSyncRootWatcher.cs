@@ -1,16 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Threading.Tasks;
-using Vanara.PInvoke;
+﻿using Vanara.PInvoke;
 using static Vanara.PInvoke.CldApi;
 using static Vanara.PInvoke.Kernel32;
 
 namespace CloudMirror
 {
-    static class CloudProviderSyncRootWatcher
+	static class CloudProviderSyncRootWatcher
     {
-        static DirectoryWatcher s_directoryWatcher = new DirectoryWatcher();
+        static DirectoryWatcher s_directoryWatcher = new();
         static bool s_shutdownWatcher;
 
         public static void WatchAndWait()

@@ -1,5 +1,4 @@
-﻿using System;
-using static Vanara.PInvoke.DnsApi;
+﻿using static Vanara.PInvoke.DnsApi;
 
 namespace DNSAsyncQuery
 {

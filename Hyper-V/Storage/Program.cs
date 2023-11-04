@@ -3,7 +3,6 @@ global using System.Globalization;
 global using System.Linq;
 global using System.Management;
 global using System.Reflection;
-global using Vanara.PInvoke;
 global using Vanara.IO;
 
 if (args.Length == 1)

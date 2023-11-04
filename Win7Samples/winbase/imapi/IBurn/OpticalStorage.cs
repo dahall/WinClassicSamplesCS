@@ -1,9 +1,6 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections;
 using System.ComponentModel;
 using System.IO;
-using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using System.Runtime.InteropServices.ComTypes;
@@ -1555,7 +1552,7 @@ namespace Vanara.Storage
 		/// and Windows Server 2008 R2.
 		/// </para>
 		/// </remarks>
-		public bool ISRC { get => track.ISRC; set => track.ISRC = value; }
+		public string? ISRC { get => track.ISRC; set => track.ISRC = value; }
 
 		/// <summary>Retrieves the number of user sectors in this track.</summary>
 		/// <value>The number of user sectors in this track.</value>
@@ -2857,9 +2854,7 @@ namespace Vanara.Storage
 		public void Dispose()
 		{
 			if (stream is null) return;
-#pragma warning disable CA1416 // Validate platform compatibility
 			System.Runtime.InteropServices.Marshal.ReleaseComObject(stream);
-#pragma warning restore CA1416 // Validate platform compatibility
 			stream = null;
 			GC.SuppressFinalize(this);
 		}

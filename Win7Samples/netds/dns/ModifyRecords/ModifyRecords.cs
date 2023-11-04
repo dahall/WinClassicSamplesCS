@@ -1,5 +1,4 @@
-﻿using System;
-using System.Runtime.InteropServices;
+﻿using System.Runtime.InteropServices;
 using Vanara.InteropServices;
 
 using static Vanara.PInvoke.DnsApi;

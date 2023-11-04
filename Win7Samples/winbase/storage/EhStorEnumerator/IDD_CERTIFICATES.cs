@@ -1,12 +1,9 @@
-﻿using System;
-using System.Data;
-using System.Linq;
-using System.Windows.Forms;
+﻿using System.Data;
 using static Vanara.PInvoke.EnhancedStorage;
 
 namespace EhStorEnumerator
 {
-    public partial class IDD_CERTIFICATES : Form
+	public partial class IDD_CERTIFICATES : Form
     {
         private readonly ColumnHeader[] deviceHeaders = new[]
         {
@@ -81,7 +78,7 @@ namespace EhStorEnumerator
             CCertificate g_Certificate = SelectedCertificate;
             if (g_Certificate is not null)
             {
-                IDD_SET_CERTIFICATE dlg = new IDD_SET_CERTIFICATE(g_Certificate);
+                IDD_SET_CERTIFICATE dlg = new(g_Certificate);
                 if (dlg.ShowDialog(this) == DialogResult.OK)
                 {
                     bool bProcessAdding = true;

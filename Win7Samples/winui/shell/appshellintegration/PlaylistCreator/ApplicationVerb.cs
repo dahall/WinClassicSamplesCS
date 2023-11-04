@@ -1,14 +1,10 @@
-﻿using System;
-using System.Drawing;
-using System.Runtime.InteropServices;
-
+﻿using System.Runtime.InteropServices;
+using Vanara.Extensions;
+using Vanara.Extensions.Reflection;
 using static Vanara.PInvoke.Ole32;
 using static Vanara.PInvoke.OleAut32;
 using static Vanara.PInvoke.Shell32;
 using static Vanara.PInvoke.ShlwApi;
-
-using Vanara.Extensions;
-using Vanara.Extensions.Reflection;
 
 namespace Vanara.PInvoke
 {

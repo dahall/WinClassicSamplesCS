@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace imapi2sample
+﻿namespace imapi2sample
 {
 	static class ConsoleUtil
 	{

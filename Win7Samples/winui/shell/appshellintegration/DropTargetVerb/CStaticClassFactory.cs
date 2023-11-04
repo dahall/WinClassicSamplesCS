@@ -1,9 +1,6 @@
-﻿using System;
-using System.Runtime.InteropServices;
-
-using static Vanara.PInvoke.Ole32;
-
+﻿using System.Runtime.InteropServices;
 using Vanara.PInvoke;
+using static Vanara.PInvoke.Ole32;
 
 namespace DropTargetVerb
 {

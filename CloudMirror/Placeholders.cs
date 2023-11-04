@@ -1,6 +1,4 @@
-﻿using System;
-using System.IO;
-using Vanara.InteropServices;
+﻿using Vanara.InteropServices;
 using Vanara.PInvoke;
 using Windows.Storage.Provider;
 using static Vanara.PInvoke.CldApi;

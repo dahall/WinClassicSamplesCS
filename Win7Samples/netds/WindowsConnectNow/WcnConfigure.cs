@@ -1,11 +1,10 @@
 ﻿using CommandLine;
-using System;
-using Vanara.PInvoke;
+using System.Text;
 using Vanara.Extensions;
+using Vanara.PInvoke;
 using static Vanara.PInvoke.Kernel32;
 using static Vanara.PInvoke.WcnApi;
 using static Vanara.PInvoke.WlanApi;
-using System.Text;
 
 namespace WindowsConnectNow
 {
@@ -217,7 +216,7 @@ namespace WindowsConnectNow
 
 			//Wlan variable declarations
 			StringBuilder profileBuffer = null;
-			WCN_DEVICE_INFO_PARAMETERS WCNDeviceInformation = new WCN_DEVICE_INFO_PARAMETERS();
+			WCN_DEVICE_INFO_PARAMETERS WCNDeviceInformation = new();
 
 			//The following wlan profile xml is used to configure an unconfigured WCN enabled Router or device.
 			//See http://msdn.microsoft.com/en-us/library/bb525370(VS.85).aspx on how to generate a wlan profile.
@@ -499,7 +498,7 @@ namespace WindowsConnectNow
 
 			//The IWCNDevice::SetPassword method configures the authentication method value, and if required, 
 			//a password used for the pending session. This method may only be called prior to IWCNDevice::Connect.
-			hr = pDevice.SetPassword(configParams.enumConfigType, (uint)pinLen, pin.ToString());
+			hr = pDevice.SetPassword(configParams.enumConfigType, (uint)pinLen, StringHelper.GetBytes(pin.ToString(), false, CharSet.Ansi));
 
 			if (hr != HRESULT.S_OK)
 			{

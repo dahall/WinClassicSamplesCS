@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Runtime.InteropServices;
-using System.Threading;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using Vanara.Extensions;
 using Vanara.InteropServices;
 using Vanara.PInvoke;
@@ -16,7 +11,7 @@ namespace CloudMirror
 		private static readonly SizeT c_bufferSize = Marshal.SizeOf<FILE_NOTIFY_INFORMATION>() * 100;
 
 		private Action<IEnumerable<string>> _callback;
-		private CancellationTokenSource _cancellationTokenSource = new CancellationTokenSource();
+		private CancellationTokenSource _cancellationTokenSource = new();
 		private SafeHFILE _dir;
 		private string _path;
 

@@ -1,6 +1,4 @@
-﻿using System;
-using System.Threading;
-using Vanara.IO;
+﻿using Vanara.IO;
 
 if (args.Length != 2)
 {

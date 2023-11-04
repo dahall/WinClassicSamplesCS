@@ -14,16 +14,14 @@ using static Vanara.PInvoke.Shell32;
 namespace DesktopToastsSample
 {
 	[ClassInterface(ClassInterfaceType.None)]
-#pragma warning disable CS0618 // Type or member is obsolete
 	[ComSourceInterfaces(typeof(INotificationActivationCallback))]
-#pragma warning restore CS0618 // Type or member is obsolete
 	[Guid("23A5B06E-20BB-4E7E-A0AC-6982ED6A6041"), ComVisible(true)]
 	public class NotificationActivator : INotificationActivationCallback
 	{
 		private static readonly string subKey = @"SOFTWARE\Classes\CLSID\" + typeof(NotificationActivator).GUID.ToString("B");
 		private static int cookie = -1;
-		private static RegistrationServices regService = new RegistrationServices();
-		private static string shortcutPath;
+		private static RegistrationServices regService = new();
+		private static string? shortcutPath;
 
 		public static void Initialize(string appId)
 		{

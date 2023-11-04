@@ -30,16 +30,15 @@
 //      -   The fake-menu switches to keyboard focus highlighting
 //          once keyboard menu navigation is employed.
 
-using Vanara.PInvoke;
-using static Vanara.PInvoke.Kernel32;
-using static Vanara.PInvoke.Gdi32;
-using static Vanara.PInvoke.User32;
-using static Vanara.PInvoke.DwmApi;
-using static Vanara.PInvoke.UxTheme;
-using static Vanara.PInvoke.Macros;
 using System.Runtime.InteropServices;
-using Vanara.InteropServices;
 using Vanara.Extensions;
+using Vanara.PInvoke;
+using static Vanara.PInvoke.DwmApi;
+using static Vanara.PInvoke.Gdi32;
+using static Vanara.PInvoke.Kernel32;
+using static Vanara.PInvoke.Macros;
+using static Vanara.PInvoke.User32;
+using static Vanara.PInvoke.UxTheme;
 
 internal class Program
 {

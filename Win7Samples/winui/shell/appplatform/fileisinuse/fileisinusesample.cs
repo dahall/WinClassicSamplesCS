@@ -1,13 +1,8 @@
-﻿using System;
-using System.IO;
-using System.Runtime.InteropServices;
-using System.Windows.Forms;
-
+﻿using System.Runtime.InteropServices;
+using Vanara.PInvoke;
 using static Vanara.PInvoke.Kernel32;
 using static Vanara.PInvoke.Ole32;
 using static Vanara.PInvoke.Shell32;
-
-using Vanara.PInvoke;
 
 namespace fileisinuse
 {

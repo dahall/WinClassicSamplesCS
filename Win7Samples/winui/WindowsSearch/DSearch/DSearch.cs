@@ -1,13 +1,12 @@
-﻿using System;
-using System.Data.OleDb;
+﻿using System.Data.OleDb;
 using static Vanara.PInvoke.SearchApi;
 
 namespace Microsoft.Samples.WindowsSearch.DSearch
 {
-    /// <summary>
-    /// This class is simply a static console application to query the Windows Search using interop for ISearchQueryHelper
-    /// </summary>
-    class DSearch
+	/// <summary>
+	/// This class is simply a static console application to query the Windows Search using interop for ISearchQueryHelper
+	/// </summary>
+	class DSearch
     {
         [STAThread]
         static void Main(string[] args)

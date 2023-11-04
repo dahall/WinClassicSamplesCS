@@ -1,5 +1,4 @@
-﻿using System;
-using Vanara.InteropServices;
+﻿using Vanara.InteropServices;
 using static Vanara.PInvoke.ProjectedFSLib;
 
 namespace ProjectedFileSystem
@@ -30,14 +29,14 @@ namespace ProjectedFileSystem
 			// Store the notification mapping we set up into a start options structure.  We leave all the
 			// other options at their defaults.
 			using var mem = SafeCoTaskMemHandle.CreateFromList(notificationMappings);
-			PRJ_STARTVIRTUALIZING_OPTIONS opts = new PRJ_STARTVIRTUALIZING_OPTIONS
+			PRJ_STARTVIRTUALIZING_OPTIONS opts = new()
 			{
 				NotificationMappings = mem,
 				NotificationMappingsCount = 1
 			};
 
 			// Start the provider using the options we set up.
-			RegfsProvider provider = new RegfsProvider();
+			RegfsProvider provider = new();
 			var hr = provider.Start(rootPath, opts);
 			if (hr.Failed)
 			{

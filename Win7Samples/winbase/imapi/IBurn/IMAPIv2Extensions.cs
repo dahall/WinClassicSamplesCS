@@ -1,12 +1,10 @@
-﻿using System;
-using System.IO;
-using System.Linq;
+﻿using System.IO;
+using System.Runtime.InteropServices;
 using System.Runtime.InteropServices.ComTypes;
 using Vanara.Extensions;
 using Vanara.InteropServices;
-using static Vanara.PInvoke.IMAPI;
 using Vanara.PInvoke;
-using System.Runtime.InteropServices;
+using static Vanara.PInvoke.IMAPI;
 
 namespace Vanara.Storage
 {

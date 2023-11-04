@@ -1,5 +1,4 @@
-﻿using System;
-using static ConnectionManagerCost.Utils;
+﻿using static ConnectionManagerCost.Utils;
 using static Vanara.PInvoke.Kernel32;
 using static Vanara.PInvoke.WcmApi;
 

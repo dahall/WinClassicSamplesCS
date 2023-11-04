@@ -1,6 +1,4 @@
-﻿using System;
-using System.Diagnostics;
-using System.IO;
+﻿using System.Diagnostics;
 using System.Runtime.InteropServices;
 using System.Runtime.InteropServices.ComTypes;
 using Vanara.PInvoke;
@@ -22,7 +20,7 @@ namespace ParsingWithParameters
 
 		// file system bind data is a parameter passed to IShellFolder::ParseDisplayName() to provide the item information to the file system
 		// data source. this will enable parsing of items that do not exist and avoiding accessing the disk in the parse operation {fc0a77e6-9d70-4258-9783-6dab1d0fe31e}
-		private static Guid CLSID_UnknownJunction = new Guid(0xfc0a77e6, 0x9d70, 0x4258, 0x97, 0x83, 0x6d, 0xab, 0x1d, 0x0f, 0xe3, 0x1e);
+		private static Guid CLSID_UnknownJunction = new(0xfc0a77e6, 0x9d70, 0x4258, 0x97, 0x83, 0x6d, 0xab, 0x1d, 0x0f, 0xe3, 0x1e);
 
 		// create a bind context with a named object
 		private static IBindCtx CreateBindCtxWithParam(string pszParam, object punk)

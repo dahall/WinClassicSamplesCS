@@ -1,5 +1,4 @@
-﻿using System;
-using System.Runtime.InteropServices;
+﻿using System.Runtime.InteropServices;
 using Vanara.Extensions;
 using Vanara.PInvoke;
 using static Vanara.PInvoke.WinMm;

@@ -2,7 +2,6 @@
 
   <PropertyGroup>
     <OutputType>Exe</OutputType>
-    <TargetFramework>netcoreapp3.1</TargetFramework>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
@@ -10,9 +9,9 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Vanara.PInvoke.IpHlpApi" Version="3.4.17" />
-    <PackageReference Include="Vanara.PInvoke.NetListMgr" Version="3.4.17" />
-    <PackageReference Include="Vanara.PInvoke.Ws2_32" Version="3.4.17" />
+    <PackageReference Include="Vanara.PInvoke.IpHlpApi" Version="4.0.0" />
+    <PackageReference Include="Vanara.PInvoke.NetListMgr" Version="4.0.0" />
+    <PackageReference Include="Vanara.PInvoke.Ws2_32" Version="4.0.0" />
   </ItemGroup>
 
 </Project>

@@ -1,13 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Data;
-using System.Drawing;
-using System.IO;
-using System.Linq;
-using System.Runtime.InteropServices;
+﻿using System.Runtime.InteropServices;
 using System.Runtime.InteropServices.ComTypes;
 using System.Text;
-using System.Windows.Forms;
 using Vanara.Extensions;
 using Vanara.InteropServices;
 using Vanara.PInvoke;
@@ -798,7 +791,7 @@ namespace tsfapp
 			the end character and add the width to the rectangle.
 			*/
 			acpEnd--;
-			Point ptEnd = GetPositionFromCharIndex(acpEnd);
+            System.Drawing.Point ptEnd = GetPositionFromCharIndex(acpEnd);
 
 			//calculate the width of the last character
 			Gdi32.GetTextExtentPoint32(hdc, pwszText + acpEnd, 1, out SIZE size);

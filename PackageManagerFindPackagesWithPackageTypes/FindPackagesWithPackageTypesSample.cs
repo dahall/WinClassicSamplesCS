@@ -1,8 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Security.Principal;
-using Windows.ApplicationModel;
-using Windows.Management.Deployment;
 
 class FindPackagesSample
 {

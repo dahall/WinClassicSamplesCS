@@ -1,5 +1,4 @@
-﻿using System;
-using Vanara.PInvoke;
+﻿using Vanara.PInvoke;
 using static Vanara.PInvoke.UrlMon;
 
 namespace uri;

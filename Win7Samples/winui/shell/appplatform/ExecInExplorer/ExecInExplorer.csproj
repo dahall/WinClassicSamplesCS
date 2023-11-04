@@ -3,12 +3,11 @@
   <PropertyGroup>
     <OutputType>WinExe</OutputType>
     <UseWindowsForms>true</UseWindowsForms>
-    <TargetFramework>netcoreapp3.1</TargetFramework>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Vanara.PInvoke.Shell32" Version="3.4.17" />
+    <PackageReference Include="Vanara.PInvoke.Shell32" Version="4.0.0" />
   </ItemGroup>
 
 </Project>

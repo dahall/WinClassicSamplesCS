@@ -1,10 +1,8 @@
-﻿using System;
-using System.Windows.Forms;
-using Vanara.PInvoke;
+﻿using Vanara.PInvoke;
 
 namespace EhStorEnumerator
 {
-    public partial class IDD_SET_PASSWORD : Form
+	public partial class IDD_SET_PASSWORD : Form
     {
         private readonly CPasswordSiloInformation siloInformation;
 

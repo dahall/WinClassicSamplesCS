@@ -1,7 +1,4 @@
-﻿using System;
-using System.Windows.Forms;
-
-namespace ExplorerBrowserCustomContents
+﻿namespace ExplorerBrowserCustomContents
 {
 	internal static class Program
 	{

@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Security.Principal;
-using System.Threading.Tasks;
+﻿using System.Security.Principal;
 using Windows.Security.Cryptography;
 using Windows.Storage;
 using Windows.Storage.Provider;

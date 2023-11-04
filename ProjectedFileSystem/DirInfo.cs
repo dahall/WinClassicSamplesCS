@@ -1,7 +1,4 @@
-﻿using System.Collections.Generic;
-using System.IO;
-using Vanara.Extensions;
-using static Vanara.PInvoke.ProjectedFSLib;
+﻿using static Vanara.PInvoke.ProjectedFSLib;
 
 namespace ProjectedFileSystem
 {
@@ -31,7 +28,7 @@ namespace ProjectedFileSystem
 		private int _currIndex;
 
 		// The list of entries in the directory this DirInfo represents.
-		private List<DirEntry> _entries = new List<DirEntry>();
+		private List<DirEntry> _entries = new();
 
 		// Stores the name of the directory this DirInfo represents.
 		private string _filePathName;
@@ -40,7 +37,7 @@ namespace ProjectedFileSystem
 		public DirInfo(string FilePathName) { _filePathName = FilePathName; }
 
 		// Returns a PRJ_FILE_BASIC_INFO populated with the information for the current item.
-		public PRJ_FILE_BASIC_INFO CurrentBasicInfo => new PRJ_FILE_BASIC_INFO { IsDirectory = _entries[_currIndex].IsDirectory, FileSize = _entries[_currIndex].FileSize };
+		public PRJ_FILE_BASIC_INFO CurrentBasicInfo => new() { IsDirectory = _entries[_currIndex].IsDirectory, FileSize = _entries[_currIndex].FileSize };
 
 		// Returns the file name for the current item.
 		public string CurrentFileName => _entries[_currIndex].FileName;

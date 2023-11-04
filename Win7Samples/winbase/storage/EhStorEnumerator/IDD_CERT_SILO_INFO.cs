@@ -1,10 +1,9 @@
-﻿using System.Windows.Forms;
-using Vanara.PInvoke;
+﻿using Vanara.PInvoke;
 using static Vanara.PInvoke.EnhancedStorage;
 
 namespace EhStorEnumerator
 {
-    public partial class IDD_CERT_SILO_INFO : Form
+	public partial class IDD_CERT_SILO_INFO : Form
     {
         public IDD_CERT_SILO_INFO()
         {

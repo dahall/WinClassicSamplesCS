@@ -2,7 +2,6 @@
 
   <PropertyGroup>
     <OutputType>Exe</OutputType>
-    <TargetFramework>net6.0</TargetFramework>
   </PropertyGroup>
 
   <ItemGroup>
@@ -12,9 +11,9 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Vanara.PInvoke.IMAPI" Version="3.4.17" />
-    <PackageReference Include="Vanara.PInvoke.Ole" Version="3.4.17" />
-    <PackageReference Include="Vanara.PInvoke.Shlwapi" Version="3.4.17" />
+    <PackageReference Include="Vanara.PInvoke.IMAPI" Version="4.0.0" />
+    <PackageReference Include="Vanara.PInvoke.Ole" Version="4.0.0" />
+    <PackageReference Include="Vanara.PInvoke.Shlwapi" Version="4.0.0" />
   </ItemGroup>
 
 </Project>

@@ -1,14 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Runtime.InteropServices.ComTypes;
+﻿using System.Runtime.InteropServices.ComTypes;
 using System.Text;
-
 using static Vanara.PInvoke.AdvApi32;
 using static Vanara.PInvoke.Kernel32;
 using static Vanara.PInvoke.Shell32;
 using static Vanara.PInvoke.ShlwApi;
-
-using Vanara.PInvoke;
 
 namespace Vanara.PInvoke
 {

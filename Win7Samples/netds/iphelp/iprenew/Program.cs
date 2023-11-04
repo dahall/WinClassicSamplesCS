@@ -1,6 +1,4 @@
-﻿using System;
-using System.Linq;
-using Vanara.PInvoke;
+﻿using Vanara.PInvoke;
 using static Vanara.PInvoke.IpHlpApi;
 
 IP_INTERFACE_INFO pInterfaceInfo;

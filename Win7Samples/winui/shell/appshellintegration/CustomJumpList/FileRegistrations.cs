@@ -1,13 +1,10 @@
-﻿using System;
-using System.Text;
-
+﻿using System.Text;
+using Vanara.InteropServices;
+using Vanara.PInvoke;
 using static Vanara.PInvoke.AdvApi32;
 using static Vanara.PInvoke.Kernel32;
 using static Vanara.PInvoke.Shell32;
 using static Vanara.PInvoke.ShlwApi;
-
-using Vanara.InteropServices;
-using Vanara.PInvoke;
 
 namespace CustomJumpList
 {

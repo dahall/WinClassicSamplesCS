@@ -2,12 +2,11 @@
 
   <PropertyGroup>
     <OutputType>Exe</OutputType>
-    <TargetFramework>netcoreapp3.1</TargetFramework>
     <StartupObject>encrypt.decrypt</StartupObject>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Vanara.PInvoke.Security" Version="3.4.17" />
+    <PackageReference Include="Vanara.PInvoke.Security" Version="4.0.0" />
   </ItemGroup>
 
 </Project>

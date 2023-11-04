@@ -1,13 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System.Text;
 using Vanara.Extensions;
 using Vanara.PInvoke;
 using static Vanara.PInvoke.Crypt32;
 
 namespace EhStorEnumerator
 {
-    public enum SYSTEM_STORE_NAMES
+	public enum SYSTEM_STORE_NAMES
     {
         SYSTEM_STORE_CA,
         SYSTEM_STORE_MY,

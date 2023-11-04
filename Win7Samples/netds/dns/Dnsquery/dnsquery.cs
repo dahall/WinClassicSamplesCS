@@ -1,6 +1,4 @@
-﻿using System;
-using System.Linq;
-using Vanara.Extensions;
+﻿using Vanara.Extensions;
 using Vanara.InteropServices;
 
 using static Vanara.PInvoke.DnsApi;

@@ -1,6 +1,4 @@
-﻿using System;
-using System.Linq;
-using System.Runtime.InteropServices;
+﻿using System.Runtime.InteropServices;
 using Vanara.Collections;
 using Vanara.PInvoke;
 using static Vanara.PInvoke.MSCTF;
@@ -27,17 +25,17 @@ namespace tsfcase
 		private const uint CASE_ICON_INDEX = 0;
 
 		// arbitrary hotkey: ctl-f
-		private static readonly TF_PRESERVEDKEY c_FlipCaseKey = new TF_PRESERVEDKEY { uVKey = 'F', uModifiers = TF_MOD.TF_MOD_CONTROL };
+		private static readonly TF_PRESERVEDKEY c_FlipCaseKey = new() { uVKey = 'F', uModifiers = TF_MOD.TF_MOD_CONTROL };
 
-		private static readonly Guid c_guidCaseProfile = new Guid(0x4d5459db, 0x7543, 0x42c0, 0x92, 0x04, 0x91, 0x95, 0xb9, 0x1f, 0x6f, 0xb8);
+		private static readonly Guid c_guidCaseProfile = new(0x4d5459db, 0x7543, 0x42c0, 0x92, 0x04, 0x91, 0x95, 0xb9, 0x1f, 0x6f, 0xb8);
 
 		private static readonly (Guid pguidCategory, Guid pguid)[] c_rgCategories = new (Guid pguidCategory, Guid pguid)[]
 		{
 			(GUID_TFCAT_TIP_KEYBOARD, typeof(CCaseTextService).GUID)
 		};
 
-		private static readonly LANGID CASE_LANGID = new LANGID(LANGID.LANG.LANG_ENGLISH, LANGID.SUBLANG.SUBLANG_ENGLISH_US);
-		private static readonly Guid GUID_PRESERVEDKEY_FLIPCASE = new Guid(0x5d6d1b1e, 0x64f2, 0x47cd, 0x9f, 0xe1, 0x4e, 0x03, 0x2c, 0x2d, 0xae, 0x77);
+		private static readonly LANGID CASE_LANGID = new(LANGID.LANG.LANG_ENGLISH, LANGID.SUBLANG.SUBLANG_ENGLISH_US);
+		private static readonly Guid GUID_PRESERVEDKEY_FLIPCASE = new(0x5d6d1b1e, 0x64f2, 0x47cd, 0x9f, 0xe1, 0x4e, 0x03, 0x2c, 0x2d, 0xae, 0x77);
 		private readonly uint dwThreadFocusSinkCookie = TF_INVALID_COOKIE;
 		private readonly bool fShowSnoop;
 		private readonly CLangBarItemButton pLangBarItem;
@@ -54,7 +52,7 @@ namespace tsfcase
 
 		public CCaseTextService()
 		{
-			c_rgMenuItems = new (string, Action, Func<bool>)[]
+			c_rgMenuItems = new (string, Action, Func<bool>?)[]
 			{
 				( "Show Snoop Wnd", Menu_ShowSnoopWnd, IsSnoopWndVisible ), // must match MENU_SHOWSNOOP_INDEX
 				( "Hello World", Menu_HelloWord, null),

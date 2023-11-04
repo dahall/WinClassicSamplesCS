@@ -2,15 +2,14 @@
 
   <PropertyGroup>
     <OutputType>Exe</OutputType>
-    <TargetFramework>netcoreapp3.1</TargetFramework>
     <ApplicationManifest>app.manifest</ApplicationManifest>
     <SignAssembly>true</SignAssembly>
     <AssemblyOriginatorKeyFile>ShowDesktop.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Vanara.PInvoke.Shell32" Version="3.4.17" />
-    <PackageReference Include="Vanara.PInvoke.User32" Version="3.4.17" />
+    <PackageReference Include="Vanara.PInvoke.Shell32" Version="4.0.0" />
+    <PackageReference Include="Vanara.PInvoke.User32" Version="4.0.0" />
   </ItemGroup>
 
   <Target Name="PostBuild" AfterTargets="PostBuildEvent">

@@ -1,7 +1,4 @@
-﻿using System;
-using System.Linq;
-using System.Text;
-using System.Threading;
+﻿using System.Text;
 using Vanara.PInvoke;
 using static Vanara.PInvoke.Kernel32;
 using static Vanara.PInvoke.Ws2_32;
@@ -41,7 +38,7 @@ namespace DNSAsyncNetworkNameResolution
 
 			IsWSAStartupCalled = true;
 
-			ADDRINFOEXW Hints = new ADDRINFOEXW { ai_family = ADDRESS_FAMILY.AF_UNSPEC };
+			ADDRINFOEXW Hints = new() { ai_family = ADDRESS_FAMILY.AF_UNSPEC };
 
 			// Note that this is a simple sample that waits/cancels a single asynchronous query. The reader may extend this to support
 			// multiple asynchronous queries.

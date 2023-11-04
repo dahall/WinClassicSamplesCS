@@ -1,6 +1,4 @@
 ﻿using DirectShowLib;
-using System;
-using System.Windows.Forms;
 using Vanara.PInvoke;
 using static Vanara.PInvoke.CoreAudio;
 

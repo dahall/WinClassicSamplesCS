@@ -1,5 +1,4 @@
-﻿using System;
-using static Vanara.PInvoke.Ole32;
+﻿using static Vanara.PInvoke.Ole32;
 
 namespace explorerdataprovider
 {
