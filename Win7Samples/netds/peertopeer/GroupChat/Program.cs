@@ -1,18 +1,17 @@
-namespace GroupChat
+namespace GroupChat;
+
+static class Program
 {
-	static class Program
+	/// <summary>
+	///  The main entry point for the application.
+	/// </summary>
+	[STAThread]
+	static void Main()
 	{
-		/// <summary>
-		///  The main entry point for the application.
-		/// </summary>
-		[STAThread]
-		static void Main()
-		{
-			Application.EnableVisualStyles();
-			Application.SetCompatibleTextRenderingDefault(false);
-			GroupChat.InitSystem().ThrowIfFailed();
-			Application.Run(new GroupChat());
-			GroupChat.CleanupSystem();
-		}
+		Application.EnableVisualStyles();
+		Application.SetCompatibleTextRenderingDefault(false);
+		GroupChat.InitSystem().ThrowIfFailed();
+		Application.Run(new GroupChat());
+		GroupChat.CleanupSystem();
 	}
 }

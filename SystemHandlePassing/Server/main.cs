@@ -1,6 +1,4 @@
-﻿using System.Runtime.InteropServices;
-using System.Text;
-using Vanara.PInvoke;
+﻿using Vanara.PInvoke;
 using static Vanara.PInvoke.Kernel32;
 
 namespace SparkleFinisherLib;
@@ -100,10 +98,10 @@ internal class SparkleWork : IDisposable
 		try
 		{
 			// Re-attach work pointer to a unique_ptr to ensure it is cleaned up even if an error occurs.
-			using SparkleWork work = (SparkleWork)GCHandle.FromIntPtr(Context).Target;
+			using SparkleWork work = (SparkleWork)(GCHandle.FromIntPtr(Context).Target ?? throw new InvalidOperationException());
 
 			// If the wait ended for any reason except being signaled properly by the caller, we need to abort.
-			if (WAIT_STATUS.WAIT_OBJECT_0 != (WAIT_STATUS)WaitResult) throw ((HRESULT)HRESULT.E_ABORT).GetException();
+			if (WAIT_STATUS.WAIT_OBJECT_0 != (WAIT_STATUS)WaitResult) throw ((HRESULT)HRESULT.E_ABORT).GetException()!;
 
 			// Finalize into string.
 			string completeMessage = "Dispensing sparkle finisher.\nRinsing.\nDrying.\nSparkly!\n";

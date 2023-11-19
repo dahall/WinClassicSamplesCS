@@ -1,6 +1,4 @@
-﻿using System.Text;
-
-namespace ServiceConfig4;
+﻿namespace ServiceConfig4;
 
 internal partial class Program
 {
@@ -21,16 +19,16 @@ internal partial class Program
 	--***************************************************************************/
 	public static Win32Error DoSsl(string[] args, HTTPCFG_TYPE type)
 	{
-		string pHash = default;
-		string pCertStoreName = default;
-		string pCtlIdentifier = default;
-		string pCtlStoreName = default;
+		string? pHash = default;
+		string? pCertStoreName = default;
+		string? pCtlIdentifier = default;
+		string? pCtlStoreName = default;
 		uint CertCheckMode = 0;
 		uint Freshness = 0;
 		uint Timeout = 0;
 		HTTP_SERVICE_CONFIG_SSL_FLAG Flags = 0;
 
-		string pIp = default;
+		string? pIp = default;
 
 		for (var i = 0; args.Length >= i+2 && args[i][0] is '-' or '/'; i += 2)
 		{
@@ -114,7 +112,7 @@ internal partial class Program
 	Return Value:
 	Success/Failure.
 	--***************************************************************************/
-	private static Win32Error DoSslDelete([In, Optional] string pIp)
+	private static Win32Error DoSslDelete([In, Optional] string? pIp)
 	{
 		// Convert string IP address to a SOCKADDR structure
 		if (GetAddress(pIp, out SOCKADDR TempSockAddr).Failed)
@@ -141,7 +139,7 @@ internal partial class Program
 	Return Value:
 	Success/Failure.
 	--***************************************************************************/
-	private static Win32Error DoSslQuery([In, Optional] string pIp)
+	private static Win32Error DoSslQuery([In, Optional] string? pIp)
 	{
 		Win32Error Status;
 
@@ -225,16 +223,16 @@ internal partial class Program
 	Return Value:
 	Success/Failure.
 	--***************************************************************************/
-	private static Win32Error DoSslSet([In, Optional] string pIp,
+	private static Win32Error DoSslSet([In, Optional] string? pIp,
 		[In, Optional] Guid AppGuid,
-		[In, Optional] string pHash,
+		[In, Optional] string? pHash,
 		[In, Optional] uint CertCheckMode,
 		[In, Optional] uint Freshness,
 		[In, Optional] uint Timeout,
 		[In, Optional] HTTP_SERVICE_CONFIG_SSL_FLAG Flags,
-		[In, Optional] string pCtlIdentifier,
-		[In, Optional] string pCtlStoreName,
-		[In, Optional] string pCertStoreName
+		[In, Optional] string? pCtlIdentifier,
+		[In, Optional] string? pCtlStoreName,
+		[In, Optional] string? pCertStoreName
 	)
 	{
 		using SafeNativeArray<byte> BinaryHash = new(MAX_HASH);
@@ -283,8 +281,8 @@ internal partial class Program
 		}
 
 		SetParam.ParamDesc.pSslCertStoreName = pCertStoreName;
-		SetParam.ParamDesc.pDefaultSslCtlIdentifier = pCtlIdentifier;
-		SetParam.ParamDesc.pDefaultSslCtlStoreName = pCtlStoreName;
+		SetParam.ParamDesc.pDefaultSslCtlIdentifier = pCtlIdentifier ?? "";
+		SetParam.ParamDesc.pDefaultSslCtlStoreName = pCtlStoreName ?? "";
 		SetParam.ParamDesc.DefaultCertCheckMode = CertCheckMode;
 		SetParam.ParamDesc.DefaultRevocationFreshnessTime = Freshness;
 		SetParam.ParamDesc.DefaultRevocationUrlRetrievalTimeout = Timeout;

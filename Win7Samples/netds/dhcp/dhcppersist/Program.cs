@@ -14,7 +14,7 @@ const string DHCP_PERSISTENT_APP_STRING = "DhcpRequestSample";
 * this is where it all happens
 */
 bool bAddPersist = false, bRemovePersist = false;
-string ptr = null;
+string? ptr = null;
 
 // check for persist options and adapter ID
 foreach (var p in args)

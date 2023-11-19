@@ -1,6 +1,4 @@
-﻿using System.Runtime.InteropServices;
-using System.Text;
-using Vanara.PInvoke;
+﻿using Vanara.PInvoke;
 using static Vanara.PInvoke.Kernel32;
 using static Vanara.PInvoke.Ole32;
 
@@ -9,7 +7,7 @@ try
 	// Get a file name.
 	Console.WriteLine("Enter a file name: " );
 
-	string? fileName = Console.ReadLine();
+	string fileName = Console.ReadLine() ?? throw new InvalidOperationException("You must enter a file name.");
 
 	// Open the file
 	using var fileHandle = Win32Error.ThrowLastErrorIfInvalid(CreateFile(fileName, // File name
@@ -55,7 +53,7 @@ try
 	Win32Error.ThrowLastErrorIfFalse(WriteFile(fileHandle, Encoding.Unicode.GetBytes(completeMessage), (uint)bytesToWrite, out var bytesWritten));
 
 	// If we didn't write the whole thing... detect it and set error.
-	if (bytesWritten != bytesToWrite) throw new HRESULT(HRESULT.E_UNEXPECTED).GetException();
+	if (bytesWritten != bytesToWrite) throw new HRESULT(HRESULT.E_UNEXPECTED).GetException()!;
 
 	// Signal the sparkle finisher server to do its work.
 	startEvent.Set();

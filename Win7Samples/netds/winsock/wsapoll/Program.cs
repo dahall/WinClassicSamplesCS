@@ -1,5 +1,4 @@
-﻿using System.Runtime.InteropServices;
-using Vanara.Extensions;
+﻿using Vanara.Extensions;
 using Vanara.InteropServices;
 using Vanara.PInvoke;
 using static Vanara.PInvoke.Kernel32;
@@ -14,8 +13,8 @@ static class Program
 	const int DEFAULT_PORT = 12345;
 	const int DEFAULT_WAIT = 30000;
 	static readonly SafeCoTaskMemString TST_MSG = new("0123456789abcdefghijklmnopqrstuvwxyz\0");
-	static SafeEventHandle hCloseSignal = null;
-	static SafeHTHREAD hThread = null;
+	static SafeEventHandle? hCloseSignal = null;
+	static SafeHTHREAD? hThread = null;
 
 	public static int Main()
 	{
@@ -42,7 +41,7 @@ static class Program
 			//Call WSAPoll for readability of listener (accepted)
 			WSAPOLLFD[] fdarray = { new() { fd = lsock, events = PollFlags.POLLRDNORM } };
 
-			SafeSOCKET asock = default;
+			SafeSOCKET? asock = default;
 			var ret = WSRESULT.ThrowLastErrorIf(WSAPoll(fdarray, 1, DEFAULT_WAIT), e => e == SOCKET_ERROR);
 			if (ret > 0 && fdarray[0].revents.IsFlagSet(PollFlags.POLLRDNORM))
 			{
@@ -120,7 +119,7 @@ static class Program
 				Console.Write("ConnectThread: recvd {0} bytes\n", ret);
 			}
 
-			WaitForSingleObject(hCloseSignal, DEFAULT_WAIT);
+			WaitForSingleObject(hCloseSignal!, DEFAULT_WAIT);
 		}
 		catch (Exception ex)
 		{

@@ -1,5 +1,4 @@
-﻿using System.Runtime.InteropServices;
-using Vanara.Extensions;
+﻿using Vanara.Extensions;
 using Vanara.InteropServices;
 using Vanara.PInvoke;
 using static Vanara.PInvoke.Kernel32;
@@ -54,7 +53,7 @@ namespace Vanara.PInvoke
 			/// <summary>RFCOMM channel associated with the socket. See Remarks.</summary>
 			public uint port;
 
-			public byte[] GetAddressBytes() => ((IntPtr)new PinnedObject(this)).ToArray<byte>(Marshal.SizeOf(typeof(SOCKADDR_BTH)));
+			public byte[] GetAddressBytes() => ((IntPtr)new PinnedObject(this)).ToArray<byte>(Marshal.SizeOf(typeof(SOCKADDR_BTH))) ?? Array.Empty<byte>();
 
 			public static explicit operator SOCKADDR(SOCKADDR_BTH sblth) => SOCKADDR.CreateFromStructure(sblth);
 		}

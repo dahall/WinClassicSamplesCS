@@ -1,6 +1,6 @@
-﻿namespace EhStorEnumerator
-{
-	public partial class IDD_PWDSILO_INFO : Form
+﻿namespace EhStorEnumerator;
+
+public partial class IDD_PWDSILO_INFO : Form
     {
         public IDD_PWDSILO_INFO()
         {
@@ -23,4 +23,3 @@
             IDC_AUTHN_STATE.Text = siloInformation.dwAuthnState.ToString().Substring(29);
         }
     }
-}

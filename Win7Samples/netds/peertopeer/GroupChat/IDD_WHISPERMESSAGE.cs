@@ -1,10 +1,9 @@
-﻿namespace GroupChat
+﻿namespace GroupChat;
+
+public partial class IDD_WHISPERMESSAGE : Form
 {
-	public partial class IDD_WHISPERMESSAGE : Form
+	public IDD_WHISPERMESSAGE()
 	{
-		public IDD_WHISPERMESSAGE()
-		{
-			InitializeComponent();
-		}
+		InitializeComponent();
 	}
 }

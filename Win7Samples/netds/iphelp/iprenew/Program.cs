@@ -96,7 +96,6 @@ if (OptRelease)
 	}
 }
 
-
 if (OptRenew)
 {
 	for (int i = 0; i < pInterfaceInfo.NumAdapters; i++)

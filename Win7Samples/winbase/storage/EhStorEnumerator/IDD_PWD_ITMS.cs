@@ -1,6 +1,6 @@
-﻿namespace EhStorEnumerator
-{
-	public partial class IDD_PWD_ITMS : Form
+﻿namespace EhStorEnumerator;
+
+public partial class IDD_PWD_ITMS : Form
     {
         public IDD_PWD_ITMS(bool sidEnabled)
         {
@@ -10,4 +10,3 @@
 
         public string SID => IDC_DEVICE_SID.Text;
     }
-}

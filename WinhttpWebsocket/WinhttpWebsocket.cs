@@ -1,5 +1,4 @@
-﻿using System.Runtime.InteropServices;
-using Vanara.Extensions;
+﻿using Vanara.Extensions;
 using Vanara.InteropServices;
 using Vanara.PInvoke;
 using static Vanara.PInvoke.WinHTTP;
@@ -74,7 +73,7 @@ do
 {
 	if (dwBufferLength == 0)
 	{
-		throw ((Win32Error)Win32Error.ERROR_NOT_ENOUGH_MEMORY).GetException();
+		throw ((Win32Error)Win32Error.ERROR_NOT_ENOUGH_MEMORY).GetException()!;
 	}
 
 	WinHttpWebSocketReceive(hWebSocketHandle, pbCurrentBufferPointer, dwBufferLength, out dwBytesTransferred, out eBufferType).ThrowIfFailed();
@@ -95,7 +94,7 @@ while (eBufferType == WINHTTP_WEB_SOCKET_BUFFER_TYPE.WINHTTP_WEB_SOCKET_BINARY_F
 if (eBufferType != WINHTTP_WEB_SOCKET_BUFFER_TYPE.WINHTTP_WEB_SOCKET_BINARY_MESSAGE_BUFFER_TYPE)
 {
 	Console.Write("Unexpected buffer type\n");
-	throw ((Win32Error)Win32Error.ERROR_INVALID_PARAMETER).GetException();
+	throw ((Win32Error)Win32Error.ERROR_INVALID_PARAMETER).GetException()!;
 }
 
 Console.Write("Received message from the server: '{0}'\n", rgbBuffer.ToString(-1, CharSet.Unicode));

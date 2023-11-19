@@ -111,7 +111,7 @@ internal partial class Program
 	Return Value:
 		Success/Failure.
 	--***************************************************************************/
-	private static WSRESULT GetAddress([In, Optional] string pIp, out SOCKADDR pBuffer)
+	private static WSRESULT GetAddress([In, Optional] string? pIp, out SOCKADDR pBuffer)
 	{
 		pBuffer = new SOCKADDR(default(SOCKADDR_IN6));
 		if (pIp is null)

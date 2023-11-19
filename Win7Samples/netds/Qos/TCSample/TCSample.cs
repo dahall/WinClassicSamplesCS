@@ -1,5 +1,4 @@
 ﻿using System.Net;
-using System.Runtime.InteropServices;
 using Vanara.Extensions;
 using Vanara.PInvoke;
 using static Vanara.PInvoke.Kernel32;
@@ -164,7 +163,7 @@ bool AddTcFlows(List<IFC_INFO> IfcList, TC_GEN_FLOW pTcFlow)
 	//
 	for (int i = 0; i < IfcList.Count; i++)
 	{
-		var err = TcAddFlow(IfcList[i].hIfc, default, 0, pTcFlow, out IfcList[i].hFlow);
+		var err = TcAddFlow(IfcList[i].hIfc!, default, 0, pTcFlow, out IfcList[i].hFlow);
 		if (err.Failed)
 		{
 			Console.Write("TcAddFlow Failed {0}\n", err);
@@ -189,7 +188,7 @@ bool AddTcFilters(List<IFC_INFO> IfcList, in TC_GEN_FILTER pTcFilter)
 	//
 	for (int i = 0; i < IfcList.Count; i++)
 	{
-		err = TcAddFilter(IfcList[i].hFlow, pTcFilter, out IfcList[i].hFilter);
+		err = TcAddFilter(IfcList[i].hFlow!, pTcFilter, out IfcList[i].hFilter);
 		if (err.Failed)
 		{
 			Console.Write("TcAddFilter Failed {0}\n", err);

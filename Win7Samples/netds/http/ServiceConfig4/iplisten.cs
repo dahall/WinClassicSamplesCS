@@ -4,7 +4,7 @@ internal partial class Program
 {
 	public static Win32Error DoIpListen(string[] args, HTTPCFG_TYPE Type)
 	{
-		string pIp = default;
+		string? pIp = default;
 
 		for (var i = 0; args.Length >= i+2 && args[i][0] is '-' or '/'; i += 2)
 		{
@@ -24,13 +24,13 @@ internal partial class Program
 		switch (Type)
 		{
 			case HTTPCFG_TYPE.HttpCfgTypeSet:
-				return DoIpSet(pIp);
+				return DoIpSet(pIp!);
 
 			case HTTPCFG_TYPE.HttpCfgTypeQuery:
 				return DoIpQuery();
 
 			case HTTPCFG_TYPE.HttpCfgTypeDelete:
-				return DoIpDelete(pIp);
+				return DoIpDelete(pIp!);
 
 			default:
 				Console.Write("{0} is not a valid command. ", args[0]);

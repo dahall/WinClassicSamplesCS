@@ -33,7 +33,7 @@ try
 
 	pProxyResolver.ResolveProxy(hProxyResolveSession, pwszUrl);
 
-	CrackHostAndPath(pwszUrl, out string pwszHost, out string pwszPath);
+	CrackHostAndPath(pwszUrl, out var pwszHost, out var pwszPath);
 
 	// Attempt to connect to the host and retrieve a status code.
 
@@ -139,9 +139,9 @@ Return Value:
 Win32 Error codes.
 
 --*/
-void SendRequestToHost([In] HINTERNET hSession, ProxyResolver pProxyResolver, string pwszHost, string pwszPath, out HTTP_STATUS pdwStatusCode)
+void SendRequestToHost([In] HINTERNET hSession, ProxyResolver pProxyResolver, string pwszHost, string? pwszPath, out HTTP_STATUS pdwStatusCode)
 {
-	string[] pcwszAcceptTypes = { "*/*", default };
+	string?[] pcwszAcceptTypes = { "*/*", default };
 
 	pdwStatusCode = 0;
 
@@ -186,15 +186,16 @@ Return Value:
 Win32 Error codes.
 
 --*/
-void CrackHostAndPath(string pwszUrl, out string ppwszHost, out string ppwszPath)
+void CrackHostAndPath(string pwszUrl, out string ppwszHost, out string? ppwszPath)
 {
-	ppwszHost = ppwszPath = null;
+	ppwszHost = "";
+	ppwszPath = null;
 
 	// Get the length of each component.
 
 	WINHTTP_URL_COMPONENTS urlComponents = new();
 	Win32Error.ThrowLastErrorIfFalse(WinHttpCrackUrl(pwszUrl, 0, 0, ref urlComponents));
 
-	ppwszHost = urlComponents.lpszHostName;
+	ppwszHost = urlComponents.lpszHostName!;
 	ppwszPath = urlComponents.lpszUrlPath;
 }

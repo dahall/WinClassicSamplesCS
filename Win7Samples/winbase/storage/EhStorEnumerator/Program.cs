@@ -1,6 +1,6 @@
-namespace EhStorEnumerator
-{
-	static class Program
+namespace EhStorEnumerator;
+
+static class Program
     {
         /// <summary>
         ///  The main entry point for the application.
@@ -14,4 +14,3 @@ namespace EhStorEnumerator
             Application.Run(new EhStorEnumerator2());
         }
     }
-}

@@ -1,5 +1,4 @@
-﻿using System.Runtime.InteropServices;
-using Vanara.Extensions;
+﻿using Vanara.Extensions;
 using Vanara.InteropServices;
 using Vanara.PInvoke;
 
@@ -10,9 +9,9 @@ namespace WinhttpAsyncSample;
 
 internal class Program
 {
-	private static readonly List<MYCONTEXT> contexts = new();
-	private static SafeHINTERNET g_hConnect = default;
-	private static SafeHINTERNET g_hSession = default;
+	private static readonly List<MYCONTEXT?> contexts = new();
+	private static SafeHINTERNET? g_hConnect = default;
+	private static SafeHINTERNET? g_hSession = default;
 
 	/*++
 	Routine Description:
@@ -41,7 +40,7 @@ internal class Program
 
 		// Kick off a regular request.
 
-		dwError = BeginRequest("/", out MYCONTEXT pRegularContext);
+		dwError = BeginRequest("/", out MYCONTEXT? pRegularContext);
 		if (dwError != Win32Error.ERROR_SUCCESS)
 		{
 			goto Exit;
@@ -49,13 +48,13 @@ internal class Program
 
 		// Kick off a request we actually going to always cancel (for demonstration purposes).
 
-		dwError = BeginRequest("/cancel", out MYCONTEXT pCancelContext);
+		dwError = BeginRequest("/cancel", out MYCONTEXT? pCancelContext);
 		if (dwError != Win32Error.ERROR_SUCCESS)
 		{
 			goto Exit;
 		}
 
-		dwError = DemoCancel(pCancelContext);
+		dwError = DemoCancel(pCancelContext!);
 		if (dwError != Win32Error.ERROR_SUCCESS)
 		{
 			goto Exit;
@@ -63,7 +62,7 @@ internal class Program
 
 		// Wait for the regular request to complete normally.
 
-		dwError = EndRequest(pRegularContext);
+		dwError = EndRequest(pRegularContext!);
 		if (dwError != Win32Error.ERROR_SUCCESS)
 		{
 			goto Exit;
@@ -73,7 +72,7 @@ internal class Program
 
 		// Wait for the cancel request to complete normally.
 
-		dwError = EndRequest(pCancelContext);
+		dwError = EndRequest(pCancelContext!);
 		if (dwError != Win32Error.ERROR_SUCCESS)
 		{
 			if (dwError == Win32Error.ERROR_OPERATION_ABORTED || dwError == Win32Error.ERROR_WINHTTP_OPERATION_CANCELLED)
@@ -130,7 +129,7 @@ Exit:
 			case WINHTTP_CALLBACK_STATUS.WINHTTP_CALLBACK_STATUS_SENDREQUEST_COMPLETE:
 				Console.Write("AsyncCallback: WINHTTP_CALLBACK_STATUS_SENDREQUEST_COMPLETE\n");
 
-				if (!WinHttpReceiveResponse(pContext.RequestHandle, default))
+				if (!WinHttpReceiveResponse(pContext.RequestHandle!, default))
 				{
 					dwError = GetLastError();
 					Console.Write("AsyncCallback: WinHttpReceiveResponse failed\n");
@@ -176,18 +175,18 @@ Exit:
 			if (pContext is not null)
 			{
 				pContext.LastError = dwError;
-				_=SetEvent(pContext.RequestFinishedEvent);
+				_=SetEvent(pContext.RequestFinishedEvent!);
 			}
 		}
 
 		if (fLocked)
 		{
-			pContext.UnlockRequestHandle();
+			pContext!.UnlockRequestHandle();
 		}
 
 		if (fReleaseContext)
 		{
-			pContext.Release();
+			pContext!.Release();
 		}
 	}
 
@@ -202,16 +201,16 @@ Exit:
 	Return Value:
 	Win32.
 	--*/
-	private static Win32Error BeginRequest(string pwszPath, out MYCONTEXT ppContext)
+	private static Win32Error BeginRequest(string pwszPath, out MYCONTEXT? ppContext)
 	{
 		Win32Error dwError = Win32Error.ERROR_SUCCESS;
 		var fLocked = false;
-		var pwszAcceptTypes = new[] { "*/*", default };
-		MYCONTEXT pContext = default;
+		string?[] pwszAcceptTypes = new[] { "*/*", default };
+		MYCONTEXT? pContext = default;
 
 		ppContext = default;
 
-		SafeHINTERNET hRequest = WinHttpOpenRequest(g_hConnect,
+		SafeHINTERNET? hRequest = WinHttpOpenRequest(g_hConnect!,
 			"GET",
 			pwszPath,
 			default, // version
@@ -247,7 +246,7 @@ Exit:
 		pContext.AddRef();
 		contexts.Add(pContext);
 		var ctxidx = contexts.Count - 1;
-		if (!WinHttpSetOption(pContext.RequestHandle, WINHTTP_OPTION.WINHTTP_OPTION_CONTEXT_VALUE, (IntPtr)ctxidx, 0))
+		if (!WinHttpSetOption(pContext.RequestHandle!, WINHTTP_OPTION.WINHTTP_OPTION_CONTEXT_VALUE, (IntPtr)ctxidx, 0))
 		{
 			dwError = GetLastError();
 
@@ -260,7 +259,7 @@ Exit:
 			goto Exit;
 		}
 
-		if (!WinHttpSendRequest(pContext.RequestHandle))
+		if (!WinHttpSendRequest(pContext.RequestHandle!))
 		{
 			dwError = GetLastError();
 			Console.Write("WinHttpSendRequest failed\n");
@@ -279,7 +278,7 @@ Exit:
 
 		if (fLocked)
 		{
-			pContext.UnlockRequestHandle();
+			pContext!.UnlockRequestHandle();
 		}
 
 		pContext?.Release();
@@ -365,7 +364,7 @@ Exit:
 	{
 		_ = Win32Error.ERROR_SUCCESS;
 		Win32Error dwError;
-		if (WaitForSingleObject(pContext.RequestFinishedEvent, INFINITE) == WAIT_STATUS.WAIT_FAILED)
+		if (WaitForSingleObject(pContext.RequestFinishedEvent!, INFINITE) == WAIT_STATUS.WAIT_FAILED)
 		{
 			dwError = GetLastError();
 			Console.Write("WaitForSingleObject failed\n");
@@ -422,7 +421,7 @@ Exit:
 
 		Console.Write("OnHeadersAvailable\n");
 		Win32Error dwError;
-		try { StatusCode = WinHttpQueryHeaders<uint>(pContext.RequestHandle, dwFlags); }
+		try { StatusCode = WinHttpQueryHeaders<uint>(pContext.RequestHandle!, dwFlags); }
 		catch
 		{
 			dwError = GetLastError();
@@ -452,7 +451,7 @@ Exit:
 		else
 		{
 			Console.Write("OnReadComplete: Read complete\n");
-			_=SetEvent(pContext.RequestFinishedEvent);
+			_=SetEvent(pContext.RequestFinishedEvent!);
 		}
 
 		return dwError;
@@ -464,7 +463,7 @@ Exit:
 
 		// Notice how we're under LockRequestHandle, so it's OK to touch pContext.RequestHandle.
 
-		if (!WinHttpReadData(pContext.RequestHandle, pContext.Buffer, pContext.Buffer.Size, out _))
+		if (!WinHttpReadData(pContext.RequestHandle!, pContext.Buffer, pContext.Buffer.Size, out _))
 		{
 			dwError = GetLastError();
 			Console.Write("WinHttpReadData failed\n");
@@ -480,19 +479,19 @@ Exit:
 		public CRITICAL_SECTION Lock;
 		public bool LockInitialized = true;
 		public int ReferenceCount = 1;
-		public SafeEventHandle RequestFinishedEvent;
-		public SafeHINTERNET RequestHandle;
+		public SafeEventHandle? RequestFinishedEvent;
+		public SafeHINTERNET? RequestHandle;
 
 		public MYCONTEXT(SafeHINTERNET Request)
 		{
-			_=Win32Error.ThrowLastErrorIfFalse(InitializeCriticalSectionAndSpinCount(out Lock, 1000));
+			Win32Error.ThrowLastErrorIfFalse(InitializeCriticalSectionAndSpinCount(out Lock, 1000));
 
-			_=Win32Error.ThrowLastErrorIfInvalid(RequestFinishedEvent = CreateEvent(default, true, false, default));
+			Win32Error.ThrowLastErrorIfInvalid(RequestFinishedEvent = CreateEvent(default, true, false, default));
 
 			RequestHandle = Request;
 		}
 
-		public static MYCONTEXT FromPtr(IntPtr ptr)
+		public static MYCONTEXT? FromPtr(IntPtr ptr)
 		{
 			var idx = ptr.ToInt32();
 			return idx >= 0 && idx < contexts.Count ? contexts[idx] : null;
@@ -528,7 +527,7 @@ Exit:
 
 			fLocked = true;
 
-			SafeHINTERNET hRequest = RequestHandle;
+			SafeHINTERNET? hRequest = RequestHandle;
 			RequestHandle = default;
 			hRequest?.Dispose();
 

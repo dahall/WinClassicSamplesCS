@@ -1,58 +1,57 @@
 ﻿using Vanara.PInvoke;
 using static Vanara.PInvoke.P2P;
 
-namespace GroupChat
+namespace GroupChat;
+
+public partial class IDD_DELETEIDENTITY : Form
 {
-	public partial class IDD_DELETEIDENTITY : Form
+	public IDD_DELETEIDENTITY()
 	{
-		public IDD_DELETEIDENTITY()
+		InitializeComponent();
+		GroupChat.RefreshIdentityCombo(IDC_CB_IDENTITY, false);
+	}
+
+	private void IDOK_Click(object sender, EventArgs e)
+	{
+		if (DeleteIdentity(GroupChat.GetSelectedIdentity(IDC_CB_IDENTITY)).Succeeded)
+			Close();
+	}
+
+	//-----------------------------------------------------------------------------
+	// Function: DeleteIdentity
+	//
+	// Purpose: Deletes an identity
+	//
+	// Parameters:
+	// pwzIdentity : The peer identity to delete
+	//
+	// Returns: HRESULT //
+	HRESULT DeleteIdentity(string? pwzIdentity)
+	{
+		HRESULT hr = HRESULT.S_OK;
+
+		if (string.IsNullOrEmpty(pwzIdentity))
 		{
-			InitializeComponent();
-			GroupChat.RefreshIdentityCombo(IDC_CB_IDENTITY, false);
+			GroupChat.DisplayHrError("Please select an identity.", hr = HRESULT.E_INVALIDARG);
 		}
 
-		private void IDOK_Click(object sender, EventArgs e)
+		if (hr.Succeeded)
 		{
-			if (DeleteIdentity(GroupChat.GetSelectedIdentity(IDC_CB_IDENTITY)).Succeeded)
-				Close();
+			GroupChat.Main!.CleanupGroup();
+
+			hr = PeerIdentityDelete(pwzIdentity!);
+
+			if (hr.Failed)
+			{
+				GroupChat.DisplayHrError("Failed to delete identity.", hr);
+			}
 		}
 
-		//-----------------------------------------------------------------------------
-		// Function: DeleteIdentity
-		//
-		// Purpose: Deletes an identity
-		//
-		// Parameters:
-		// pwzIdentity : The peer identity to delete
-		//
-		// Returns: HRESULT //
-		HRESULT DeleteIdentity(string pwzIdentity)
+		if (hr.Succeeded)
 		{
-			HRESULT hr = HRESULT.S_OK;
-
-			if (string.IsNullOrEmpty(pwzIdentity))
-			{
-				GroupChat.DisplayHrError("Please select an identity.", hr = HRESULT.E_INVALIDARG);
-			}
-
-			if (hr.Succeeded)
-			{
-				GroupChat.Main.CleanupGroup();
-
-				hr = PeerIdentityDelete(pwzIdentity);
-
-				if (hr.Failed)
-				{
-					GroupChat.DisplayHrError("Failed to delete identity.", hr);
-				}
-			}
-
-			if (hr.Succeeded)
-			{
-				GroupChat.Main.SetStatus("Deleted identity");
-			}
-
-			return hr;
+			GroupChat.Main!.SetStatus("Deleted identity");
 		}
+
+		return hr;
 	}
 }

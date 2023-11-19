@@ -2,7 +2,6 @@
 
   <PropertyGroup>
     <OutputType>Library</OutputType>
-    <!--<TargetFramework>net472</TargetFramework>-->
     <ApplicationIcon />
     <StartupObject />
   </PropertyGroup>

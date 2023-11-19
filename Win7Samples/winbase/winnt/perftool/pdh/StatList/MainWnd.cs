@@ -14,13 +14,13 @@ public partial class MainWnd : Form
 	private const int COUNTER_STRING_SIZE = 1024;
 	private const int NUM_STAT_SAMPLES = 100;
 	private static readonly int[] nTabStops = { 300, 400, 500, 600, 700 };
-	private static readonly string szHelpFileName = System.IO.Path.GetFileNameWithoutExtension(Application.ExecutablePath) + ".hlp";
+	private static readonly string szHelpFileName = Path.GetFileNameWithoutExtension(Application.ExecutablePath) + ".hlp";
 
 	// font for text in window
-	private Font hFinePrint = default;
+	private Font? hFinePrint = default;
 
 	// PDH Query Handle for these counters
-	private SafePDH_HQUERY hQuery = default;
+	private SafePDH_HQUERY? hQuery = default;
 
 	// pointer to first item in counter list
 	private readonly List<CIB> pFirstCib = new();
@@ -30,7 +30,7 @@ public partial class MainWnd : Form
 	protected override void OnClosing(CancelEventArgs e)
 	{
 		// Tell WinHelp we don't need it any more...
-		_=WinHelp(Handle, szHelpFileName, HelpCmd.HELP_QUIT, default);
+		WinHelp(Handle, szHelpFileName, HelpCmd.HELP_QUIT, default);
 
 		DeleteAllCounters();
 
@@ -45,10 +45,7 @@ public partial class MainWnd : Form
 		{
 			PdhOpenQuery(default, default, out hQuery).ThrowIfFailed();
 		}
-		if (hFinePrint is null)
-		{
-			hFinePrint = new Font(Font.Name, 8f);
-		}
+		hFinePrint ??= new Font(Font.Name, 8f);
 	}
 
 	protected override void OnMouseDown(MouseEventArgs e)
@@ -62,7 +59,7 @@ public partial class MainWnd : Form
 		// just bring up the 'configure' menu:
 		var ctx = new ContextMenuStrip();
 		foreach (ToolStripMenuItem mi in configureToolStripMenuItem.DropDown.Items)
-			_=ctx.Items.Add(mi);
+			ctx.Items.Add(mi);
 		ctx.Show(this, e.Location);
 	}
 
@@ -79,8 +76,8 @@ public partial class MainWnd : Form
 		nY += Macros.HIWORD(unchecked((uint)lTextOutReturn));
 
 		// select the fine print font for this window
-		using var hfont = new SafeHFONT(hFinePrint.ToHfont());
-		_=SelectObject(hdc, hfont);
+		using var hfont = new SafeHFONT(hFinePrint!.ToHfont());
+		SelectObject(hdc, hfont);
 
 		// for each CIB in the list draw the current text and value
 		foreach (CIB pCib in pFirstCib)
@@ -110,13 +107,13 @@ public partial class MainWnd : Form
 		if (PdhBrowseCounters(ref BrowseInfo).Succeeded)
 		{
 			// try to add the counter to the query
-			if (PdhAddCounter(hQuery, szCounterBuffer, default, out SafePDH_HCOUNTER hCounter).Succeeded)
+			if (PdhAddCounter(hQuery!, szCounterBuffer!, default, out SafePDH_HCOUNTER hCounter).Succeeded)
 			{
 				// add counter to the list
 				CIB pNewCib = new()
 				{
 					hCounter = hCounter,
-					szCounterPath = szCounterBuffer,
+					szCounterPath = szCounterBuffer!,
 					// allocate the raw data buffer here
 					pCounterArray = new PDH_RAW_COUNTER[NUM_STAT_SAMPLES]
 				};
@@ -138,7 +135,7 @@ public partial class MainWnd : Form
 		// delete all current counters, then create a new query
 		DeleteAllCounters();
 
-		_=PdhOpenQuery(default, default, out hQuery);
+		PdhOpenQuery(default, default, out hQuery);
 
 		Refresh();
 	}
@@ -170,12 +167,12 @@ public partial class MainWnd : Form
 			foreach (CIB pCib in pFirstCib)
 			{
 				// update "Last value"
-				_=PdhGetFormattedCounterValue(pCib.hCounter, PDH_FMT.PDH_FMT_DOUBLE, out _, out PDH_FMT_COUNTERVALUE pValue);
+				PdhGetFormattedCounterValue(pCib.hCounter!, PDH_FMT.PDH_FMT_DOUBLE, out _, out PDH_FMT_COUNTERVALUE pValue);
 				pCib.dLastValue = pValue.doubleValue;
 				// update "Raw Value" and statistics
-				_=PdhGetRawCounterValue(pCib.hCounter, out _, out PDH_RAW_COUNTER pRaw);
-				pCib.pCounterArray[pCib.dwNextIndex] = pRaw;
-				_=PdhComputeCounterStatistics(pCib.hCounter, PDH_FMT.PDH_FMT_DOUBLE, pCib.dwFirstIndex, ++pCib.dwLastIndex, pCib.pCounterArray, out pCib.pdhCurrentStats);
+				PdhGetRawCounterValue(pCib.hCounter!, out _, out PDH_RAW_COUNTER pRaw);
+				pCib.pCounterArray![pCib.dwNextIndex] = pRaw;
+				PdhComputeCounterStatistics(pCib.hCounter!, PDH_FMT.PDH_FMT_DOUBLE, pCib.dwFirstIndex, ++pCib.dwLastIndex, pCib.pCounterArray, out pCib.pdhCurrentStats);
 				// update pointers & indeces
 				if (pCib.dwLastIndex < NUM_STAT_SAMPLES)
 				{
@@ -198,7 +195,7 @@ public partial class MainWnd : Form
 		var bGotHelp = WinHelp(Handle, szHelpFileName, HelpCmd.HELP_FINDER, default);
 		if (!bGotHelp)
 		{
-			_=System.Windows.Forms.MessageBox.Show(this, "Unable to activate help", null, MessageBoxButtons.OK, MessageBoxIcon.Hand);
+			System.Windows.Forms.MessageBox.Show(this, "Unable to activate help", null, MessageBoxButtons.OK, MessageBoxIcon.Hand);
 		}
 	}
 
@@ -208,9 +205,9 @@ public partial class MainWnd : Form
 		public uint dwFirstIndex;
 		public uint dwLastIndex;
 		public uint dwNextIndex;
-		public SafePDH_HCOUNTER hCounter;
-		public PDH_RAW_COUNTER[] pCounterArray;
+		public SafePDH_HCOUNTER? hCounter;
+		public PDH_RAW_COUNTER[]? pCounterArray;
 		public PDH_STATISTICS pdhCurrentStats;
-		public string szCounterPath;
+		public string? szCounterPath;
 	}
 }

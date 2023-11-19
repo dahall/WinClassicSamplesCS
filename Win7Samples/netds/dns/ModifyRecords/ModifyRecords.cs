@@ -1,11 +1,10 @@
-﻿using System.Runtime.InteropServices;
-using Vanara.InteropServices;
+﻿using Vanara.InteropServices;
 
 using static Vanara.PInvoke.DnsApi;
 using static Vanara.PInvoke.Ws2_32;
 
 DNS_RECORD myDnsRecord = new(); //pointer to DNS_RECORD structure
-string pOwnerName = default; //owner name and the data for CNAME resource record
+string? pOwnerName = default; //owner name and the data for CNAME resource record
 IN_ADDR? dnsSvr = default;//pinter to IP4_ARRAY structure
 
 if (args.Length > 7)

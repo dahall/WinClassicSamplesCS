@@ -1,5 +1,4 @@
-﻿using System.Text;
-using Vanara.InteropServices;
+﻿using Vanara.InteropServices;
 using Vanara.PInvoke;
 
 using static Vanara.PInvoke.Kernel32;
@@ -17,14 +16,14 @@ internal class Program
 	private const int CACHESAMPLE_ACTION_ENUM_CONTENT = 32;
 	private const int CACHESAMPLE_ACTION_ENUM_MASK = CACHESAMPLE_ACTION_ENUM_ALL|CACHESAMPLE_ACTION_ENUM_COOKIE|CACHESAMPLE_ACTION_ENUM_HISTORY|CACHESAMPLE_ACTION_ENUM_CONTENT;
 
-	private const string ALL = null; // Enumerate in all FIXED container
+	private const string? ALL = null; // Enumerate in all FIXED container
 	private const string CONTENT = "";
 	private const string COOKIE = "cookie:"; // Enumerate only in the COOKIE container Enumerate only in the CONTENT container
 	private const string HISTORY = "visited:"; // Enumerate only in the HISTORY container
 
 	private static int g_dwAction; // action type var.
-	private static string g_lpszSearchPattern = default; // Search pattern
-	private static string g_lpszURL = default; // Store user input URL
+	private static string? g_lpszSearchPattern = default; // Search pattern
+	private static string? g_lpszURL = default; // Store user input URL
 
 	public static int Main(string[] args)
 	{
@@ -191,7 +190,7 @@ internal class Program
 
 		// 1st call to GetUrlCacheEntryInfo with default buffer to get the buffer size needed.
 		using SafeCoTaskMemStruct<INTERNET_CACHE_ENTRY_INFO> lpCacheEntryInfo = new(0);
-		if (!GetUrlCacheEntryInfo(g_lpszURL, // The URL to the entry
+		if (!GetUrlCacheEntryInfo(g_lpszURL!, // The URL to the entry
 			default, // Buffer
 			ref cbEntrySize)) // Buffer size
 		{
@@ -217,7 +216,7 @@ internal class Program
 		}
 
 		// Called GetUrlCacheEntryInfo with the correct buffer size.
-		if (!GetUrlCacheEntryInfo(g_lpszURL, // The URL to the entry.
+		if (!GetUrlCacheEntryInfo(g_lpszURL!, // The URL to the entry.
 			lpCacheEntryInfo, // Buffer.
 			ref cbEntrySize)) // Buffer size.
 		{

@@ -5,7 +5,7 @@ using static Vanara.PInvoke.DnsApi;
 using static Vanara.PInvoke.Ws2_32;
 
 IN_ADDR? dnsSvr = default;//pinter to IP4_ARRAY structure
-string pOwnerName = default; //owner name to be queried
+string? pOwnerName = default; //owner name to be queried
 DNS_TYPE wType = 0; //Type of the record to be queried
 
 if (args.Length is 4 or 6)
@@ -67,7 +67,7 @@ else
 
 // Calling function DnsQuery_A() to query Host or PTR records
 using SafeCoTaskMemStruct<IP4_ARRAY> pSrvList = dnsSvr.HasValue ? new(new IP4_ARRAY(dnsSvr.Value)) : SafeCoTaskMemStruct<IP4_ARRAY>.Null;
-var status = DnsQuery(pOwnerName, //pointer to OwnerName
+var status = DnsQuery(pOwnerName!, //pointer to OwnerName
 	wType, //Type of the record to be queried
 	pSrvList.HasValue ? DNS_QUERY_OPTIONS.DNS_QUERY_BYPASS_CACHE : 0, // Bypasses the resolver cache on the lookup.
 	pSrvList, //contains DNS server IP address
@@ -86,12 +86,12 @@ else
 	{
 		//convert the Internet network address into a string
 		//in Internet standard dotted format.
-		var ipaddrs = pDnsRecord.Select(r => ((DNS_A_DATA)r.Data).IpAddress).ToArray();
+		var ipaddrs = pDnsRecord.Select(r => ((DNS_A_DATA)r.Data!).IpAddress).ToArray();
 		Console.Write("The IP addresses of the host {0} are:\n{1}\n", pOwnerName, string.Join('\n', ipaddrs));
 	}
 	else
 	{
-		Console.Write("The host name is {0} \n", ((DNS_PTR_DATA)pDnsRecord.First().Data).pNameHost);
+		Console.Write("The host name is {0} \n", ((DNS_PTR_DATA)pDnsRecord.First().Data!).pNameHost);
 	}
 }
 

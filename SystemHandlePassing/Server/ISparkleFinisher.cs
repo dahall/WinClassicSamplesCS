@@ -1,5 +1,4 @@
-﻿using System.Runtime.InteropServices;
-using Vanara.PInvoke;
+﻿using Vanara.PInvoke;
 
 namespace SparkleFinisherLib;
 

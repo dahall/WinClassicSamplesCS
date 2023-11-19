@@ -1,5 +1,4 @@
 ﻿using System.Diagnostics.CodeAnalysis;
-using System.Text;
 using Vanara.PInvoke;
 using static Vanara.PInvoke.Kernel32;
 
@@ -116,7 +115,7 @@ foreach (string localeName in locales)
 internal class LComp : IEqualityComparer<string>, IComparer<string>
 {
 	public static readonly LComp Instance = new();
-	public int Compare(string? x, string? y) => CompareStringEx(LOCALE_NAME_INVARIANT, COMPARE_STRING.LINGUISTIC_IGNORECASE, x, -1, y, -1) - (int)CSTR_EQUAL;
+	public int Compare(string? x, string? y) => string.Compare(x, y, true, System.Globalization.CultureInfo.InvariantCulture);
 	public bool Equals(string? x, string? y) => Compare(x, y) == 0;
 	public int GetHashCode([DisallowNull] string obj) => obj.GetHashCode();
 }

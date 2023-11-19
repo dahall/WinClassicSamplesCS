@@ -1,5 +1,4 @@
-﻿using System.Runtime.InteropServices;
-using Vanara.InteropServices;
+﻿using Vanara.InteropServices;
 using Vanara.PInvoke;
 using static Vanara.PInvoke.Kernel32;
 using static Vanara.PInvoke.User32;
@@ -51,7 +50,6 @@ Done:
 		return fRet;
 	}
 
-
 	//==============================================================================
 	static Win32Error DoCustomUI(HINTERNET hConnect, HINTERNET hRequest)
 	{
@@ -84,12 +82,12 @@ Done:
 	public static void Main(string[] args)
 	{
 		bool fRet = false;
-		string pszErr = default;
+		string? pszErr = default;
 		bool fAllowCustomUI = false;
-		string pszHost = default;
-		string pszObject = default;
-		string pszUser = default;
-		string pszPass = default;
+		string? pszHost = default;
+		string? pszObject = default;
+		string? pszUser = default;
+		string? pszPass = default;
 
 		// Check usage.
 		if (args.Length < 1)
@@ -194,7 +192,7 @@ Done:
 				break;
 			}
 
-			Console.Write(string.Join(' ', rgbBuf.Take((int)cbRead).Select(b => $"{b:X}")));
+			Console.Write(string.Join(' ', rgbBuf.Take(cbRead).Select(b => $"{b:X}")));
 		}
 
 		if (pszErr is not null)

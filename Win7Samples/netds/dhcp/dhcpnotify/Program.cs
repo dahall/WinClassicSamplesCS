@@ -8,7 +8,9 @@ namespace dhcpnotify;
 
 internal static class Program
 {
+#pragma warning disable CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.
 	private static SafeEventHandle g_hExitEvent;
+#pragma warning restore CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.
 
 	/*
 	* main

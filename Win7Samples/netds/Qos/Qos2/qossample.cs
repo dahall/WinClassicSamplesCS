@@ -1,5 +1,4 @@
 ﻿using System.Net;
-using System.Runtime.InteropServices;
 using Vanara;
 using Vanara.InteropServices;
 using Vanara.PInvoke;
@@ -326,11 +325,11 @@ This instance of the QOS sample program is aiming to:
 			estimatesAvailable = true;
 
 			// Convert the bottleneck bandwidth from bps to mbps
-			bottleneck = (double)flowFund.BottleneckBandwidth;
+			bottleneck = flowFund.BottleneckBandwidth;
 			bottleneck /= 1000000.0;
 
 			// Convert available bandwidth from bps to mbps
-			available = (double)flowFund.AvailableBandwidth;
+			available = flowFund.AvailableBandwidth;
 			available /= 1000000.0;
 
 			Console.Write("DONE\n" +
@@ -657,7 +656,6 @@ This instance of the QOS sample program is aiming to:
 							// Reset the current bit rate to the initial target rate
 							currentBitRate = targetBitRate;
 
-
 							// Update the shaping characteristics on our QOS flow 
 							// to smooth out our bursty traffic.
 							flowRate.Bandwidth = QOS_ADD_OVERHEAD(addressFamily, IPPROTO.IPPROTO_UDP, dataBuffer.Size, targetBitRate);
@@ -692,7 +690,7 @@ This instance of the QOS sample program is aiming to:
 						// The transmit packet has completed its send, 
 						// If it did so successfully, it's time to send the next 
 						// burst of packets.
-						var overlappedResult = WSAGetOverlappedResult(socket, sendOverlapped, out var ignoredNumOfBytesSent, false, out var ignoredFlags);
+						var overlappedResult = WSAGetOverlappedResult(socket, sendOverlapped, out var _, false, out var _);
 
 						if (overlappedResult == false)
 						{

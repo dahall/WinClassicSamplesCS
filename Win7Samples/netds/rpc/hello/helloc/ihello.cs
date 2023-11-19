@@ -1,12 +1,10 @@
-﻿using System.Runtime.InteropServices;
-using static Vanara.PInvoke.Rpc;
+﻿using static Vanara.PInvoke.Rpc;
 
-namespace hello
+namespace hello;
+
+public interface ihello
 {
-	public interface ihello
-	{
-		void HelloProc([In] RPC_BINDING_HANDLE h1, [In] string pszString);
+	void HelloProc([In] RPC_BINDING_HANDLE h1, [In] string pszString);
 
-		void Shutdown([In] RPC_BINDING_HANDLE h1);
-	}
+	void Shutdown([In] RPC_BINDING_HANDLE h1);
 }

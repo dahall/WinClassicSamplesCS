@@ -1,9 +1,9 @@
 ﻿using Vanara.PInvoke;
 using static Vanara.PInvoke.P2P;
 
-namespace GroupChat
-{
-	public partial class IDD_OPENGROUP : Form
+namespace GroupChat;
+
+public partial class IDD_OPENGROUP : Form
     {
         public IDD_OPENGROUP()
         {
@@ -15,7 +15,7 @@ namespace GroupChat
         {
             if (HandleOpenGroup().Succeeded)
             {
-                GroupChat.Main.SetStatus("Group opened");
+                GroupChat.Main!.SetStatus("Group opened");
                 Close();
             }
         }
@@ -37,7 +37,6 @@ namespace GroupChat
         {
             var pwzGroup = IDC_CB_GROUP.SelectedIndex != -1 ? ((PEER_NAME_PAIR)IDC_CB_GROUP.SelectedItem).pwzPeerName : null;
             var pwzIdentity = GroupChat.GetSelectedIdentity(IDC_CB_IDENTITY);
-            return GroupChat.Main.OpenGroup(pwzIdentity, pwzGroup);
+            return GroupChat.Main!.OpenGroup(pwzIdentity, pwzGroup);
         }
     }
-}

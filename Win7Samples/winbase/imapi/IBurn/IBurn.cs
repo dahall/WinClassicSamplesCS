@@ -29,7 +29,7 @@ OpticalStorageFileSystemImage image = new(args[0], FsiFileSystems.FsiFileSystemJ
 op.Data = image.GetImageStream();
 op.Execute();
 
-static void Device_WriteProgress(object sender, OpticalStorageWriteEventArgs progress)
+static void Device_WriteProgress(object? sender, OpticalStorageWriteEventArgs progress)
 {
 	string timeStatus = $"Time: {progress.ElapsedTime} / {progress.TotalTime} ({progress.ElapsedTime / progress.TotalTime})";
 

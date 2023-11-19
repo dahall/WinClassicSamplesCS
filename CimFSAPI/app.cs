@@ -1,5 +1,4 @@
-﻿using System.Runtime.InteropServices;
-using Vanara.Extensions;
+﻿using Vanara.Extensions;
 using Vanara.InteropServices;
 using Vanara.PInvoke;
 using static Vanara.PInvoke.AdvApi32;
@@ -218,7 +217,7 @@ static class Program
 
 		// Write alternate data streams.
 
-		if (cimFileData.StreamData.Count > 0)
+		if (cimFileData.StreamData?.Count > 0)
 		{
 
 			foreach (WIN32_FIND_STREAM_DATA streamData in cimFileData.StreamData)
@@ -618,13 +617,13 @@ static class Program
 		public CIMFS_FILE_METADATA MetaData;
 
 		// buffer for reparse point data
-		public SafeAllocatedMemoryHandle ReparsePointData;
+		public SafeAllocatedMemoryHandle? ReparsePointData;
 
 		// While getting the data we also need to keep the sd alive
-		public SafePSECURITY_DESCRIPTOR Sd;
+		public SafePSECURITY_DESCRIPTOR? Sd;
 
 		// Alternate streams information
-		public List<WIN32_FIND_STREAM_DATA> StreamData;
+		public List<WIN32_FIND_STREAM_DATA>? StreamData;
 
 		public CimFileData(SafeHFILE hf, in FILE_BASIC_INFO fi, in FILE_ID_INFO fid)
 		{

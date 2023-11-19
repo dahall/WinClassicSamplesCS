@@ -13,7 +13,7 @@ public class PerMonitorDPIWindow : Window
 {
 	private readonly bool m_perMonitorEnabled;
 
-	private HwndSource m_source;
+	private HwndSource? m_source;
 
 	//Constructor; sets the current process as Per_Monitor_DPI_Aware
 	public PerMonitorDPIWindow()
@@ -23,7 +23,7 @@ public class PerMonitorDPIWindow : Window
 			throw new Exception("Enabling Per-monitor DPI Failed. Do you have [assembly: DisableDpiAwareness] in your assembly manifest [AssemblyInfo.cs]?");
 	}
 
-	public event EventHandler DPIChanged;
+	public event EventHandler? DPIChanged;
 
 	public double CurrentDPI { get; private set; }
 
@@ -48,7 +48,7 @@ public class PerMonitorDPIWindow : Window
 	{
 		ScaleFactor = CurrentDPI / WpfDPI;
 		UpdateLayoutTransform(ScaleFactor);
-		DPIChanged(this, EventArgs.Empty);
+		DPIChanged?.Invoke(this, EventArgs.Empty);
 	}
 
 	protected void UpdateLayoutTransform(double scaleFactor)

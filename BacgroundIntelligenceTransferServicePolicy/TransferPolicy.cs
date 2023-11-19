@@ -5,66 +5,65 @@ using static Vanara.PInvoke.BITS;
 using static Vanara.PInvoke.Ole32;
 using static Vanara.PInvoke.Rpc;
 
-namespace BacgroundIntelligenceTransferServicePolicy
+namespace BacgroundIntelligenceTransferServicePolicy;
+
+static class TransferPolicy
 {
-	static class TransferPolicy
+	[STAThread]
+	static void Main()
 	{
-		[STAThread]
-		static void Main()
-		{
-			//The impersonation level must be at least RPC_C_IMP_LEVEL_IMPERSONATE.
-			CoInitializeSecurity(PSECURITY_DESCRIPTOR.NULL, -1, default, default, RPC_C_AUTHN_LEVEL.RPC_C_AUTHN_LEVEL_CONNECT, RPC_C_IMP_LEVEL.RPC_C_IMP_LEVEL_IMPERSONATE, default, EOLE_AUTHENTICATION_CAPABILITIES.EOAC_NONE).ThrowIfFailed();
+		//The impersonation level must be at least RPC_C_IMP_LEVEL_IMPERSONATE.
+		CoInitializeSecurity(PSECURITY_DESCRIPTOR.NULL, -1, default, default, RPC_C_AUTHN_LEVEL.RPC_C_AUTHN_LEVEL_CONNECT, RPC_C_IMP_LEVEL.RPC_C_IMP_LEVEL_IMPERSONATE, default, EOLE_AUTHENTICATION_CAPABILITIES.EOAC_NONE).ThrowIfFailed();
 
-			using var pQueueMgr = ComReleaserFactory.Create(new IBackgroundCopyManager());
+		using var pQueueMgr = ComReleaserFactory.Create(new IBackgroundCopyManager());
 
-			// Create a Job
-			Console.Write("Creating Job...\n");
+		// Create a Job
+		Console.Write("Creating Job...\n");
 
-			pQueueMgr.Item.CreateJob("TransferPolicy", BG_JOB_TYPE.BG_JOB_TYPE_DOWNLOAD, out var guidJob, out var pBackgroundCopyJob);
-			using var pppBackgroundCopyJob = ComReleaserFactory.Create(pBackgroundCopyJob);
+		pQueueMgr.Item.CreateJob("TransferPolicy", BG_JOB_TYPE.BG_JOB_TYPE_DOWNLOAD, out var guidJob, out var pBackgroundCopyJob);
+		using var pppBackgroundCopyJob = ComReleaserFactory.Create(pBackgroundCopyJob);
 
-			Console.Write(" Job is succesfully created ...\n");
+		Console.Write(" Job is succesfully created ...\n");
 
-			// Set Transfer Policy for the job
-			var propval = new BITS_JOB_PROPERTY_VALUE { Dword = (uint)(BITS_COST_STATE.BITS_COST_STATE_USAGE_BASED | BITS_COST_STATE.BITS_COST_STATE_OVERCAP_THROTTLED | BITS_COST_STATE.BITS_COST_STATE_BELOW_CAP | BITS_COST_STATE.BITS_COST_STATE_CAPPED_USAGE_UNKNOWN | BITS_COST_STATE.BITS_COST_STATE_UNRESTRICTED) };
+		// Set Transfer Policy for the job
+		var propval = new BITS_JOB_PROPERTY_VALUE { Dword = (uint)(BITS_COST_STATE.BITS_COST_STATE_USAGE_BASED | BITS_COST_STATE.BITS_COST_STATE_OVERCAP_THROTTLED | BITS_COST_STATE.BITS_COST_STATE_BELOW_CAP | BITS_COST_STATE.BITS_COST_STATE_CAPPED_USAGE_UNKNOWN | BITS_COST_STATE.BITS_COST_STATE_UNRESTRICTED) };
 
-			var pBackgroundCopyJob5 = (IBackgroundCopyJob5)pBackgroundCopyJob;
+		var pBackgroundCopyJob5 = (IBackgroundCopyJob5)pBackgroundCopyJob;
 
-			pBackgroundCopyJob5.SetProperty(BITS_JOB_PROPERTY_ID.BITS_JOB_PROPERTY_ID_COST_FLAGS, propval);
+		pBackgroundCopyJob5.SetProperty(BITS_JOB_PROPERTY_ID.BITS_JOB_PROPERTY_ID_COST_FLAGS, propval);
 
-			// get Transfer Policy for the new job
-			Console.Write("Getting TransferPolicy Property ...\n");
+		// get Transfer Policy for the new job
+		Console.Write("Getting TransferPolicy Property ...\n");
 
-			var actual_propval = pBackgroundCopyJob5.GetProperty(BITS_JOB_PROPERTY_ID.BITS_JOB_PROPERTY_ID_COST_FLAGS);
+		var actual_propval = pBackgroundCopyJob5.GetProperty(BITS_JOB_PROPERTY_ID.BITS_JOB_PROPERTY_ID_COST_FLAGS);
 
-			var job_transferpolicy = (BITS_COST_STATE)actual_propval.Dword;
-			Console.Write("get TransferPolicy Property returned {0}\n", job_transferpolicy);
+		var job_transferpolicy = (BITS_COST_STATE)actual_propval.Dword;
+		Console.Write("get TransferPolicy Property returned {0}\n", job_transferpolicy);
 
-			pBackgroundCopyJob.Cancel();
-		}
+		pBackgroundCopyJob.Cancel();
+	}
 
-		[STAThread]
-		static void AlternateMain()
-		{
-			//The impersonation level must be at least RPC_C_IMP_LEVEL_IMPERSONATE.
-			CoInitializeSecurity(PSECURITY_DESCRIPTOR.NULL, -1, default, default, RPC_C_AUTHN_LEVEL.RPC_C_AUTHN_LEVEL_CONNECT, RPC_C_IMP_LEVEL.RPC_C_IMP_LEVEL_IMPERSONATE, default, EOLE_AUTHENTICATION_CAPABILITIES.EOAC_NONE).ThrowIfFailed();
+	[STAThread]
+	static void AlternateMain()
+	{
+		//The impersonation level must be at least RPC_C_IMP_LEVEL_IMPERSONATE.
+		CoInitializeSecurity(PSECURITY_DESCRIPTOR.NULL, -1, default, default, RPC_C_AUTHN_LEVEL.RPC_C_AUTHN_LEVEL_CONNECT, RPC_C_IMP_LEVEL.RPC_C_IMP_LEVEL_IMPERSONATE, default, EOLE_AUTHENTICATION_CAPABILITIES.EOAC_NONE).ThrowIfFailed();
 
-			// Create a Job
-			Console.Write("Creating Job...\n");
+		// Create a Job
+		Console.Write("Creating Job...\n");
 
-			var job = Vanara.IO.BackgroundCopyManager.Jobs.Add("TransferPolicy");
+		var job = Vanara.IO.BackgroundCopyManager.Jobs.Add("TransferPolicy");
 
-			Console.Write(" Job is succesfully created ...\n");
+		Console.Write(" Job is succesfully created ...\n");
 
-			// Set Transfer Policy for the job
-			job.TransferBehavior = BackgroundCopyCost.OvercapThrottled | BackgroundCopyCost.UsageBased | BackgroundCopyCost.BelowCap | BackgroundCopyCost.CappedUsageUnknown | BackgroundCopyCost.Unrestricted;
+		// Set Transfer Policy for the job
+		job.TransferBehavior = BackgroundCopyCost.OvercapThrottled | BackgroundCopyCost.UsageBased | BackgroundCopyCost.BelowCap | BackgroundCopyCost.CappedUsageUnknown | BackgroundCopyCost.Unrestricted;
 
-			// get Transfer Policy for the new job
-			Console.Write("Getting TransferPolicy Property ...\n");
+		// get Transfer Policy for the new job
+		Console.Write("Getting TransferPolicy Property ...\n");
 
-			Console.Write("get TransferPolicy Property returned {0}\n", job.TransferBehavior);
+		Console.Write("get TransferPolicy Property returned {0}\n", job.TransferBehavior);
 
-			job.Cancel();
-		}
+		job.Cancel();
 	}
 }

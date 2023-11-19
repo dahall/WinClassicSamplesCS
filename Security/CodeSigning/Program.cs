@@ -1,5 +1,4 @@
-﻿using System.Runtime.InteropServices;
-using Vanara.InteropServices;
+﻿using Vanara.InteropServices;
 using Vanara.PInvoke;
 using static Vanara.PInvoke.Crypt32;
 using static Vanara.PInvoke.Kernel32;
@@ -15,7 +14,7 @@ internal class Program
 	{
 		uint ArgStart = 0;
 		var UseStrongSigPolicy = false;
-		SafeHFILE FileHandle = null;
+		SafeHFILE FileHandle = new(default, false);
 		HRESULT Error;
 		if (args.Length is <2 or >3)
 		{
@@ -81,7 +80,7 @@ Cleanup:
 
 	private static void PrintUsage()
 	{
-		Console.Write("{0} [-p] <-c | -e> file\n", System.IO.Path.GetFileNameWithoutExtension(System.Reflection.Assembly.GetEntryAssembly().Location));
+		Console.Write("{0} [-p] <-c | -e> file\n", System.IO.Path.GetFileNameWithoutExtension(System.Reflection.Assembly.GetEntryAssembly()?.Location));
 		Console.Write("Flags:\n");
 		Console.Write(" -p: Use signature policy of the current os (szOID_CERT_STRONG_SIGN_OS_CURRENT)\n");
 		Console.Write(" -c: Search for the file in system catalogs\n");
@@ -98,10 +97,10 @@ Cleanup:
 	{
 		Win32Error Error = Win32Error.ERROR_SUCCESS;
 		var Found = false;
-		SafeCoTaskMemHandle HashData = null;
+		SafeCoTaskMemHandle? HashData = null;
 
 		SafeHCATADMIN CatAdminHandle;
-		SafeHCATINFO CatInfoHandle = null;
+		SafeHCATINFO? CatInfoHandle = null;
 		if (UseStrongSigPolicy)
 		{
 			CERT_STRONG_SIGN_PARA SigningPolicy = new()

@@ -1,5 +1,4 @@
-﻿using System.Runtime.InteropServices;
-using Vanara.InteropServices;
+﻿using Vanara.InteropServices;
 using Vanara.PInvoke;
 
 using static Vanara.PInvoke.HttpApi;
@@ -12,8 +11,8 @@ internal class Program
 	public static int Main(string[] args)
 	{
 		HTTPAPI_VERSION HttpApiVersion = HTTPAPI_VERSION.HTTPAPI_VERSION_2;
-		SafeHTTP_URL_GROUP_ID urlGroupId = default;
-		SafeHREQQUEUE hReqQueue = default;
+		SafeHTTP_URL_GROUP_ID? urlGroupId = default;
+		SafeHREQQUEUE? hReqQueue = default;
 
 		if (args.Length < 2)
 		{
@@ -73,7 +72,6 @@ internal class Program
 			goto CleanUp;
 		}
 
-
 		//
 		// Set EntityBody Timeout property on UrlGroup
 		//
@@ -119,10 +117,10 @@ CleanUp:
 		// HTTP_URL_FLAG_REMOVE_ALL flag allows us to remove
 		// all the URLs registered on URL Group at once
 		//
-		if (!HTTP_IS_NULL_ID(urlGroupId))
+		if (!HTTP_IS_NULL_ID(urlGroupId ?? 0UL))
 		{
 
-			retCode = HttpRemoveUrlFromUrlGroup(urlGroupId, default, HTTP_URL_FLAG.HTTP_URL_FLAG_REMOVE_ALL);
+			retCode = HttpRemoveUrlFromUrlGroup(urlGroupId!, default, HTTP_URL_FLAG.HTTP_URL_FLAG_REMOVE_ALL);
 
 			if (retCode.Failed)
 			{
@@ -169,10 +167,10 @@ CleanUp:
 		using var pRequestBuffer = new SafeCoTaskMemHandle(Marshal.SizeOf(typeof(HTTP_REQUEST_V1)) + 2048);
 
 		// Wait for a new request -- This is indicated by a default request ID.
-		while (HttpReceiveHttpRequest(hReqQueue, HTTP_NULL_ID, 0, out HTTP_REQUEST pRequest).Succeeded)
+		while (HttpReceiveHttpRequest(hReqQueue, HTTP_NULL_ID, 0, out HTTP_REQUEST? pRequest).Succeeded)
 		{
 			// Worked!
-			switch (pRequest.Verb)
+			switch (pRequest!.Verb)
 			{
 				case HTTP_VERB.HttpVerbGET:
 					Console.Write("Got a GET request for {0} \n", pRequest.CookedUrl.pFullUrl);
@@ -222,8 +220,8 @@ CleanUp:
 		uint TempFileBytesWritten;
 		_ = (uint)uint.MaxValue.ToString().Length;
 		uint TotalBytesRead = 0;
-		SafeHFILE hTempFile = null;
-		System.Text.StringBuilder szTempName = new(MAX_PATH + 1);
+		SafeHFILE? hTempFile = null;
+		StringBuilder szTempName = new(MAX_PATH + 1);
 
 		// Allocate some space for an entity buffer. We'll grow this on demand.
 		uint EntityBufferLength = 2048;
@@ -385,7 +383,7 @@ CleanUp:
 
 Done:
 
-		if (!hTempFile.IsInvalid)
+		if (hTempFile is not null && !hTempFile.IsInvalid)
 		{
 			hTempFile.Dispose();
 			DeleteFile(szTempName.ToString());
@@ -406,7 +404,7 @@ Done:
 	Return Value:
 	Success/Failure.
 	--***************************************************************************/
-	private static Win32Error SendHttpResponse([In] HREQQUEUE hReqQueue, HTTP_REQUEST pRequest, [In] ushort StatusCode, string pReason, string entityString)
+	private static Win32Error SendHttpResponse([In] HREQQUEUE hReqQueue, HTTP_REQUEST pRequest, [In] ushort StatusCode, string pReason, string? entityString = null)
 	{
 		// Initialize the HTTP response structure.
 		HTTP_RESPONSE_V2 response = INITIALIZE_HTTP_RESPONSE(StatusCode, pReason);
@@ -418,7 +416,7 @@ Done:
 		if (!(pEntityString is null || pEntityString.IsNull))
 		{
 			// Add an entity chunk
-			pDataChunk = new(new HTTP_DATA_CHUNK((SafeAllocatedMemoryHandle)pEntityString));
+			pDataChunk = new(new HTTP_DATA_CHUNK(pEntityString));
 
 			response.EntityChunkCount = 1;
 			response.pEntityChunks = pDataChunk;

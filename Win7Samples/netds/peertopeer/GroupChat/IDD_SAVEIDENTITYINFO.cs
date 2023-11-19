@@ -1,10 +1,9 @@
-﻿namespace GroupChat
+﻿namespace GroupChat;
+
+public partial class IDD_SAVEIDENTITYINFO : Form
 {
-	public partial class IDD_SAVEIDENTITYINFO : Form
+	public IDD_SAVEIDENTITYINFO()
 	{
-		public IDD_SAVEIDENTITYINFO()
-		{
-			InitializeComponent();
-		}
+		InitializeComponent();
 	}
 }

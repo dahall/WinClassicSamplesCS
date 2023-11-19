@@ -94,7 +94,7 @@ internal class Program
 
 	private static HRESULT PerformDataExchange([In] WEB_SOCKET_HANDLE clientHandle, [In] WEB_SOCKET_HANDLE serverHandle, in Transport transport)
 	{
-		SafeCoTaskMemHandle dataToSend = new(StringHelper.GetBytes("Hello World", System.Text.Encoding.UTF8, false));
+		SafeCoTaskMemHandle dataToSend = new(StringHelper.GetBytes("Hello World", Encoding.UTF8, false));
 		WEB_SOCKET_BUFFER buffer = new(dataToSend);
 
 		Console.Write("\n-- Queueing a send with a buffer --\n");

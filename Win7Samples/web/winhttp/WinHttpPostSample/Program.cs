@@ -1,5 +1,4 @@
-﻿using System.Runtime.InteropServices;
-using Vanara.InteropServices;
+﻿using Vanara.InteropServices;
 using Vanara.PInvoke;
 
 using static Vanara.PInvoke.Kernel32;
@@ -15,7 +14,7 @@ internal class Program
 		string szFilename = args[1];
 		bool fShowHelp = false;
 
-		string szProxyUrl;
+		string? szProxyUrl;
 		//
 		// Make sure we got three or four params 
 		//(the first is the executeable name, rest are user params)
@@ -115,7 +114,7 @@ done:
 		return 0;
 	}
 
-	static bool GetFileHandleAndSize(string szFilename, out SafeHFILE pHandle, out uint pdwSize)
+	static bool GetFileHandleAndSize(string szFilename, out SafeHFILE? pHandle, out uint pdwSize)
 	{
 		bool returnValue = false;
 		long liSize = 0;
@@ -152,7 +151,6 @@ done:
 		}
 	}
 
-
 	static WINHTTP_AUTH_SCHEME ChooseAuthScheme(HINTERNET hRequest, WINHTTP_AUTH_SCHEME dwSupportedSchemes)
 	{
 		// It is the servers responsibility to only accept authentication schemes
@@ -181,16 +179,15 @@ done:
 			return 0;
 	}
 
-
-	static bool WinHttpSamplePost(string szServerUrl, string szFile, string szProxyUrl)
+	static bool WinHttpSamplePost(string szServerUrl, string szFile, string? szProxyUrl)
 	{
 		bool returnValue = false;
-		string strTargetUsername = null;
-		string strTargetPassword = null;
-		string strProxyServer = null;
-		string strProxyUsername = null;
-		string strProxyPassword = null;
-		SafeHINTERNET hSession = default, hConnect = default, hRequest = default;
+		string? strTargetUsername = null;
+		string? strTargetPassword = null;
+		string? strProxyServer = null;
+		string? strProxyUsername = null;
+		string? strProxyPassword = null;
+		SafeHINTERNET? hSession = default, hConnect = default, hRequest = default;
 		WINHTTP_AUTH_SCHEME dwProxyAuthScheme = 0;
 		uint dwStatusCode;
 
@@ -229,8 +226,8 @@ done:
 		if (urlServerComponents.lpszPassword.IsNull)
 			urlServerComponents.dwPasswordLength = 0;
 
-		string strTargetServer = urlServerComponents.lpszHostName;
-		string strTargetPath = urlServerComponents.lpszUrlPath;
+		string? strTargetServer = urlServerComponents.lpszHostName;
+		string? strTargetPath = urlServerComponents.lpszUrlPath;
 
 		// for the username and password, if they are empty, leave the string pointers as default.
 		// This allows for the current process's default credentials to be used.
@@ -273,7 +270,7 @@ done:
 			strProxyServer = urlProxyComponents.lpszHostName;
 			var idx = urlProxyComponents.lpszHostName.ToString()?.IndexOf("://") ?? -1;
 			if (idx >= 0)
-				strProxyServer = strProxyServer.Remove(0, idx + 3);
+				strProxyServer = strProxyServer!.Remove(0, idx + 3);
 
 			// for the username and password, if they are empty, leave the string pointers as default.
 			// This allows for the current process's default credentials to be used.
@@ -283,7 +280,6 @@ done:
 			if (urlProxyComponents.dwPasswordLength != 0)
 				strProxyPassword = urlProxyComponents.lpszPassword;
 		}
-
 
 		//
 		// whew, now we can go on and start the request.
@@ -309,7 +305,7 @@ done:
 		//
 		// Open a connection to the target server
 		//
-		hConnect = WinHttpConnect(hSession, strTargetServer, urlServerComponents.nPort, 0);
+		hConnect = WinHttpConnect(hSession, strTargetServer!, urlServerComponents.nPort, 0);
 
 		if (hConnect.IsInvalid)
 			goto done;
@@ -340,7 +336,7 @@ done:
 			if (dwProxyAuthScheme != 0)
 			{
 				if (!WinHttpSetCredentials(hRequest, WINHTTP_AUTH_TARGET.WINHTTP_AUTH_TARGET_PROXY,
-					dwProxyAuthScheme, strProxyUsername, strProxyPassword, default))
+					dwProxyAuthScheme, strProxyUsername!, strProxyPassword, default))
 				{
 					goto done;
 				}
@@ -358,7 +354,7 @@ done:
 			//after an auth challenge, and so we will reset the file position
 			//to the beginning on each loop.
 			//
-			if (INVALID_SET_FILE_POINTER == SetFilePointer(hFile, 0, default, System.IO.SeekOrigin.Begin))
+			if (INVALID_SET_FILE_POINTER == SetFilePointer(hFile!, 0, default, System.IO.SeekOrigin.Begin))
 				goto done;
 
 			// Load the file 4k at a time and write it. fwFileLeft will track
@@ -368,7 +364,7 @@ done:
 			{
 				using var buffer = new SafeCoTaskMemHandle(4096);
 
-				if (!ReadFile(hFile, buffer, buffer.Size, out var dwBytesRead, default))
+				if (!ReadFile(hFile!, buffer, buffer.Size, out var dwBytesRead, default))
 					goto done;
 
 				if (dwBytesRead == 0)
@@ -430,7 +426,7 @@ done:
 					else
 					{
 						if (!WinHttpSetCredentials(hRequest, dwTarget, dwSelectedScheme,
-							strTargetUsername, strTargetPassword, default))
+							strTargetUsername!, strTargetPassword, default))
 						{
 							goto done;
 						}

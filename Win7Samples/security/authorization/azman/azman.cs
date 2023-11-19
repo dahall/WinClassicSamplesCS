@@ -1,10 +1,9 @@
-﻿namespace AclApi
+﻿namespace AclApi;
+
+internal static class AclApi
 {
-	internal static class AclApi
+	private static int Main(string[] args)
 	{
-		private static int Main(string[] args)
-		{
-			return 0;
-		}
+		return 0;
 	}
 }

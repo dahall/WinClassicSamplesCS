@@ -1,6 +1,4 @@
-﻿using System.Runtime.InteropServices;
-using System.Text;
-using Vanara.Extensions;
+﻿using Vanara.Extensions;
 using Vanara.PInvoke;
 
 using static Vanara.PInvoke.Kernel32;
@@ -28,8 +26,8 @@ internal class Program
 	//Structure containing the Session and Connect handles
 	public class MAIN_CONTEXT
 	{
-		public SafeHINTERNET hSession;
-		public SafeHINTERNET hConnect;
+		public SafeHINTERNET? hSession;
+		public SafeHINTERNET? hConnect;
 	}
 
 	//Structure used for storing the context for the asynchronous calls
@@ -40,7 +38,7 @@ internal class Program
 	public struct APP_CONTEXT
 	{
 		public MAIN_CONTEXT mainContext;
-		public SafeHINTERNET hRequest;
+		public SafeHINTERNET? hRequest;
 		public SafeEventHandle hEvent;
 		public byte[] pszOutBuffer;
 		public int dwDownloaded;
@@ -48,8 +46,8 @@ internal class Program
 		public uint dwWritten;
 		public uint dwReadOffset;
 		public int dwWriteOffset;
-		public SafeHFILE hFile;
-		public SafeHFILE hRes;
+		public SafeHFILE? hFile;
+		public SafeHFILE? hRes;
 		public uint dwState;
 		public int lPendingWrites;
 		public bool bReceiveDone;
@@ -68,29 +66,29 @@ internal class Program
 	static uint g_action;
 	const string DEFAULTHOSTNAME = "www.microsoft.com";
 	//Host to connect to
-	static string g_hostName;
+	static string? g_hostName;
 	//Resource to get from the server
 	static string g_resource = "/"; //By default request the root object
 	//File containing data to post
-	static string g_inputFile;
+	static string? g_inputFile;
 	//File to write the data received from the server
-	static string g_outputFile;
+	static string? g_outputFile;
 	//Flag to indicate the use of a proxy
 	static bool g_bUseProxy = false;
 	//Name of the proxy to use
-	static string g_proxy = default;
+	static string? g_proxy = default;
 	//Flag to indicate the use of SSL
 	static bool g_bSecure = false;
 	//Callback function
 	static IntPtr g_callback;
 	//Structures to be used in the Async File IO callbacks
-	static IO_BUF g_readIO;
-	static IO_BUF g_writeIO;
+	static IO_BUF? g_readIO;
+	static IO_BUF? g_writeIO;
 	//Timeout for the async operations
 	static uint g_userTimeout = DEFAULT_TIMEOUT;
 	//Indicate if we had to create a temp file
 	static bool g_bCreatedTempFile = false;
-	static MAIN_CONTEXT mainContext;
+	static MAIN_CONTEXT? mainContext;
 	static APP_CONTEXT context = new();
 
 	public static int Main(string[] args)
@@ -148,7 +146,7 @@ internal class Program
 
 		//Create Connection handle and provide context for async operations
 		mainContext.hConnect = InternetConnect(mainContext.hSession,
-			g_hostName, //Name of the server to connect to
+			g_hostName!, //Name of the server to connect to
 			serverPort, //HTTP (80) or HTTPS (443)
 			default, //Do not provide a user name for the server
 			default, //Do not provide a password for the server
@@ -163,7 +161,6 @@ internal class Program
 			goto Exit;
 		}
 
-
 		//Initialize the context to be used in the asynchronous calls
 		InitRequestContext(mainContext, ref context);
 
@@ -172,7 +169,7 @@ internal class Program
 		OpenFiles(ref context);
 
 		//Verify if we've opened a file to post and get its size
-		if (!context.hFile.IsInvalid)
+		if (!context.hFile!.IsInvalid)
 		{
 			dwFileSize = GetFileSize(context.hFile, out _);
 		}
@@ -195,7 +192,7 @@ internal class Program
 		dwRequestFlags |= INTERNET_FLAG.INTERNET_FLAG_RELOAD | INTERNET_FLAG.INTERNET_FLAG_NO_CACHE_WRITE;
 
 		//Create a Request handle
-		context.hRequest = HttpOpenRequest(context.mainContext.hConnect,
+		context.hRequest = HttpOpenRequest(context.mainContext.hConnect!,
 			verb, //GET or POST
 			g_resource, //root "/" by default
 			default, //USe default HTTP/1.1 as the version
@@ -438,7 +435,7 @@ ExitSwitch:
 							g_writeIO.lpo.OffsetLow = context.dwWriteOffset;
 							Array.Copy(context.pszOutBuffer, g_writeIO.buffer, context.pszOutBuffer.Length);
 
-							if (!WriteFile(context.hRes, g_writeIO.buffer, context.dwDownloaded, out _, ref g_writeIO.lpo))
+							if (!WriteFile(context.hRes!, g_writeIO.buffer, context.dwDownloaded, out _, ref g_writeIO.lpo))
 							{
 								if ((dwError=GetLastError())!= Win32Error.ERROR_IO_PENDING)
 								{
@@ -513,7 +510,7 @@ ExitSwitch:
 
 		g_readIO = new() { aContext = aContext, lpo = new NativeOverlapped { OffsetLow = unchecked((int)aContext.dwReadOffset) } };
 
-		if (!ReadFile(aContext.hFile, g_readIO.buffer, BUFFER_LEN, out _, ref g_readIO.lpo))
+		if (!ReadFile(aContext.hFile!, g_readIO.buffer, BUFFER_LEN, out _, ref g_readIO.lpo))
 		{
 			if ((dwError=GetLastError()) == Win32Error.ERROR_HANDLE_EOF)
 			{
@@ -545,7 +542,7 @@ Exit:
 
 		Console.Error.Write("Finished posting file\n");
 		aContext.dwState = POST_RES;
-		if (!HttpEndRequest(aContext.hRequest))
+		if (!HttpEndRequest(aContext.hRequest!))
 		{
 			if ((dwError = Win32Error.GetLastError()) == Win32Error.ERROR_IO_PENDING)
 			{
@@ -579,7 +576,7 @@ Exit:
 	{
 		Win32Error dwError;
 
-		if (InternetWriteFile(aContext.hRequest,
+		if (InternetWriteFile(aContext.hRequest!,
 			aContext.pszOutBuffer,
 			(int)aContext.dwRead,
 			out aContext.dwWritten))
@@ -617,7 +614,7 @@ Exit:
 	{
 		Win32Error dwError;
 
-		while (InternetReadFile(aContext.hRequest,
+		while (InternetReadFile(aContext.hRequest!,
 			aContext.pszOutBuffer,
 			BUFFER_LEN,
 			out aContext.dwDownloaded))
@@ -646,13 +643,13 @@ Exit:
 				return;
 			}
 
-			g_writeIO = new() { aContext = aContext, lpo = new NativeOverlapped { OffsetLow = unchecked((int)aContext.dwWriteOffset) } };
+			g_writeIO = new() { aContext = aContext, lpo = new NativeOverlapped { OffsetLow = unchecked(aContext.dwWriteOffset) } };
 
 			InterlockedIncrement(ref aContext.lPendingWrites);
 
 			Array.Copy(aContext.pszOutBuffer, g_writeIO.buffer, aContext.dwDownloaded);
 
-			if (!WriteFile(aContext.hRes,
+			if (!WriteFile(aContext.hRes!,
 				g_writeIO.buffer,
 				aContext.dwDownloaded,
 				out _,
@@ -744,7 +741,7 @@ Exit:
 				context.dwReadOffset += dwNumberOfBytesTransfered;
 				context.dwRead = dwNumberOfBytesTransfered;
 
-				Array.Copy(context.pszOutBuffer, g_readIO.buffer, context.dwRead);
+				Array.Copy(context.pszOutBuffer, g_readIO!.buffer, context.dwRead);
 
 				DoInternetWrite(ref context);
 			}
@@ -832,7 +829,7 @@ Exit:
 		aContext.hRes?.Dispose();
 		if (!(aContext.hRequest?.IsClosed ?? false))
 		{
-			aContext.hRequest.Dispose();
+			aContext.hRequest?.Dispose();
 			// Wait for the closing of the handle
 			var dwSync = WaitForSingleObject(aContext.hEvent, INFINITE);
 			if (WAIT_STATUS.WAIT_ABANDONED == dwSync)
@@ -840,7 +837,7 @@ Exit:
 				Console.Error.Write("The callback thread has terminated.\n");
 			}
 		}
-		if (!aContext.mainContext.hConnect.IsClosed)
+		if (!aContext.mainContext.hConnect!.IsClosed)
 		{
 			//Remove the callback from the Connection handle.
 			//Since se set the callback on the session handle previous to create the conenction and
@@ -854,7 +851,7 @@ Exit:
 			aContext.mainContext.hConnect.Dispose();
 
 		}
-		if (!aContext.mainContext.hSession.IsClosed)
+		if (!aContext.mainContext.hSession!.IsClosed)
 		{
 			//Remove the callback from the Session handle
 			g_callback = InternetSetStatusCallback(aContext.mainContext.hSession, default);
@@ -881,7 +878,7 @@ Exit:
 		if (g_action == POST)
 		{
 			//Open input file
-			aContext.hFile = CreateFile(g_inputFile,
+			aContext.hFile = CreateFile(g_inputFile!,
 				FileAccess.GENERIC_READ,
 				System.IO.FileShare.Read,
 				default, // handle cannot be inherited
@@ -904,7 +901,7 @@ Exit:
 		}
 
 		//Open output file
-		aContext.hRes = CreateFile(g_outputFile,
+		aContext.hRes = CreateFile(g_outputFile!,
 			FileAccess.GENERIC_WRITE,
 			0, //Open exclusively
 			default, //handle cannot be inherited
@@ -924,7 +921,6 @@ Exit:
 			Environment.Exit(1);
 		}
 	}
-
 
 	/*++
 	Routine Description:
@@ -954,8 +950,8 @@ Exit:
 			{
 				case 'p':
 
-g_bUseProxy = true;
-					if (i < args.Length-1)
+					g_bUseProxy = true;
+					if (i < args.Length - 1)
 					{
 						g_proxy = args[++i];
 					}
@@ -963,7 +959,7 @@ g_bUseProxy = true;
 
 				case 'h':
 
-if (i < args.Length-1)
+					if (i < args.Length - 1)
 					{
 						g_hostName = args[++i];
 					}
@@ -972,7 +968,7 @@ if (i < args.Length-1)
 
 				case 'o':
 
-if (i < args.Length-1)
+					if (i < args.Length - 1)
 					{
 						g_resource = args[++i];
 					}
@@ -981,7 +977,7 @@ if (i < args.Length-1)
 
 				case 'r':
 
-if (i < args.Length-1)
+					if (i < args.Length - 1)
 					{
 						g_inputFile = args[++i];
 					}
@@ -990,7 +986,7 @@ if (i < args.Length-1)
 
 				case 'w':
 
-if (i < args.Length-1)
+					if (i < args.Length - 1)
 					{
 						g_outputFile = args[++i];
 					}
@@ -999,13 +995,13 @@ if (i < args.Length-1)
 
 				case 'a':
 
-if (i < args.Length-1)
+					if (i < args.Length - 1)
 					{
-						if (string.Compare(args[i+1], 0, "get", 0, 3, true) == 0)
+						if (string.Compare(args[i + 1], 0, "get", 0, 3, true) == 0)
 						{
 							g_action = GET;
 						}
-						else if (string.Compare(args[i+1], 0, "post", 0, 4, true) == 0)
+						else if (string.Compare(args[i + 1], 0, "post", 0, 4, true) == 0)
 						{
 							g_action = POST;
 						}
@@ -1014,14 +1010,14 @@ if (i < args.Length-1)
 					break;
 
 				case 's':
-g_bSecure = true;
+					g_bSecure = true;
 					break;
 
 				case 't':
-if (i < args.Length-1)
+					if (i < args.Length - 1)
 					{
 						//Verify the user provided a valid number for the default time
-						if (false != char.IsDigit(args[i+1][0]))
+						if (false != char.IsDigit(args[i + 1][0]))
 						{
 							g_userTimeout = uint.Parse(args[++i]);
 						}

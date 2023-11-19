@@ -38,7 +38,7 @@ internal class Program
 			// Set the File Completed Call
 			AutoResetEvent evt = new(false);
 			pJob.Completed += (s, e) => { Console.WriteLine("Job transferred. Completing Job..."); evt.Set(); };
-			pJob.Error += (s, e) => { Console.WriteLine($"Job entered error state...\nJob {pJob.DisplayName} encountered the following error: {pJob.LastError.Message}"); evt.Set(); };
+			pJob.Error += (s, e) => { Console.WriteLine($"Job entered error state...\nJob {pJob.DisplayName} encountered the following error: {pJob.LastError!.Message}"); evt.Set(); };
 			pJob.FileTransferred += (s, e) =>
 			{
 				Console.WriteLine($"Temporary location of the downloaded file: {e.FileInfo.TemporaryName}\nIs this a valid file?");
@@ -69,7 +69,7 @@ internal class Program
 		}
 		catch (Exception ex)
 		{
-			Console.WriteLine($"Failure at {new System.Diagnostics.StackTrace(ex).GetFrame(0).GetMethod().Name}: {ex.Message}");
+			Console.WriteLine($"Failure at {new System.Diagnostics.StackTrace(ex).GetFrame(0)!.GetMethod()!.Name}: {ex.Message}");
 		}
 	}
 

@@ -2,9 +2,9 @@
 using static Vanara.PInvoke.EnhancedStorage;
 using static Vanara.PInvoke.PortableDeviceApi;
 
-namespace EhStorEnumerator
-{
-	public class CPasswordSiloInformation
+namespace EhStorEnumerator;
+
+public class CPasswordSiloInformation
     {
         public CPasswordSiloInformation(IPortableDeviceValues results)
         {
@@ -29,7 +29,7 @@ namespace EhStorEnumerator
     {
         private void OnPasswordInittomanufacturerstate(object sender, EventArgs e)
         {
-            IPortableDevice dev = SelectedDevice;
+            IPortableDevice? dev = SelectedDevice;
             if (dev is null)
             {
                 return;
@@ -45,7 +45,7 @@ namespace EhStorEnumerator
 
         private void OnPasswordQueryInformation(object sender, EventArgs e)
         {
-            IPortableDevice dev = SelectedDevice;
+            IPortableDevice? dev = SelectedDevice;
             if (dev is null)
             {
                 return;
@@ -57,7 +57,7 @@ namespace EhStorEnumerator
 
         private void OnPasswordSet(object sender, EventArgs e)
         {
-            IPortableDevice dev = SelectedDevice;
+            IPortableDevice? dev = SelectedDevice;
             if (dev is null)
             {
                 return;
@@ -71,4 +71,3 @@ namespace EhStorEnumerator
             }
         }
     }
-}

@@ -17,7 +17,7 @@ internal partial class Program
 	--***************************************************************************/
 	public static Win32Error DoUrlAcl(string[] args, HTTPCFG_TYPE Type)
 	{
-		string pAcl = default, pUrl = default;
+		string? pAcl = default, pUrl = default;
 
 		for (var i = 0; args.Length >= i+2 && args[i][0] is '-' or '/'; i += 2)
 		{
@@ -62,10 +62,10 @@ internal partial class Program
 	Return Value:
 	Success/Failure.
 	--***************************************************************************/
-	private static Win32Error DoUrlAclDelete([In, Optional] string pUrl)
+	private static Win32Error DoUrlAclDelete([In, Optional] string? pUrl)
 	{
 		HTTP_SERVICE_CONFIG_URLACL_SET SetParam = new();
-		SetParam.KeyDesc.pUrlPrefix = pUrl;
+		SetParam.KeyDesc.pUrlPrefix = pUrl ?? "";
 
 		Win32Error Status = HttpDeleteServiceConfiguration(SetParam);
 
@@ -81,9 +81,8 @@ internal partial class Program
 	Return Value:
 	Success/Failure.
 	--***************************************************************************/
-	private static Win32Error DoUrlAclQuery([In, Optional] string pUrl)
+	private static Win32Error DoUrlAclQuery([In, Optional] string? pUrl)
 	{
-		_ = 0;
 		HTTP_SERVICE_CONFIG_URLACL_QUERY QueryParam = new();
 
 		if (pUrl is not null)
@@ -152,11 +151,11 @@ internal partial class Program
 	Return Value:
 	Success/Failure.
 	--***************************************************************************/
-	private static Win32Error DoUrlAclSet([In, Optional] string pUrl, [In, Optional] string pAcl)
+	private static Win32Error DoUrlAclSet([In, Optional] string? pUrl, [In, Optional] string? pAcl)
 	{
 		HTTP_SERVICE_CONFIG_URLACL_SET SetParam = new();
-		SetParam.KeyDesc.pUrlPrefix = pUrl;
-		SetParam.ParamDesc.pStringSecurityDescriptor = pAcl;
+		SetParam.KeyDesc.pUrlPrefix = pUrl ?? "";
+		SetParam.ParamDesc.pStringSecurityDescriptor = pAcl ?? "";
 
 		Win32Error Status = HttpSetServiceConfiguration(SetParam);
 

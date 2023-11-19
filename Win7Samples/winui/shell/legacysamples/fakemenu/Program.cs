@@ -30,7 +30,6 @@
 //      -   The fake-menu switches to keyboard focus highlighting
 //          once keyboard menu navigation is employed.
 
-using System.Runtime.InteropServices;
 using Vanara.Extensions;
 using Vanara.PInvoke;
 using static Vanara.PInvoke.DwmApi;
@@ -520,7 +519,7 @@ internal class Program
 		ColorPick_ChooseLocation(hwndOwner, x, y, cx, cy, out POINT pt);
 
 		ColorPickState_Initialize(hwndOwner);
-		HWND hwndPopup = CreateWindowEx(dwExStyle, "ColorPick", "", dwStyle, pt.X, pt.Y, cx, cy, hwndOwner, default, g_hInstance);
+		HWND hwndPopup = CreateWindowEx(dwExStyle, "ColorPick", "", dwStyle, pt.X, pt.Y, cx, cy, hwndOwner, default, g_hInstance!);
 
 		// Show the window but don't activate it!
 		ShowWindow(hwndPopup, ShowWindowCommand.SW_SHOWNOACTIVATE);

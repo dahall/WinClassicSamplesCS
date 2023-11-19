@@ -1,6 +1,4 @@
-﻿global using System;
-global using System.Globalization;
-global using System.Linq;
+﻿global using System.Globalization;
 global using System.Management;
 global using System.Reflection;
 global using Vanara.IO;
@@ -37,7 +35,7 @@ else if (args.Length == 2)
 		if (vdisk.DiskType == VirtualDisk.DeviceType.VhdSet)
 		{
 			Console.Write("parentPath = ");
-			Console.WriteLine(string.Join("\r\n\t", vdisk.ParentPaths));
+			Console.WriteLine(string.Join("\r\n\t", vdisk.ParentPaths!));
 			Console.WriteLine($"parentIdentifier = {vdisk.ParentIdentifier}");
 		}
 		Console.WriteLine($"minInternalSize = {vdisk.SmallestSafeVirtualSize}");
@@ -217,7 +215,7 @@ else if (args.Length == 3)
 //	if (string.Equals(args[0], "CreateFixedVirtualHardDisk", StringComparison.OrdinalIgnoreCase))
 //	{
 //		string virtualHardDiskPath = args[1];
-//		string parentPath = null;
+//		string? parentPath = null;
 //		VirtualHardDiskType type = VirtualHardDiskType.FixedSize;
 //		VirtualHardDiskFormat format;
 
@@ -249,7 +247,7 @@ else if (args.Length == 3)
 //	else if (string.Equals(args[0], "CreateDynamicVirtualHardDisk", StringComparison.OrdinalIgnoreCase))
 //	{
 //		string virtualHardDiskPath = args[1];
-//		string parentPath = null;
+//		string? parentPath = null;
 //		VirtualHardDiskType type = VirtualHardDiskType.DynamicallyExpanding;
 //		VirtualHardDiskFormat format;
 
@@ -337,7 +335,7 @@ static void ShowUsage()
 /// <summary>Gets the image management service.</summary>
 /// <param name="scope">The ManagementScope to use to connect to WMI.</param>
 /// <returns>The image management object.</returns>
-static ManagementObject GetImageManagementService(ManagementScope scope)
+static ManagementObject? GetImageManagementService(ManagementScope scope)
 {
 	using ManagementClass imageManagementServiceClass = new("Msvm_ImageManagementService") { Scope = scope };
 	return imageManagementServiceClass.GetInstances().Cast<ManagementObject>().FirstOrDefault();
@@ -346,10 +344,11 @@ static ManagementObject GetImageManagementService(ManagementScope scope)
 static void CallWmi(string method, params (string, object)[] values)
 {
 	ManagementScope scope = new(@"\\.\root\virtualization\v2");
-	using var imgMgmtSvc = GetImageManagementService(scope);
+	using var imgMgmtSvc = GetImageManagementService(scope) ?? throw new InvalidOperationException();
 	using var inParams = imgMgmtSvc.GetMethodParameters(method);
+	var opt = new InvokeMethodOptions();
 	foreach (var kv in values)
 		inParams[kv.Item1] = kv.Item2;
-	using var outParams = imgMgmtSvc.InvokeMethod(method, inParams, null);
+	using var outParams = imgMgmtSvc.InvokeMethod(method, inParams, opt);
 	Utils.Wmi.ValidateOutput(outParams, scope);
 }

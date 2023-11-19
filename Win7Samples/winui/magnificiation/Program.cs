@@ -51,7 +51,7 @@ const string WindowClassName = "MagnifierWindow";
 const string WindowTitle = "Screen Magnifier Sample";
 const uint timerInterval = 16; // close to the refresh rate @60hz
 
-HINSTANCE hInst = Kernel32.GetModuleHandle();
+HINSTANCE hInst = GetModuleHandle();
 HWND hwndMag = default, hwndHost = default;
 RECT hostWindowRect = default, magWindowRect = default;
 
@@ -214,7 +214,6 @@ bool SetupMagnifier()
 
 	return ret;
 }
-
 
 //
 // FUNCTION: UpdateMagWindow()

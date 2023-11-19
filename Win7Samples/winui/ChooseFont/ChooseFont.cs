@@ -1,5 +1,4 @@
-﻿using System.Runtime.InteropServices;
-using Vanara.InteropServices;
+﻿using Vanara.InteropServices;
 using Vanara.PInvoke;
 using static Vanara.PInvoke.ComDlg32;
 using static Vanara.PInvoke.Gdi32;
@@ -14,9 +13,9 @@ internal static class Program
 	private const string szWindowClass = "ChooseFontSampleWClass";
 	private const string szWindowName = "ChooseFont Sample";
 	private static readonly HINSTANCE g_hInst = GetModuleHandle(); // Save our hInstance for later
-	private static SafeHFONT g_hfont;
-	private static SafeHWND g_hwndLabel;
-	private static SafeCoTaskMemStruct<LOGFONT> lf;
+	private static SafeHFONT g_hfont = SafeHFONT.Null;
+	private static SafeHWND g_hwndLabel = new(default, false);
+	private static SafeCoTaskMemStruct<LOGFONT>? lf;
 
 	private static void InitDefaultLF(out SafeCoTaskMemStruct<LOGFONT> plf)
 	{
@@ -108,7 +107,7 @@ internal static class Program
 						{
 							lStructSize = (uint)Marshal.SizeOf<CHOOSEFONT>(),
 							hwndOwner = hwnd,
-							lpLogFont = lf
+							lpLogFont = lf?.DangerousGetHandle() ?? default
 						};
 						if (ButtonStateFlags.BST_CHECKED == IsDlgButtonChecked(hwnd, ID_CHECKBOX))
 						{
@@ -116,7 +115,7 @@ internal static class Program
 							cf.Flags |= CF.CF_INACTIVEFONTS;
 						}
 
-						if (ChooseFont(ref cf))
+						if (ChooseFont(ref cf) && lf is not null)
 						{
 							var hfont = CreateFontIndirect(lf);
 							if (!hfont.IsInvalid)

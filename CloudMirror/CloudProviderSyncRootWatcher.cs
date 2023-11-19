@@ -2,9 +2,9 @@
 using static Vanara.PInvoke.CldApi;
 using static Vanara.PInvoke.Kernel32;
 
-namespace CloudMirror
-{
-	static class CloudProviderSyncRootWatcher
+namespace CloudMirror;
+
+static class CloudProviderSyncRootWatcher
     {
         static DirectoryWatcher s_directoryWatcher = new();
         static bool s_shutdownWatcher;
@@ -94,4 +94,3 @@ namespace CloudMirror
         }
 
     }
-}
