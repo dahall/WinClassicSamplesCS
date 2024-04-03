@@ -134,7 +134,7 @@ public class CFolderViewImplFolder : IShellFolder2, IPersistFolder2
 
 	public CFolderViewImplFolder(uint nLevel) => m_nLevel = nLevel;
 
-	public HRESULT BindToObject(PIDL pidl, IBindCtx pbc, in Guid riid, out object? ppv)
+	public HRESULT BindToObject(PIDL pidl, IBindCtx? pbc, in Guid riid, out object? ppv)
 	{
 		ppv = default;
 		if (!pidl.IsInvalid)
@@ -142,7 +142,7 @@ public class CFolderViewImplFolder : IShellFolder2, IPersistFolder2
 
 			// Initialize it.
 			PIDL pidlFirst = ILCloneFirst((IntPtr)pidl);
-			if (pidlFirst is not null)
+			if (m_pidl is not null && pidlFirst is not null)
 			{
 				var pidlBind = PIDL.Combine(m_pidl, pidlFirst);
 				if (pidlBind is not null)
@@ -167,7 +167,7 @@ public class CFolderViewImplFolder : IShellFolder2, IPersistFolder2
 		return HRESULT.E_INVALIDARG;
 	}
 
-	public HRESULT BindToStorage(PIDL pidl, IBindCtx pbc, in Guid riid, out object? ppv) => BindToObject(pidl, pbc, riid, out ppv);
+	public HRESULT BindToStorage(PIDL pidl, IBindCtx? pbc, in Guid riid, out object? ppv) => BindToObject(pidl, pbc, riid, out ppv);
 
 	public HRESULT CompareIDs(IntPtr lParam, PIDL pidl1, PIDL pidl2)
 	{
@@ -302,7 +302,7 @@ public class CFolderViewImplFolder : IShellFolder2, IPersistFolder2
 		if (riid == typeof(IShellView).GUID)
 		{
 			SFV_CREATE csfv = new() { cbSize = (uint)Marshal.SizeOf(typeof(SFV_CREATE)), pshf = this, psfvcb = new CFolderViewCB() };
-			hr = SHCreateShellFolderView(csfv, out IShellView shv);
+			hr = SHCreateShellFolderView(csfv, out IShellView? shv);
 			if (hr.Succeeded) ppv = shv;
 		}
 		else if (riid == typeof(ICategoryProvider).GUID)
@@ -312,7 +312,7 @@ public class CFolderViewImplFolder : IShellFolder2, IPersistFolder2
 		else if (riid == typeof(IContextMenu).GUID)
 		{
 			// This is the background context menu for the folder itself, not the context menu on items within it.
-			DEFCONTEXTMENU dcm = new() { hwnd = hwndOwner, pidlFolder = (IntPtr)m_pidl, psf = this };
+			DEFCONTEXTMENU dcm = new() { hwnd = hwndOwner, pidlFolder = (IntPtr)(m_pidl ?? IntPtr.Zero), psf = this };
 			hr = SHCreateDefaultContextMenu(dcm, riid, out ppv);
 		}
 		else if (riid == typeof(IExplorerCommandProvider).GUID)
@@ -366,7 +366,7 @@ public class CFolderViewImplFolder : IShellFolder2, IPersistFolder2
 		HRESULT hr = m_pidl is not null ? HRESULT.S_OK : HRESULT.E_FAIL;
 		if (hr.Succeeded)
 		{
-			ppidl = ILClone((IntPtr)m_pidl);
+			ppidl = ILClone((IntPtr)m_pidl!);
 			hr = ppidl is not null ? HRESULT.S_OK : HRESULT.E_OUTOFMEMORY;
 		}
 		return hr;
@@ -473,7 +473,7 @@ public class CFolderViewImplFolder : IShellFolder2, IPersistFolder2
 			}
 			else
 			{
-				hr = SHGetNameFromIDList(m_pidl, (uFlags & SHGDNF.SHGDN_FORADDRESSBAR) != 0 ? SIGDN.SIGDN_DESKTOPABSOLUTEEDITING : SIGDN.SIGDN_DESKTOPABSOLUTEPARSING, out var pszThisFolder);
+				hr = SHGetNameFromIDList(m_pidl!, (uFlags & SHGDNF.SHGDN_FORADDRESSBAR) != 0 ? SIGDN.SIGDN_DESKTOPABSOLUTEEDITING : SIGDN.SIGDN_DESKTOPABSOLUTEPARSING, out var pszThisFolder);
 				if (hr.Succeeded)
 				{
 					szDisplayName = pszThisFolder + '\\';
@@ -510,7 +510,7 @@ public class CFolderViewImplFolder : IShellFolder2, IPersistFolder2
 			// The default context menu will call back for IQueryAssociations to determine the
 			// file associations with which to populate the menu.
 			using var pi = new PinnedObject(apidl);
-			DEFCONTEXTMENU dcm = new() { hwnd = hwndOwner, pidlFolder = (IntPtr)m_pidl, psf = this, cidl = cidl, apidl = pi };
+			DEFCONTEXTMENU dcm = new() { hwnd = hwndOwner, pidlFolder = (IntPtr)m_pidl!, psf = this, cidl = cidl, apidl = pi };
 			hr = SHCreateDefaultContextMenu(dcm, riid, out ppv);
 		}
 		else if (riid == typeof(IExtractIconW).GUID)
@@ -533,7 +533,7 @@ public class CFolderViewImplFolder : IShellFolder2, IPersistFolder2
 		}
 		else if (riid == typeof(IDataObject).GUID)
 		{
-			hr = SHCreateDataObject(m_pidl, cidl, apidl, default, riid, out var ido);
+			hr = SHCreateDataObject(m_pidl!, cidl, apidl, default, riid, out var ido);
 			ppv = ido;
 		}
 		else if (riid == typeof(IQueryAssociations).GUID)
@@ -601,11 +601,11 @@ public class CFolderViewImplFolder : IShellFolder2, IPersistFolder2
 		return hr;
 	}
 
-	public HRESULT ParseDisplayName(HWND hwnd, IBindCtx pbc, string pszName, out uint pchEaten, out PIDL? ppidl, ref SFGAO pdwAttributes)
+	public HRESULT ParseDisplayName(HWND hwnd, IBindCtx? pbc, string pszName, out uint pchEaten, out PIDL ppidl, ref SFGAO pdwAttributes)
 	{
 		HRESULT hr = HRESULT.E_INVALIDARG;
 		pchEaten = 0;
-		ppidl = null;
+		ppidl = PIDL.Null;
 
 		if (null != pszName)
 		{
@@ -640,7 +640,7 @@ public class CFolderViewImplFolder : IShellFolder2, IPersistFolder2
 							hr = BindToObject(pidlCurrent, pbc, typeof(IShellFolder).GUID, out var psf);
 							if (hr.Succeeded)
 							{
-								hr = ((IShellFolder)psf!).ParseDisplayName(hwnd, pbc, pszNext, out pchEaten, out var pidlNext, ref pdwAttributes);
+								hr = ((IShellFolder)psf!).ParseDisplayName(hwnd, pbc, pszNext!, out pchEaten, out var pidlNext, ref pdwAttributes);
 								if (hr.Succeeded)
 								{
 									ppidl = ILCombine((IntPtr)pidlCurrent, (IntPtr)pidlNext);
@@ -660,9 +660,9 @@ public class CFolderViewImplFolder : IShellFolder2, IPersistFolder2
 		return hr;
 	}
 
-	public HRESULT SetNameOf(HWND hwnd, PIDL pidl, string pszName, SHGDNF uFlags, out PIDL? ppidlOut)
+	public HRESULT SetNameOf(HWND hwnd, PIDL pidl, string pszName, SHGDNF uFlags, out PIDL ppidlOut)
 	{
-		ppidlOut = default;
+		ppidlOut = PIDL.Null;
 		return HRESULT.E_NOTIMPL;
 	}
 
@@ -724,7 +724,7 @@ public class CFolderViewImplFolder : IShellFolder2, IPersistFolder2
 					// if you are implementing this for other situations.
 					try
 					{
-						IShellFolder psf2 = psfParent.BindToObject<IShellFolder2>(pidlNext);
+						IShellFolder psf2 = psfParent.BindToObject<IShellFolder2>(pidlNext!)!;
 						// Also, the column mask will not be relevant and should never be passed.
 						hr = psf2.CompareIDs((IntPtr)((uint)(lParam & ~SHCIDS_COLUMNMASK)), pidlRel1, pidlRel2);
 					}

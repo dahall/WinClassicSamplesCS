@@ -52,8 +52,8 @@ internal static class ProviderFolderLocations
 		var settings = Windows.Storage.ApplicationData.Current.LocalSettings.Values;
 		if (settings.TryGetValue(title, out var lastLocation))
 		{
-			var lastItem = SHCreateItemFromParsingName<IShellItem>(lastLocation?.ToString());
-			fileOpen.Item.SetFolder(lastItem);
+			var lastItem = SHCreateItemFromParsingName<IShellItem>(lastLocation!.ToString()!);
+			fileOpen.Item.SetFolder(lastItem!);
 		}
 
 		var hr = fileOpen.Item.Show();

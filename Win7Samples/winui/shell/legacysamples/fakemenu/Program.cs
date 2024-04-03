@@ -73,7 +73,7 @@ internal class Program
 	{
 		g_hInstance = GetModuleHandle();
 
-		WindowClass wc = new("ColorPick", g_hInstance, ColorPick_WndProc, hCursor: LoadCursor(default, IDC_ARROW), hbrBkgd: SystemColorIndex.COLOR_3DFACE + 1);
+		WindowClass wc = new("ColorPick", g_hInstance, ColorPick_WndProc, hCursor: LoadCursor(default, IDC_ARROW), hbrBkgd: GetSysColorBrush(SystemColorIndex.COLOR_3DFACE + 1));
 
 		VisibleWindow.Run(FakeMenuDemo_WndProc, "Fake Menu Demo - Right-click in window to change color");
 	}

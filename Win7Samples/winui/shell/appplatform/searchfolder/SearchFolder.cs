@@ -29,7 +29,7 @@ static class SearchFolder
 		// Sets the condition for pSearchFolderItemFactory
 		pSearchFolderItemFactory.SetCondition(pCondition);
 		// This retrieves an IShellItem of the search.  It is a virtual child of the desktop.
-		var pShellItemSearch = pSearchFolderItemFactory.GetShellItem<IShellItem>();
+		var pShellItemSearch = pSearchFolderItemFactory.GetShellItem<IShellItem>()!;
 		OpenCommonFileDialogTo(pShellItemSearch);
 	}
 
@@ -38,11 +38,11 @@ static class SearchFolder
 	{
 		// Create the condition factory.  This interface helps create conditions.
 		var pConditionFactory = new IConditionFactory2();
-		var pConditionKind = (ICondition)pConditionFactory.CreateStringLeaf(PROPERTYKEY.System.Kind, CONDITION_OPERATION.COP_EQUAL, "Document", null, CONDITION_CREATION_OPTIONS.CONDITION_CREATION_DEFAULT, typeof(ICondition).GUID);
-		var pConditionSize = (ICondition)pConditionFactory.CreateIntegerLeaf(PROPERTYKEY.System.Size, CONDITION_OPERATION.COP_GREATERTHAN, 102400, CONDITION_CREATION_OPTIONS.CONDITION_CREATION_DEFAULT, typeof(ICondition).GUID);
+		var pConditionKind = (ICondition)pConditionFactory.CreateStringLeaf(PROPERTYKEY.System.Kind, CONDITION_OPERATION.COP_EQUAL, "Document", null, CONDITION_CREATION_OPTIONS.CONDITION_CREATION_DEFAULT, typeof(ICondition).GUID)!;
+		var pConditionSize = (ICondition)pConditionFactory.CreateIntegerLeaf(PROPERTYKEY.System.Size, CONDITION_OPERATION.COP_GREATERTHAN, 102400, CONDITION_CREATION_OPTIONS.CONDITION_CREATION_DEFAULT, typeof(ICondition).GUID)!;
 		// Once all of the leaf conditions are created successfully, "AND" them together
 		ICondition[] rgConditions = { pConditionKind, pConditionSize };
-		return (ICondition)pConditionFactory.CreateCompoundFromArray(CONDITION_TYPE.CT_AND_CONDITION, rgConditions, (uint)rgConditions.Length, CONDITION_CREATION_OPTIONS.CONDITION_CREATION_DEFAULT, typeof(ICondition).GUID);
+		return (ICondition)pConditionFactory.CreateCompoundFromArray(CONDITION_TYPE.CT_AND_CONDITION, rgConditions, (uint)rgConditions.Length, CONDITION_CREATION_OPTIONS.CONDITION_CREATION_DEFAULT, typeof(ICondition).GUID)!;
 	}
 
 	// This opens up the common file dialog to an IShellItem and waits for the user to select a file from the results.
@@ -72,7 +72,7 @@ static class SearchFolder
 	static T CreateShellItemArray<T>() where T : class
 	{
 		var pLibrary = new IShellLibrary();
-		return pLibrary.GetFolders<T>(LIBRARYFOLDERFILTER.LFF_ALLITEMS);
+		return pLibrary.GetFolders<T>(LIBRARYFOLDERFILTER.LFF_ALLITEMS)!;
 	}
 
 	// This helper creates the scope object that is a collection of shell items that
@@ -81,7 +81,7 @@ static class SearchFolder
 	{
 		var pObjects = CreateShellItemArray<IObjectCollection>();
 		if (SHCreateItemInKnownFolder(KNOWNFOLDERID.FOLDERID_DocumentsLibrary.Guid(), 0, null, typeof(IShellItem).GUID, out var psi).Succeeded)
-			pObjects.AddObject(psi);
+			pObjects.AddObject(psi!);
 
 		// Other items can be added to pObjects similar to the code above.
 		return (IShellItemArray)pObjects;

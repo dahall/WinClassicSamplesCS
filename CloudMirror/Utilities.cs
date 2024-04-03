@@ -68,7 +68,7 @@ internal static class Utilities
 		try
 		{
 			// First, get the Volatile property store for the file. That's where the properties are maintained.
-			using var shellItem = ComReleaserFactory.Create(SHCreateItemFromParsingName<IShellItem2>(fullPath));
+			using var shellItem = ComReleaserFactory.Create(SHCreateItemFromParsingName<IShellItem2>(fullPath)!);
 
 			using var propStoreVolatile = ComReleaserFactory.Create(shellItem.Item.GetPropertyStore(GETPROPERTYSTOREFLAGS.GPS_READWRITE | GETPROPERTYSTOREFLAGS.GPS_VOLATILEPROPERTIESONLY, typeof(IPropertyStore).GUID));
 

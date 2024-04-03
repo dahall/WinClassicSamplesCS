@@ -67,8 +67,8 @@ class Program
 			// Code that targets only Windows 7 and later can take advantage of IConditionFactory2::ResolveCondition.
 			// Code that targets also earlier versions of Windows and Windows Search should use IQueryCondition::Resolve.
 			var pcf = (IConditionFactory2)pqs;
-			var pcResolved = pcf.ResolveCondition<ICondition2>(pc);
-			DisplayQuery(pcResolved, 0);
+			var pcResolved = pcf.ResolveCondition<ICondition2>(pc!);
+			DisplayQuery(pcResolved!, 0);
 		}
 
 		CoUninitialize();

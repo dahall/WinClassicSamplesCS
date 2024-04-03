@@ -816,7 +816,7 @@ public class OpticalStorageFileSystemImage : IOpticalStorageImage
 	/// A boot option array that contains a list of IBootOptions interfaces of boot images used to generate the file system image.
 	/// </value>
 	/// <remarks>If a boot image is not specified, a zero-sized array will be returned.</remarks>
-	internal IBootOptions[] BootImageOptionsArray => fsi is IFileSystemImage2 i ? i.BootImageOptionsArray : Array.Empty<IBootOptions>();
+	internal IBootOptions[] BootImageOptionsArray => fsi is IFileSystemImage2 i ? i.BootImageOptionsArray.Cast<IBootOptions>().ToArray() : Array.Empty<IBootOptions>();
 
 	/// <summary>Gets the change point identifier.</summary>
 	/// <value>Change point identifier. The identifier is a count of the changes to the file system image since its inception.</value>
@@ -912,7 +912,7 @@ public class OpticalStorageFileSystemImage : IOpticalStorageImage
 	/// <remarks>
 	/// Query the IMultisession interface for a derived <c>IMultisession</c> interface, for example, the IMultisessionSequential interface.
 	/// </remarks>
-	internal IMultisession[] MultisessionInterfaces { get => fsi.MultisessionInterfaces; set => fsi.MultisessionInterfaces = value; }
+	internal IMultisession[] MultisessionInterfaces { get => fsi.MultisessionInterfaces.Cast<IMultisession>().ToArray(); set => fsi.MultisessionInterfaces = value; }
 
 	/// <summary>Sets the default file system types and the image size based on the specified media type.</summary>
 	/// <param name="value">
@@ -2326,7 +2326,7 @@ public class OpticalStorageWriteOperation : OpticalStorageMediaOperation<IDiscFo
 	/// <c>pdispVal</c> member of the variant for any interface that inherits from IMultisession interface, for example, IMultisessionSequential.
 	/// </value>
 	/// <remarks>The array will always contain at least one element.</remarks>
-	internal IMultisession[] MultisessionInterfaces => op.MultisessionInterfaces;
+	internal IMultisession[] MultisessionInterfaces => op.MultisessionInterfaces.Cast<IMultisession>().ToArray();
 
 	/// <summary>Retrieves the location for the next write operation.</summary>
 	/// <value>Address where the next write operation begins.</value>

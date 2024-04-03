@@ -38,7 +38,7 @@ internal class Program
 		// Create the IFileOperation object
 		var pfo = CreateAndInitializeFileOperation();
 		var szSampleFileName = string.Format("{0}.{1}", c_szSampleFileName, c_szSampleFileExt);
-		var psiSrcFile = SHCreateItemFromRelativeName<IShellItem>(psiSrc, szSampleFileName);
+		var psiSrcFile = SHCreateItemFromRelativeName<IShellItem>(psiSrc, szSampleFileName)!;
 		var szNewName = string.Format("{0}.{1}", c_szSampleFileNewname, c_szSampleFileExt);
 		pfo.CopyItem(psiSrcFile, psiDst, szNewName, null);
 		pfo.PerformOperations();
@@ -90,8 +90,8 @@ internal class Program
 		pfo.PerformOperations();
 		// Now that the folders have been created, create items for them. This is just an optimization so that the sample does not have
 		// to rebind to these items for each sample type.
-		ppsiSampleSrc = SHCreateItemFromRelativeName<IShellItem>(psiSampleRoot, c_szSampleSrcDir);
-		ppsiSampleDst = SHCreateItemFromRelativeName<IShellItem>(psiSampleRoot, c_szSampleDstDir);
+		ppsiSampleSrc = SHCreateItemFromRelativeName<IShellItem>(psiSampleRoot, c_szSampleSrcDir)!;
+		ppsiSampleDst = SHCreateItemFromRelativeName<IShellItem>(psiSampleRoot, c_szSampleDstDir)!;
 	}
 
 	// Synopsis:  Creates an IShellItemArray containing the sample files to be used in the CopyMultipleFiles sample
@@ -117,8 +117,7 @@ internal class Program
 		finally
 		{
 			for (var i = 0; i < rgpidlChildren.Length; i++)
-				if (rgpidlChildren[i] != null)
-					rgpidlChildren[i].Dispose();
+				rgpidlChildren[i].Dispose();
 		}
 	}
 
@@ -138,7 +137,7 @@ internal class Program
 	private static void Main()
 	{
 		// Get the documents known folder. This folder will be used to create subfolders for the sample source and destination
-		var psiDocuments = SHCreateItemInKnownFolder<IShellItem>(KNOWNFOLDERID.FOLDERID_Documents, KNOWN_FOLDER_FLAG.KF_FLAG_DEFAULT_PATH);
+		var psiDocuments = SHCreateItemInKnownFolder<IShellItem>(KNOWNFOLDERID.FOLDERID_Documents, KNOWN_FOLDER_FLAG.KF_FLAG_DEFAULT_PATH)!;
 		CreateSampleFolders(psiDocuments, out var psiSampleSrc, out var psiSampleDst);
 		CreateSampleFiles(psiSampleSrc);
 		CopySingleFile(psiSampleSrc, psiSampleDst);

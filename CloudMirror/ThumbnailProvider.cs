@@ -17,7 +17,7 @@ public class ThumbnailProvider : IInitializeWithItem, IThumbnailProvider
 		// Retrieve thumbnails of the placeholders on demand by delegating to the thumbnail of the source items.
 		try
 		{
-			using var thumbnailProviderSource = ComReleaserFactory.Create(_itemSrc.BindToHandler<IThumbnailProvider>(default, BHID.BHID_ThumbnailHandler.Guid()));
+			using var thumbnailProviderSource = ComReleaserFactory.Create(_itemSrc!.BindToHandler<IThumbnailProvider>(default, BHID.BHID_ThumbnailHandler.Guid()));
 			thumbnailProviderSource.Item.GetThumbnail(cx, out phbmp, out pdwAlpha).ThrowIfFailed();
 		}
 		catch (Exception ex)

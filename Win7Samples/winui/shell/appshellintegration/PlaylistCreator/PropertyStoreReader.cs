@@ -13,7 +13,7 @@ internal class CPropertyStoreReader
 
 	public CPropertyStoreReader(IPropertyStore? pps = null) => _pps = pps;
 
-	public CPropertyStoreReader(IShellItem psi, GETPROPERTYSTOREFLAGS flags, PROPERTYKEY[]? rgKeys = null, uint cKeys = 0) => _pps = (psi as IShellItem2)?.GetPropertyStoreForKeys(rgKeys, cKeys, flags, typeof(IPropertyStore).GUID);
+	public CPropertyStoreReader(IShellItem psi, GETPROPERTYSTOREFLAGS flags, PROPERTYKEY[]? rgKeys = null, uint cKeys = 0) => _pps = (psi as IShellItem2)?.GetPropertyStoreForKeys(rgKeys ?? new PROPERTYKEY[0], cKeys, flags, typeof(IPropertyStore).GUID);
 
 	~CPropertyStoreReader()
 	{

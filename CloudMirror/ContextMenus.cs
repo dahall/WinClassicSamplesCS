@@ -58,7 +58,7 @@ public class TestExplorerCommandHandler : IExplorerCommand, IObjectWithSite, IEx
 		ppszInfotip = null; return HRESULT.E_NOTIMPL;
 	}
 
-	public HRESULT Invoke(IShellItemArray selection, IBindCtx pbc)
+	public HRESULT Invoke(IShellItemArray selection, IBindCtx? pbc)
 	{
 		try
 		{

@@ -16,7 +16,7 @@ internal static class ExecInExplorer
 	private static IShellDispatch2 GetShellDispatchFromView(IShellView psv)
 	{
 		var io = psv.GetItemObject(SVGIO.SVGIO_BACKGROUND, typeof(IDispatch).GUID);
-		var psfvd = (IShellFolderViewDual)io;
+		var psfvd = (IShellFolderViewDual)io!;
 		return (IShellDispatch2)psfvd.Application;
 	}
 
@@ -29,7 +29,7 @@ internal static class ExecInExplorer
 		var pdisp = psw.FindWindowSW(0 /* CSIDL_Desktop */, default, ShellWindowTypeConstants.SWC_DESKTOP, out _, ShellWindowFindWindowOptions.SWFO_NEEDDISPATCH);
 		var psb = ShlwApi.IUnknown_QueryService<IShellBrowser>(pdisp, SID_STopLevelBrowser) ?? throw new InvalidOperationException();
 		psb.QueryActiveShellView(out var iShView).ThrowIfFailed();
-		return (T)iShView;
+		return (T)iShView!;
 	}
 
 	/// <summary>The main entry point for the application.</summary>

@@ -155,7 +155,7 @@ ATOM RegisterHostWindowClass()
 		lpfnWndProc = HostWndProc,
 		hInstance = hInst,
 		hCursor = LoadCursor(default, IDC_ARROW),
-		hbrBackground = (HBRUSH)(1 + SystemColorIndex.COLOR_BTNFACE),
+		hbrBackground = GetSysColorBrush(1 + SystemColorIndex.COLOR_BTNFACE),
 		lpszClassName = WindowClassName
 	};
 	return RegisterClassEx(wcex);

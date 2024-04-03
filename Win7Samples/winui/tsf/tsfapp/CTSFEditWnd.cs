@@ -774,7 +774,7 @@ internal partial class CTSFEditWnd : TextBox, ITextStoreACP, ITfContextOwnerComp
 			acpEnd = lTextLength - 1;
 		}
 
-		using Gdi32.SafeHDC hdc = User32.GetDC(Handle);
+		using var hdc = User32.GetDC(Handle);
 		var hfont = (HFONT)Gdi32.SelectObject(hdc, Font.ToHfont());
 
 		//get the position of the start character

@@ -164,7 +164,7 @@ public class CApplicationVerb<TApplication, TVerb> : IExecuteCommand, IInitializ
 			var walkFlags = NAMESPACEWALKFLAG.NSWF_DONT_ACCUMULATE_RESULT | NAMESPACEWALKFLAG.NSWF_ASYNC | NAMESPACEWALKFLAG.NSWF_FLAG_VIEWORDER;
 			if (_flags.IsFlagSet(APPLICATION_VERB_FLAGS.AVF_ONE_IMPLIES_ALL)) walkFlags |= NAMESPACEWALKFLAG.NSWF_ONE_IMPLIES_ALL;
 			const int walkDepth = 8;
-			if ((hr = pnsw.Walk(psv ?? _psia, walkFlags, walkDepth, this)).Failed)
+			if ((hr = pnsw.Walk(psv ?? _psia!, walkFlags, walkDepth, this)).Failed)
 				return hr;
 		}
 		else if (_psia != null)
@@ -174,7 +174,7 @@ public class CApplicationVerb<TApplication, TVerb> : IExecuteCommand, IInitializ
 		return HRESULT.S_OK;
 	}
 
-	HRESULT IExecuteCommand.SetDirectory([In, MarshalAs(UnmanagedType.LPWStr)] string _) => HRESULT.S_OK;
+	HRESULT IExecuteCommand.SetDirectory([In, MarshalAs(UnmanagedType.LPWStr)] string? _) => HRESULT.S_OK;
 
 	HRESULT IExecuteCommand.SetKeyState(MouseButtonState grfKeyState)
 	{
@@ -225,10 +225,10 @@ public class CApplicationVerb<TApplication, TVerb> : IExecuteCommand, IInitializ
 
 	HRESULT INamespaceWalkCB.FoundItem(IShellFolder psf, IntPtr pidl)
 	{
-		var hr = SHCreateItemWithParent(null, psf, pidl, typeof(IShellItem2).GUID, out var ppvItem);
+		var hr = SHCreateItemWithParent(PIDL.Null, psf, pidl, typeof(IShellItem2).GUID, out var ppvItem);
 		if (hr.Succeeded)
 		{
-			OnItem((IShellItem2)ppvItem);
+			OnItem((IShellItem2)ppvItem!);
 		}
 		return ShouldContinue() ? hr : ShellHelpers.HRESULT_FROM_WIN32(Win32Error.ERROR_CANCELLED);
 	}
@@ -248,7 +248,7 @@ public class CApplicationVerb<TApplication, TVerb> : IExecuteCommand, IInitializ
 
 	HRESULT INamespaceWalkCB2.LeaveFolder(IShellFolder psf, IntPtr pidl) => ((INamespaceWalkCB)this).LeaveFolder(psf, pidl);
 
-	HRESULT INamespaceWalkCB2.InitializeProgressDialog(out string ppszTitle, out string ppszCancel) => ((INamespaceWalkCB)this).InitializeProgressDialog(out ppszTitle, out ppszCancel);
+	HRESULT INamespaceWalkCB2.InitializeProgressDialog(out string? ppszTitle, out string? ppszCancel) => ((INamespaceWalkCB)this).InitializeProgressDialog(out ppszTitle, out ppszCancel);
 
 	HRESULT INamespaceWalkCB2.WalkComplete(HRESULT hr)
 	{

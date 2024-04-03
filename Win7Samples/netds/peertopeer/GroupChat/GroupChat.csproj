@@ -8,10 +8,10 @@
 
   <ItemGroup>
     <PackageReference Include="Vanara.PInvoke.P2P" Version="4.0.0" />
-    <Using Include="System"/>
-    <Using Include="System.IO"/>
-    <Using Include="System.Linq"/>
-    <Using Include="System.Windows.Forms"/>
+    <Using Include="System" />
+    <Using Include="System.IO" />
+    <Using Include="System.Linq" />
+    <Using Include="System.Windows.Forms" />
   </ItemGroup>
 
   <ItemGroup>

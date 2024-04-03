@@ -102,7 +102,7 @@ public class CDropTargetVerb : CAppMessageLoop, IDropTarget, IObjectWithSite
 	{
 		// on Vista SHCreateShellItemArrayFromDataObject is supported and will convert the data object into the set of shell items
 		// directly, use that if you work on Vista and above
-		var hr = SHCreateShellItemArrayFromDataObject(_pdtobj, typeof(IShellItemArray).GUID, out var psia);
+		var hr = SHCreateShellItemArrayFromDataObject(_pdtobj!, typeof(IShellItemArray).GUID, out var psia);
 		if (hr.Succeeded)
 		{
 			var count = psia.GetCount();

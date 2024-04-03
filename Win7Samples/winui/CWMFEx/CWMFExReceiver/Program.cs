@@ -44,7 +44,7 @@ MessageFilterInformation ChangeFilter(HWND hwnd, uint uMsg, MessageFilterExActio
 
 SafeHWND CreateTheWindow(HINSTANCE hInstance)
 {
-	WindowClass wndclass = new(WNDCLASSNAME, hInstance, CWMFExWindowProc, hbrBkgd: (HBRUSH)SystemColorIndex.COLOR_WINDOW);
+	WindowClass wndclass = new(WNDCLASSNAME, hInstance, CWMFExWindowProc, hbrBkgd: GetSysColorBrush(SystemColorIndex.COLOR_WINDOW));
 
 	SafeHWND hwnd = CreateWindow(WNDCLASSNAME, WNDCLASSNAME, WindowStyles.WS_BORDER | WindowStyles.WS_VISIBLE | WindowStyles.WS_OVERLAPPEDWINDOW, CW_USEDEFAULT, CW_USEDEFAULT, 500, 500, default, default, hInstance, default);
 	if (hwnd.IsInvalid)

@@ -296,11 +296,11 @@ internal static class Program
 		if (hr.Succeeded)
 		{
 			// Search roots on that crawl scope
-			hr = pSearchCrawlScopeManager!.EnumerateRoots(out IEnumSearchRoots pSearchRoots);
+			hr = pSearchCrawlScopeManager!.EnumerateRoots(out IEnumSearchRoots? pSearchRoots);
 			if (hr.Succeeded)
 			{
 				var pSearchRoot = new ISearchRoot[1];
-				while (hr.Succeeded && HRESULT.S_OK == (hr = pSearchRoots.Next(1, pSearchRoot, out var fetched)) && fetched == 1)
+				while (hr.Succeeded && HRESULT.S_OK == (hr = pSearchRoots!.Next(1, pSearchRoot, out var fetched)) && fetched == 1)
 				{
 					hr = DisplayRootInfo(pSearchRoot[0]);
 				}

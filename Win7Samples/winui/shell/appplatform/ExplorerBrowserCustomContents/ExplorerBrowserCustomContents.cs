@@ -102,7 +102,7 @@ public partial class CExplorerBrowserHostDialog : Form, IServiceProvider, ICommD
 	{
 		if (_fEnumerated)
 		{
-			var pfv2 = _peb.GetCurrentView<IFolderView2>();
+			var pfv2 = _peb!.GetCurrentView<IFolderView2>();
 			var psi = pfv2.GetShellItem(-1);
 			IDC_FOLDERNAME.Text = psi?.GetDisplayName(SIGDN.SIGDN_NORMALDISPLAY) ?? "";
 			IDC_FOLDERPATH.Text = psi?.GetDisplayName(SIGDN.SIGDN_DESKTOPABSOLUTEPARSING) ?? "";
@@ -123,7 +123,7 @@ public partial class CExplorerBrowserHostDialog : Form, IServiceProvider, ICommD
 
 	private void _OnExplore(object sender, EventArgs e)
 	{
-		var pfv2 = _peb.GetCurrentView<IFolderView2>();
+		var pfv2 = _peb!.GetCurrentView<IFolderView2>();
 		var psi = pfv2.GetShellItem();
 		psi?.ShellExecuteItem(null, Handle);
 	}
@@ -170,7 +170,7 @@ public partial class CExplorerBrowserHostDialog : Form, IServiceProvider, ICommD
 		IDC_REFRESH.Enabled = true;
 	}
 
-	private void IDC_BROWSER_Resize(object sender, EventArgs e) => _peb?.SetRect(default, EBRect);
+	private void IDC_BROWSER_Resize(object sender, EventArgs e) { unsafe { _peb?.SetRect(default, EBRect); } }
 
 	private void IDC_CANCEL_Click(object sender, EventArgs e) => Close();
 

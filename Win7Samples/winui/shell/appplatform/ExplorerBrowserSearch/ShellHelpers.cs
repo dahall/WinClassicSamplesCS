@@ -10,6 +10,7 @@ internal static class ShellHelpers
 
 	public static IShellItem? GetDragItem(object? data)
 	{
+		if (data == null) return null;
 		var hr = SHGetIDListFromObject(data, out var pidl);
 		if (hr.Succeeded)
 			return SHCreateItemFromIDList<IShellItem>(pidl);

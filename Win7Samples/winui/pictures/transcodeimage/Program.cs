@@ -34,9 +34,8 @@ PIDL pItemIdList;
 SHParseDisplayName(pwszCommandLineArg1, default, out pItemIdList, 0, out _).ThrowIfFailed();
 
 // IShellItem representing the image to pass to TranscodeImage
-IShellItem pItemToTranscode;
 // Create an IShellItem object with the ITEMIDLIST you created above.
-SHCreateShellItem(default, default, pItemIdList, out pItemToTranscode).ThrowIfFailed();
+SHCreateShellItem(PIDL.Null, default, pItemIdList, out var pItemToTranscode).ThrowIfFailed();
 
 // A stream to hold the transcoded image
 IStream pImgStream;
@@ -46,7 +45,7 @@ SHCreateStreamOnFile(pwszCommandLineArg2, STGM.STGM_READWRITE, out pImgStream);
 // Transcode the image to the indicated format,
 // which is either TI_BITMAP, or TI_JPEG
 // and resize it to REQUESTED_WIDTH x REQUESTED_WIDTH.
-pTransImg.TranscodeImage(pItemToTranscode, REQUESTED_WIDTH, REQUESTED_HEIGHT, REQUESTED_FORMAT, pImgStream, out _, out _);
+pTransImg.TranscodeImage(pItemToTranscode!, REQUESTED_WIDTH, REQUESTED_HEIGHT, REQUESTED_FORMAT, pImgStream, out _, out _);
 
 // Write the stream containing the transcoded image to the destination file.
 pImgStream.Commit((int)STGC.STGC_DEFAULT);

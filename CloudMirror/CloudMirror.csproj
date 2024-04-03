@@ -13,11 +13,11 @@
   <ItemGroup>
     <PackageReference Include="Vanara.PInvoke.CldApi" Version="4.0.0" />
     <PackageReference Include="Vanara.PInvoke.SearchApi" Version="4.0.0" />
-    <PackageReference Include="Microsoft.Windows.CsWinRT" Version="2.0.4" />
+    <PackageReference Include="Microsoft.Windows.CsWinRT" Version="2.0.7" />
   </ItemGroup>
 
   <ItemGroup>
-    <Using Include="System.IO"/>
+    <Using Include="System.IO" />
   </ItemGroup>
 
 </Project>

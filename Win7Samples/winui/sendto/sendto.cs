@@ -39,7 +39,7 @@ static class Program
 		{
 			using (pidl)
 				if (g_psfDesktop!.BindToObject(pidl, default, typeof(IShellFolder).GUID, out var ppv).Succeeded)
-					return (IShellFolder)ppv;
+					return (IShellFolder?)ppv;
 		}
 		return null;
 	}
@@ -93,13 +93,13 @@ static class Program
 		/*
 		* Now ask the parent for the the UI object of the child.
 		*/
-		hres = ((IShellFolder)psf).GetUIObjectOf(pidlLast, out ppvOut, hwnd);
+		hres = ((IShellFolder)psf!).GetUIObjectOf(pidlLast, out ppvOut, hwnd);
 
 		/*
 		* Regardless of whether or not the GetUIObjectOf succeeded,
 		* we have no further use for the parent folder.
 		*/
-		Marshal.ReleaseComObject(psf);
+		Marshal.ReleaseComObject(psf!);
 
 		return hres;
 	}
@@ -233,12 +233,12 @@ static class Program
 					try
 					{
 						var pidls = new IntPtr[1];
-						while (peidl.Next(1, pidls, out _) == HRESULT.S_OK && idm < IDM_SENDTOLAST)
+						while (peidl!.Next(1, pidls, out _) == HRESULT.S_OK && idm < IDM_SENDTOLAST)
 						{
 							hres = psf.GetDisplayNameOf(pidls[0], SHGDNF.SHGDN_NORMAL, out var str);
 							if (hres.Succeeded)
 							{
-								if (AppendMenu(hmenu, MenuFlags.MF_ENABLED | MenuFlags.MF_STRING, (IntPtr)idm, str))
+								if (AppendMenu(hmenu, MenuFlags.MF_ENABLED | MenuFlags.MF_STRING, (IntPtr)idm, str!))
 								{
 									var mii = new MENUITEMINFO
 									{
@@ -254,7 +254,7 @@ static class Program
 					}
 					finally
 					{
-						Marshal.ReleaseComObject(peidl);
+						Marshal.ReleaseComObject(peidl!);
 					}
 				}
 			}
@@ -370,8 +370,8 @@ static class Program
 								/*
 								* Now drop the file on the drop target.
 								*/
-								DoDrop(pdto!, pdt);
-								Marshal.ReleaseComObject(pdt);
+								DoDrop(pdto!, pdt!);
+								Marshal.ReleaseComObject(pdt!);
 							}
 						}
 						finally

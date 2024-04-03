@@ -62,7 +62,7 @@ static class Program
 			ret = WSRESULT.ThrowLastErrorIf(WSAPoll(fdarray, 1, DEFAULT_WAIT), e => e == SOCKET_ERROR);
 			if (ret > 0 && fdarray[0].revents.IsFlagSet(PollFlags.POLLWRNORM))
 			{
-				ret = WSRESULT.ThrowLastErrorIf(send(asock, TST_MSG, TST_MSG.Size, 0), i => i == SOCKET_ERROR);
+				ret = WSRESULT.ThrowLastErrorIf(send(asock!, TST_MSG, TST_MSG.Size, 0), i => i == SOCKET_ERROR);
 				Console.Write("Main: sent {0} bytes\n", ret);
 			}
 		}

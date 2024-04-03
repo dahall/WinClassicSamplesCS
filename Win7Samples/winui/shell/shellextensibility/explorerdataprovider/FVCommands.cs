@@ -6,7 +6,7 @@ using static Vanara.PInvoke.User32;
 
 namespace explorerdataprovider;
 
-internal delegate HRESULT PFN_ExplorerCommandExecute(IShellItemArray psiItemArray, object pv);
+internal delegate HRESULT PFN_ExplorerCommandExecute(IShellItemArray psiItemArray, object? pv);
 
 [ComVisible(true)]
 public class CFolderViewCommandProvider : IExplorerCommandProvider
@@ -31,27 +31,27 @@ public class CFolderViewCommandProvider : IExplorerCommandProvider
 		ppv = null; return HRESULT.E_NOTIMPL;
 	}
 
-	public HRESULT GetCommands(object punkSite, in Guid riid, out object ppv)
+	public HRESULT GetCommands(object? punkSite, in Guid riid, out object? ppv)
 	{
 		CFolderViewCommandEnumerator pFVCommandEnum = new(c_FVTasks);
 		return ShellUtil.QueryInterface(pFVCommandEnum, riid, out ppv);
 	}
 
-	private static HRESULT s_OnDisplay(IShellItemArray psiItemArray, object pv) => psiItemArray.DisplayItem();
+	private static HRESULT s_OnDisplay(IShellItemArray psiItemArray, object? pv) => psiItemArray.DisplayItem();
 
-	private static HRESULT s_OnSetting1(IShellItemArray psiItemArray, object pv)
+	private static HRESULT s_OnSetting1(IShellItemArray psiItemArray, object? pv)
 	{
 		MessageBox(default, Properties.Resources.IDS_SETTING1, Properties.Resources.IDS_SETTING1, MB_FLAGS.MB_OK);
 		return HRESULT.S_OK;
 	}
 
-	private static HRESULT s_OnSetting2(IShellItemArray psiItemArray, object pv)
+	private static HRESULT s_OnSetting2(IShellItemArray psiItemArray, object? pv)
 	{
 		MessageBox(default, Properties.Resources.IDS_SETTING2, Properties.Resources.IDS_SETTING2, MB_FLAGS.MB_OK);
 		return HRESULT.S_OK;
 	}
 
-	private static HRESULT s_OnSetting3(IShellItemArray psiItemArray, object pv)
+	private static HRESULT s_OnSetting3(IShellItemArray psiItemArray, object? pv)
 	{
 		MessageBox(default, Properties.Resources.IDS_SETTING3, Properties.Resources.IDS_SETTING3, MB_FLAGS.MB_OK);
 		return HRESULT.S_OK;
@@ -100,7 +100,7 @@ internal class CFolderViewCommand : IExplorerCommand
 		ppszInfotip = pfvci.dwToolTipID; return HRESULT.S_OK;
 	}
 
-	public HRESULT Invoke(IShellItemArray psiItemArray, IBindCtx pbc) => pfvci.pfnInvoke?.Invoke(psiItemArray, pbc) ?? HRESULT.S_OK;
+	public HRESULT Invoke(IShellItemArray psiItemArray, IBindCtx? pbc) => pfvci.pfnInvoke?.Invoke(psiItemArray, pbc) ?? HRESULT.S_OK;
 }
 
 internal class CFolderViewCommandEnumerator : IEnumExplorerCommand

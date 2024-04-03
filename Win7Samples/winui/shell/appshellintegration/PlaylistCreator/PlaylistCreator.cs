@@ -84,7 +84,7 @@ public abstract class CPlaylistCreator : INamespaceWalkCB2
 
 		if (hr.Succeeded)
 		{
-			var psiCreated = _GetPlaylistItem<IShellItem>();
+			var psiCreated = _GetPlaylistItem<IShellItem>()!;
 			hr = OpenFolderAndSelectItem(psiCreated);
 		}
 		_ppd.StopProgressDialog();
@@ -104,7 +104,7 @@ public abstract class CPlaylistCreator : INamespaceWalkCB2
 		{
 			_cFileCur++;
 
-			var psi = SHCreateItemWithParent<IShellItem2>(psf, pidl);
+			var psi = SHCreateItemWithParent<IShellItem2>(psf, pidl)!;
 			hr = _ProcessItem(psi);
 			try
 			{
@@ -148,8 +148,8 @@ public abstract class CPlaylistCreator : INamespaceWalkCB2
 
 	private void _ExitMessageLoop() => PostThreadMessage(_dwThreadID, 0x0012 /*WM_QUIT*/);
 
-	private T _GetPlaylistItem<T>() where T : class =>
-		SHCreateItemFromRelativeName<T>(_GetSaveInFolder<IShellItem>(), GetFileName());
+	private T? _GetPlaylistItem<T>() where T : class =>
+		SHCreateItemFromRelativeName<T>(_GetSaveInFolder<IShellItem>()!, GetFileName());
 
 	private IStream? _GetPlaylistStream()
 	{
@@ -158,7 +158,7 @@ public abstract class CPlaylistCreator : INamespaceWalkCB2
 		return pstg?.CreateStream(GetFileName(), STGM.STGM_CREATE | STGM.STGM_WRITE | STGM.STGM_SHARE_DENY_NONE);
 	}
 
-	private T _GetSaveInFolder<T>() where T : class =>
+	private T? _GetSaveInFolder<T>() where T : class =>
 		SHCreateItemInKnownFolder<T>(KNOWNFOLDERID.FOLDERID_Playlists, KNOWN_FOLDER_FLAG.KF_FLAG_CREATE);
 
 	private HRESULT _ProcessItem(IShellItem2 psi)
@@ -333,7 +333,7 @@ static class Program
 			else if (string.Equals(pszCmdLine[0], "-Debug", StringComparison.OrdinalIgnoreCase))
 			{
 				var cpca = new CPlaylistCreatorApp();
-				var psi = SHCreateItemFromParsingName<IShellItem>(@"C:\Users\dahall\Downloads\Blue Oyster Cult - (Don't Fear) The Reaper.mp3");
+				var psi = SHCreateItemFromParsingName<IShellItem>(@"C:\Users\dahall\Downloads\Blue Oyster Cult - (Don't Fear) The Reaper.mp3")!;
 				SHCreateShellItemArrayFromShellItem(psi, typeof(IShellItemArray).GUID, out var psia);
 				cpca.CreatePlaylistAsync(CPlaylistCreatorApp.WM_APP_CREATE_M3U, psia);
 				cpca.DoMessageLoop();

@@ -154,7 +154,7 @@ public partial class AutomaticJumpListSample : Form
 		var hr = SHCreateItemInKnownFolder(KNOWNFOLDERID.FOLDERID_Documents.Guid(), KNOWN_FOLDER_FLAG.KF_FLAG_DEFAULT, null, typeof(IShellItem).GUID, out var ppv);
 		if (hr.Succeeded)
 		{
-			var psiFolder = (IShellItem)ppv;
+			var psiFolder = (IShellItem)ppv!;
 			pdlg.SetDefaultFolder(psiFolder);
 			hr = pdlg.Show(hwnd);
 			if (hr.Succeeded)
@@ -167,7 +167,7 @@ public partial class AutomaticJumpListSample : Form
 				// promoted in the Recent or Frequent lists when their usage is reported many times in rapid succession.
 				SHAddToRecentDocs(SHARD.SHARD_SHELLITEM, psi);
 			}
-			Marshal.ReleaseComObject(ppv);
+			Marshal.ReleaseComObject(ppv!);
 		}
 		Marshal.ReleaseComObject(pdlg);
 	}

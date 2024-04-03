@@ -25,7 +25,7 @@ internal static class PerMonitorDPIHelper
 	//Returns the system DPI
 	public static double GetSystemDPI()
 	{
-		using SafeHDC hDC = GetDC(default);
+		using var hDC = GetDC(default);
 		return GetDeviceCaps(hDC, DeviceCap.LOGPIXELSX);
 	}
 

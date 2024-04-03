@@ -27,7 +27,7 @@ const int OBS_COMPLETELYVISIBLE = 2;
 bool g_fTimerActive = false;
 
 using SafeHINSTANCE hInst = GetModuleHandle();
-WindowClass wc = new("Obscure", hInst, Obscure_WndProc, hbrBkgd: SystemColorIndex.COLOR_WINDOW + 1);
+WindowClass wc = new("Obscure", hInst, Obscure_WndProc, hbrBkgd: GetSysColorBrush(SystemColorIndex.COLOR_WINDOW + 1));
 
 using SafeHWND hwnd = CreateWindow(wc.ClassName, wc.ClassName, WindowStyles.WS_OVERLAPPEDWINDOW,
 	CW_USEDEFAULT, CW_USEDEFAULT, CW_USEDEFAULT, CW_USEDEFAULT, default, default, hInst);
@@ -48,7 +48,7 @@ while (GetMessage(out msg) != 0)
 
 int GetClientObscuredness(HWND hwnd)
 {
-	using SafeHDC hdc = GetDC(hwnd);
+	using var hdc = GetDC(hwnd);
 	RegionFlags iType = GetClipBox(hdc, out RECT rc);
 
 	if (iType == RegionFlags.NULLREGION)

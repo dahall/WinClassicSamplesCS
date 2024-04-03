@@ -68,11 +68,11 @@ internal static class SearchFolder
 		var pbcParse = CreateFileSysBindCtx(fd);
 
 		// this item does not exist, but it can be parsed given the parameter provided in the bind context
-		var psi = SHCreateItemFromParsingName<IShellItem2>("c:\\a.txt", pbcParse);
+		var psi = SHCreateItemFromParsingName<IShellItem2>("c:\\a.txt", pbcParse)!;
 		Debug.WriteLine(psi.GetDisplayName(SIGDN.SIGDN_NORMALDISPLAY));
 
 		// this is useful for resources on the network where the IO in these cases is more costly
-		psi = SHCreateItemFromParsingName<IShellItem2>("\\\\Server\\Share\\file.txt", pbcParse);
+		psi = SHCreateItemFromParsingName<IShellItem2>("\\\\Server\\Share\\file.txt", pbcParse)!;
 		Debug.WriteLine(psi.GetDisplayName(SIGDN.SIGDN_NORMALDISPLAY));
 	}
 
@@ -88,9 +88,9 @@ internal static class SearchFolder
 		var pbcParse = CreateBindCtxWithParam(STR_ITEM_CACHE_CONTEXT, pbcItemContext!);
 		var pfsbd = new CFileSysBindData(default);
 		pbcParse.RegisterObjectParam(STR_FILE_SYS_BIND_DATA, pfsbd);
-		var psi = SHCreateItemFromParsingName<IShellItem2>("C:\\folder\\file.txt", pbcParse);
+		var psi = SHCreateItemFromParsingName<IShellItem2>("C:\\folder\\file.txt", pbcParse)!;
 		Debug.WriteLine(psi.GetDisplayName(SIGDN.SIGDN_NORMALDISPLAY));
-		psi = SHCreateItemFromParsingName<IShellItem2>("C:\\folder\\file.doc", pbcParse);
+		psi = SHCreateItemFromParsingName<IShellItem2>("C:\\folder\\file.doc", pbcParse)!;
 		Debug.WriteLine(psi.GetDisplayName(SIGDN.SIGDN_NORMALDISPLAY));
 	}
 
@@ -108,7 +108,7 @@ internal static class SearchFolder
 		var pbcParse = CreateBindCtxWithParam(STR_PARSE_PREFER_FOLDER_BROWSING);
 		try
 		{
-			var psi = SHCreateItemFromParsingName<IShellItem2>("http://unknownserver/abc/file.extension", pbcParse);
+			var psi = SHCreateItemFromParsingName<IShellItem2>("http://unknownserver/abc/file.extension", pbcParse)!;
 			// the network path is valid
 			Debug.WriteLine($"{psi.GetDisplayName(SIGDN.SIGDN_NORMALDISPLAY)} {psi.GetAttributes(SFGAO.SFGAO_FILESYSTEM)}"); // will return SFGAO_FILESYSTEM
 		}
@@ -117,7 +117,7 @@ internal static class SearchFolder
 		// in combination with the file system bind context data this avoids the IO and still parses the item as a file system item
 		var pfsbd = new CFileSysBindData(new WIN32_FIND_DATA { dwFileAttributes = FileAttributes.Directory });
 		pbcParse.RegisterObjectParam(STR_FILE_SYS_BIND_DATA, pfsbd);
-		var psi2 = SHCreateItemFromParsingName<IShellItem2>("http://unknownserver/dav/folder", pbcParse);
+		var psi2 = SHCreateItemFromParsingName<IShellItem2>("http://unknownserver/dav/folder", pbcParse)!;
 		Debug.WriteLine($"{psi2.GetDisplayName(SIGDN.SIGDN_NORMALDISPLAY)} {psi2.GetAttributes(SFGAO.SFGAO_FILESYSTEM)}"); // will return SFGAO_FILESYSTEM
 	}
 

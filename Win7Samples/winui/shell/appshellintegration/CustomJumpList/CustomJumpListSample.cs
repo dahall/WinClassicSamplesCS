@@ -37,7 +37,7 @@ public partial class CustomJumpListSample : Form
 		{
 			if (SHCreateItemInKnownFolder(KNOWNFOLDERID.FOLDERID_Documents.Guid(), KNOWN_FOLDER_FLAG.KF_FLAG_DEFAULT, fn, typeof(IShellItem).GUID, out var ppv).Succeeded)
 			{
-				var psi = (IShellItem)ppv;
+				var psi = (IShellItem)ppv!;
 				// Items listed in the removed list may not be re-added to the Jump List during this list-building transaction. They
 				// should not be re-added to the Jump List until the user has used the item again. The AppendCategory call below will
 				// fail if an attempt to add an item in the removed list is made.
@@ -56,13 +56,13 @@ public partial class CustomJumpListSample : Form
 	private static void _AddTasksToList(ICustomDestinationList pcdl)
 	{
 		var poc = new IObjectCollection();
-		var psl = _CreateShellLink("/Task1", "Task 1");
+		var psl = _CreateShellLink("/Task1", "Task 1")!;
 		poc.AddObject(psl);
-		psl = _CreateShellLink("/Task2", "Second Task");
+		psl = _CreateShellLink("/Task2", "Second Task")!;
 		poc.AddObject(psl);
 		psl = _CreateSeparatorLink();
 		poc.AddObject(psl);
-		psl = _CreateShellLink("/Task3", "Task 3");
+		psl = _CreateShellLink("/Task3", "Task 3")!;
 		poc.AddObject(psl);
 		var poa = (IObjectArray)poc;
 		// Add the tasks to the Jump List. Tasks always appear in the canonical "Tasks" category that is displayed at the bottom of the

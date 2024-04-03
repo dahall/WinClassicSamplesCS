@@ -108,7 +108,8 @@ public partial class CExplorerBrowserSearchApp : Form, IServiceProvider, ICommDl
 	{
 		var pqs = pqp.Parse(pszString, null);
 		pqs.GetQuery(out var pc, out var _);
-		return pqs.Resolve(pc, STRUCTURED_QUERY_RESOLVE_OPTION.SQRO_DONT_SPLIT_WORDS, new SYSTEMTIME(DateTime.Now));
+		SYSTEMTIME st = new(DateTime.Now);
+		unsafe { return pqs.Resolve(pc!, STRUCTURED_QUERY_RESOLVE_OPTION.SQRO_DONT_SPLIT_WORDS, &st); }
 	}
 
 	private static void SetScope(ISearchFolderItemFactory psfif)
@@ -117,7 +118,7 @@ public partial class CExplorerBrowserSearchApp : Form, IServiceProvider, ICommDl
 		var hr = SHCreateItemInKnownFolder(KNOWNFOLDERID.FOLDERID_PicturesLibrary.Guid(), 0, null, typeof(IShellItem).GUID, out var psi);
 		if (hr.Succeeded)
 		{
-			SHCreateShellItemArrayFromShellItem((IShellItem)psi, typeof(IShellItemArray).GUID, out var psia).ThrowIfFailed();
+			SHCreateShellItemArrayFromShellItem((IShellItem)psi!, typeof(IShellItemArray).GUID, out var psia).ThrowIfFailed();
 			psfif.SetScope(psia);
 		}
 		else
@@ -134,7 +135,7 @@ public partial class CExplorerBrowserSearchApp : Form, IServiceProvider, ICommDl
 
 	private IShellItem? _GetSelectedItem()
 	{
-		var pfv = _peb.GetCurrentView<IFolderView2>();
+		var pfv = _peb!.GetCurrentView<IFolderView2>();
 		return pfv?.GetShellItem(-1);
 	}
 
@@ -215,7 +216,7 @@ public partial class CExplorerBrowserSearchApp : Form, IServiceProvider, ICommDl
 			SetScope(psfif);
 			AddStructuredQueryCondition(psfif, _pqp!, pszQueryString);
 			var psi = psfif.GetShellItem<IShellItem>();
-			_peb!.BrowseToObject(psi, 0);
+			_peb!.BrowseToObject(psi!, 0);
 		}
 		catch (Exception e)
 		{
@@ -225,8 +226,7 @@ public partial class CExplorerBrowserSearchApp : Form, IServiceProvider, ICommDl
 
 	private void IDC_EXPLORER_BROWSER_Resize(object sender, EventArgs e)
 	{
-		var nullPtr = HDWP.NULL;
-		_peb!.SetRect(ref nullPtr, EBRect);
+		unsafe { _peb!.SetRect(null, EBRect); }
 	}
 
 	private void IDC_SEARCHBOX_TextChanged(object sender, EventArgs e)

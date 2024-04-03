@@ -73,7 +73,7 @@ public partial class CChangeNotifyApp : Form
 		if (string.IsNullOrEmpty(szSpec.ToString())) return null;
 
 		var hr = SHCreateItemFromParsingName(szSpec.ToString(), null, typeof(IShellItem2).GUID, out var ppv);
-		return hr.Succeeded ? (IShellItem2)ppv : SHCreateItemFromParsingName<IShellItem2>(Environment.CurrentDirectory);
+		return hr.Succeeded ? (IShellItem2)ppv! : SHCreateItemFromParsingName<IShellItem2>(Environment.CurrentDirectory);
 	}
 
 	private static void SetBlob(IDataObject pdtobj, short cf, IntPtr pvBlob)

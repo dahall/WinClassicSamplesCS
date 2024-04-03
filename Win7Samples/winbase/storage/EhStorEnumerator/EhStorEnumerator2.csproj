@@ -8,8 +8,8 @@
 
   <ItemGroup>
     <PackageReference Include="Vanara.PInvoke.EnhancedStorage" Version="4.0.0" />
-    <Using Include="System.IO"/>
-    <Using Include="System.Windows.Forms"/>
+    <Using Include="System.IO" />
+    <Using Include="System.Windows.Forms" />
   </ItemGroup>
 
 </Project>

@@ -221,7 +221,7 @@ public class DeskBand : IDeskBand2, IPersistStream, IObjectWithSite, IInputObjec
 		}
 	}
 
-	public HRESULT ResizeBorderDW(PRECT prcBorder, object punkToolbarSite, bool fReserved) => HRESULT.E_NOTIMPL;
+	public HRESULT ResizeBorderDW(PRECT? prcBorder, object? punkToolbarSite, bool fReserved) => HRESULT.E_NOTIMPL;
 
 	public void Save(IStream _, bool fClearDirty)
 	{

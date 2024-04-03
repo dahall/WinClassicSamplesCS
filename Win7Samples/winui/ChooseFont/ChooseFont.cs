@@ -19,7 +19,7 @@ internal static class Program
 
 	private static void InitDefaultLF(out SafeCoTaskMemStruct<LOGFONT> plf)
 	{
-		using SafeHDC hdc = GetDC(default);
+		using var hdc = GetDC(default);
 		plf = new SafeCoTaskMemStruct<LOGFONT>(new LOGFONT
 		{
 			lfCharSet = (CharacterSet)GetTextCharset(hdc),

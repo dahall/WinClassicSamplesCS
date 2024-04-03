@@ -37,7 +37,7 @@ public class NotificationActivator : INotificationActivationCallback
 		UnregisterAppForNotificationSupport();
 	}
 
-	public HRESULT Activate(string appUserModelId, string invokedArgs, NOTIFICATION_USER_INPUT_DATA[] data, int dataCount)
+	public HRESULT Activate(string appUserModelId, string? invokedArgs, NOTIFICATION_USER_INPUT_DATA[] data, int dataCount)
 	{
 		var mainForm = Application.OpenForms.Cast<Form>().FirstOrDefault() as DesktopToastsApp;
 		mainForm?.Invoke(() => mainForm.ToastActivated());
