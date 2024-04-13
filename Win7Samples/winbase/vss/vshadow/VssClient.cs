@@ -12,7 +12,7 @@ internal partial class VssClient
 	static VssClient()
 	{
 		// Initialize COM security
-		CoInitializeSecurity(default, // Allow *all* VSS writers to communicate back!
+		CoInitializeSecurity(Guid.Empty, // Allow *all* VSS writers to communicate back!
 			-1, // Default COM authentication service
 			default, // Default COM authorization service
 			default, // reserved parameter

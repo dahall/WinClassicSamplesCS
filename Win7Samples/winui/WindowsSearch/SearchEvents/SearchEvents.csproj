@@ -1,12 +1,25 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <OutputType>Exe</OutputType>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="System.Data.OleDb" Version="8.0.0" />
-    <PackageReference Include="Vanara.PInvoke.SearchApi" Version="4.0.0" />
+    <Compile Remove="OleDB.cs" />
   </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Vanara.PInvoke.OleDb" Version="4.0.1" />
+    <PackageReference Include="Vanara.PInvoke.SearchApi" Version="4.0.1" />
+  </ItemGroup>
+
+  <!-- <ItemGroup> -->
+    <!-- <Reference Include="Vanara.PInvoke.Odbc32"> -->
+      <!-- <HintPath>..\..\..\..\..\Vanara\PInvoke\OleDb\bin\Debug\net6.0\Vanara.PInvoke.Odbc32.dll</HintPath> -->
+    <!-- </Reference> -->
+    <!-- <Reference Include="Vanara.PInvoke.OleDb"> -->
+      <!-- <HintPath>..\..\..\..\..\Vanara\PInvoke\OleDb\bin\Debug\net6.0\Vanara.PInvoke.OleDb.dll</HintPath> -->
+    <!-- </Reference> -->
+  <!-- </ItemGroup> -->
 
 </Project>

@@ -1,7 +1,9 @@
 ﻿using System.Data.OleDb;
+using Vanara.InteropServices;
 using Vanara.PInvoke;
 using static Vanara.PInvoke.Kernel32;
 using static Vanara.PInvoke.Ole32;
+using static Vanara.PInvoke.OleDb;
 using static Vanara.PInvoke.PropSys;
 using static Vanara.PInvoke.SearchApi;
 using static Vanara.PInvoke.ShlwApi;
@@ -99,52 +101,47 @@ static class evtdemo
 
 	static void WatchEvents(string pwszQuerySQL, PRIORITY_LEVEL priority, uint dwTimeout)
 	{
-		OleDbDataReader? spRowset = null;
-		IRowsetPrioritization? spRowsetPrioritization = null;
-
-		var hr = OpenSession(out var spDBCreateCommand);
+		IRowset? spRowset = null;
+		var hr = OpenSession(out IDBCreateCommand? spDBCreateCommand);
 		if (hr.Succeeded)
 			hr = ExecuteQuery(spDBCreateCommand!, pwszQuerySQL, true, out spRowset);
 
+		IRowsetPrioritization? spRowsetPrioritization = null;
 		if (hr.Succeeded)
-			spRowsetPrioritization = (IRowsetPrioritization)Marshal.GetObjectForIUnknown(Marshal.GetComInterfaceForObject<OleDbDataReader, IRowsetPrioritization>(spRowset!));
+			spRowsetPrioritization = (IRowsetPrioritization)spRowset!;
 
+		CRowsetEventListener spListener = new(spDBCreateCommand!);
+		uint dwAdviseID = 0;
+		hr = ConnectToConnectionPoint(spListener, typeof(IRowsetEvents).GUID, true, spRowset!, ref dwAdviseID, out _);
 		if (hr.Succeeded)
 		{
-			CRowsetEventListener spListener = new(spDBCreateCommand!);
+			spRowsetPrioritization!.GetScopeStatistics(out var indexedDocumentCount, out var oustandingAddCount, out var oustandingModifyCount);
 
-			uint dwAdviseID = 0;
-			hr = ConnectToConnectionPoint(spListener, typeof(IRowsetEvents).GUID, true, spRowset!, ref dwAdviseID, out _);
-			if (hr.Succeeded)
+			Console.Write("Prioritization and Eventing Demo\n\n");
+			Console.Write("Query:               {0}\n\n", pwszQuerySQL);
+			Console.Write("Indexed Docs:        {0}\n", indexedDocumentCount);
+			Console.Write("Oustanding Adds:     {0}\n", oustandingAddCount);
+			Console.Write("Oustanding Modifies: {0}\n\n", oustandingModifyCount);
+			Console.Write("Setting Priority:    {0}\n\n", PriorityLevelToString(priority));
+			Console.Write("Now monitoring events for this query...\n\n");
+
+			spRowsetPrioritization.SetScopePriority(priority, 1000);
+
+			if (dwTimeout == 0)
 			{
-				spRowsetPrioritization!.GetScopeStatistics(out var indexedDocumentCount, out var oustandingAddCount, out var oustandingModifyCount);
-
-				Console.Write("Prioritization and Eventing Demo\n\n");
-				Console.Write("Query:               {0}\n\n", pwszQuerySQL);
-				Console.Write("Indexed Docs:        {0}\n", indexedDocumentCount);
-				Console.Write("Oustanding Adds:     {0}\n", oustandingAddCount);
-				Console.Write("Oustanding Modifies: {0}\n\n", oustandingModifyCount);
-				Console.Write("Setting Priority:    {0}\n\n", PriorityLevelToString(priority));
-				Console.Write("Now monitoring events for this query...\n\n");
-
-				spRowsetPrioritization.SetScopePriority(priority, 1000);
-
-				if (dwTimeout == 0)
+				while (hr.Succeeded && ((oustandingAddCount > 0) || (oustandingModifyCount > 0)))
 				{
-					while (hr.Succeeded && ((oustandingAddCount > 0) || (oustandingModifyCount > 0)))
-					{
-						Sleep(1000);
-						try { spRowsetPrioritization!.GetScopeStatistics(out indexedDocumentCount, out oustandingAddCount, out oustandingModifyCount); }
-						catch (Exception ex) { hr = ex.HResult; }
-					}
+					Sleep(1000);
+					try { spRowsetPrioritization!.GetScopeStatistics(out indexedDocumentCount, out oustandingAddCount, out oustandingModifyCount); }
+					catch (Exception ex) { hr = ex.HResult; }
 				}
-				else
-				{
-					Sleep(dwTimeout);
-				}
-
-				ConnectToConnectionPoint(spListener, typeof(IRowsetEvents).GUID, false, spRowset!, ref dwAdviseID);
 			}
+			else
+			{
+				Sleep(dwTimeout);
+			}
+
+			ConnectToConnectionPoint(spListener, typeof(IRowsetEvents).GUID, false, spRowset!, ref dwAdviseID);
 		}
 
 		if (hr.Failed)
@@ -156,13 +153,18 @@ static class evtdemo
 	//*****************************************************************************
 	// Open a database session...
 
-	static HRESULT OpenSession(out OleDbConnection? pConnection)
+	static HRESULT OpenSession(out IDBCreateCommand? pConnection)
 	{
 		try
 		{
-			//var hlpr = new ISearchCatalogManager();
-			pConnection = new OleDbConnection("Provider=Search.CollatorDSO;Extended Properties='Application=Windows';");
-			pConnection.Open();
+			IDataInitialize spDataInit = new();
+		
+			object? spUnknownDBInitialize = null;
+			spDataInit.GetDataSource(default, CLSCTX.CLSCTX_INPROC_SERVER, "provider=Search.CollatorDSO.1", typeof(IDBInitialize).GUID, ref spUnknownDBInitialize);
+			IDBInitialize spDBInitialize = (IDBInitialize)spUnknownDBInitialize!;
+			spDBInitialize.Initialize().ThrowIfFailed();
+			IDBCreateSession spDBCreateSession = (IDBCreateSession)spDBInitialize;
+			pConnection = spDBCreateSession.CreateSession<IDBCreateCommand>();
 			return HRESULT.S_OK;
 		}
 		catch (COMException ex)
@@ -175,71 +177,71 @@ static class evtdemo
 	//*****************************************************************************
 	// Run a query against the database, optionally enabling eventing...
 
-	static HRESULT ExecuteQuery(OleDbConnection pConnection, string pwszQuerySQL, bool fEnableEventing, out OleDbDataReader rdr)
+	static HRESULT ExecuteQuery(IDBCreateCommand pDBCreateCommand, string pwszQuerySQL, bool fEnableEventing, out IRowset? rdr)
 	{
-		if (!pwszQuerySQL.TrimEnd().EndsWith(" FROM SYSTEMINDEX", StringComparison.InvariantCultureIgnoreCase))
-			pwszQuerySQL = pwszQuerySQL.TrimEnd() + " FROM SYSTEMINDEX";
-		var cmd = new OleDbCommand(pwszQuerySQL);
-		// TODO: Add properties DBPROP_USEEXTENDEDDBTYPES = true, DBPROP_ENABLEROWSETEVENTS = true
-		rdr = cmd.ExecuteReader();
-	}
+		try
+		{
+			var spCommand = pDBCreateCommand.CreateCommand<ICommand>();
+			var spCommandProperties = (ICommandProperties)spCommand;
 
+			SafeNativeArray<DBPROP> rgProps =
+			[
+				new DBPROP { dwPropertyID = DBPROP_USEEXTENDEDDBTYPES, dwOptions = DBPROPOPTIONS.DBPROPOPTIONS_OPTIONAL, vValue = true },
+				new DBPROP { dwPropertyID = DBPROP_ENABLEROWSETEVENTS, dwOptions = DBPROPOPTIONS.DBPROPOPTIONS_OPTIONAL, vValue = true },
+			];
+			DBPROPSET propSet = new() { cProperties = (uint)rgProps.Count, rgProperties = rgProps, guidPropertySet = DBPROPSET_QUERYEXT };
+			spCommandProperties.SetProperties(1, [ propSet ]).ThrowIfFailed();
+
+			var spCommandText = (ICommandText)spCommand;
+			spCommandText.SetCommandText(DBGUID_DEFAULT, pwszQuerySQL).ThrowIfFailed();
+
+			spCommandText.Execute(out _, typeof(IRowset).GUID, 0, out _, out rdr).ThrowIfFailed();
+
+			return HRESULT.S_OK;
+		}
+		catch (COMException ex)
+		{
+			rdr = null;
+			return ex.HResult;
+		}
+	}
 
 	//*****************************************************************************
 	// Retrieves the URL from a given workid
 
-	static HRESULT RetrieveURL(OleDbConnection pDBCreateCommand, in PROPVARIANT itemID, out string pwszURL)
+	static HRESULT RetrieveURL(IDBCreateCommand pDBCreateCommand, in PROPVARIANT itemID, out string? pwszURL)
 	{
+		pwszURL = null;
+		IRowset? spRowset = null;
 		HRESULT hr = (itemID.vt == VARTYPE.VT_UI4) ? HRESULT.S_OK : HRESULT.E_INVALIDARG;
 		if (hr.Succeeded)
 		{
 			var wszQuery = $"SELECT TOP 1 System.ItemUrl FROM SystemIndex WHERE workid={itemID.ulVal}";
-			hr = ExecuteQuery(pDBCreateCommand, wszQuery, false, out _);
+			hr = ExecuteQuery(pDBCreateCommand, wszQuery, false, out spRowset);
 		}
 		if (hr.Succeeded)
 		{
-			/*
-			IGetRow spGetRow;
-			DBCOUNTITEM ciRowsRetrieved = 0;
-			HROW hRow = default;
-			IPropertyStore spPropertyStore;
+			IntPtr hRow = default;
+			IntPtr[] phRow = [hRow];
 
-			hr = spRowset.GetNextRows(DB_NULL_HCHAPTER, 0, 1, &ciRowsRetrieved, &phRow);
+			hr = spRowset!.GetNextRows(DB_NULL_HCHAPTER, 0, 1, out var ciRowsRetrieved, ref phRow);
 			if (hr.Succeeded)
 			{
-				hr = spRowset.QueryInterface(&spGetRow);
+				IGetRow spGetRow = (IGetRow)spRowset;
+				hr = spGetRow.GetRowFromHROW(default, hRow, typeof(IPropertyStore).Guid, out var spUnknownPropertyStore);
 				if (hr.Succeeded)
 				{
-					CComPtr<IUnknown> spUnknownPropertyStore;
-					hr = spGetRow.GetRowFromHROW(default, hRow, typeof(IPropertyStore).Guid, &spUnknownPropertyStore);
-					if (hr.Succeeded)
-					{
-						hr = spUnknownPropertyStore.QueryInterface(&spPropertyStore);
-					}
-				}
-				if (hr.Succeeded)
-				{
-					PROPVARIANT var = { };
-					hr = spPropertyStore.GetValue(PKEY_ItemUrl, &var);
-					if (hr.Succeeded)
-					{
-						if (var.vt == VT_LPWSTR)
-						{
-							hr = StringCchCopy(pwszURL, cchURL, var.pwszVal);
-						}
-						else
-						{
-							hr = E_INVALIDARG;
-						}
-						::PropVariantClear(&var);
-					}
+					IPropertyStore spPropertyStore = (IPropertyStore)spUnknownPropertyStore!;
+					object? val = spPropertyStore.GetValue(PROPERTYKEY.System.ItemUrl);
+					if (val is string s)
+						pwszURL = s;
+					else
+						hr = HRESULT.E_INVALIDARG;
 				}
 
-				spRowset.ReleaseRows(ciRowsRetrieved, phRow, default, default, default);
+				spRowset.ReleaseRows(ciRowsRetrieved, phRow);
 			}
-			*/
 		}
-
 		return hr;
 	}
 
@@ -265,14 +267,9 @@ static class evtdemo
 	};
 
 	[ComVisible(true)]
-	public class CRowsetEventListener : IRowsetEvents
+	public class CRowsetEventListener(OleDb.IDBCreateCommand conn) : IRowsetEvents
 	{
-		OleDbConnection spDBCreateCommand;
-
-		public CRowsetEventListener(OleDbConnection conn)
-		{
-			spDBCreateCommand = conn;
-		}
+		IDBCreateCommand spDBCreateCommand = conn;
 
 		void IRowsetEvents.OnNewItem(PROPVARIANT itemID, ROWSETEVENT_ITEMSTATE newItemState)
 		{
@@ -332,7 +329,7 @@ static class evtdemo
 					// any value other than PRIORITY_LEVEL_DEFAULT.  This event allows tracking indexing progress in
 					// response to a prioritization reqeust.
 
-					Console.Write("OnRowsetEvent( ROWSETEVENT_TYPE_SCOPESTATISTICS )\n\t\tStatistics( indexedDocs:{0} docsToAddCount:{1} docsToReindexCount: {2} )\n", eventData.caul.pElems[0], eventData.caul.pElems[1], eventData.caul.pElems[2]);
+					Console.Write("OnRowsetEvent( ROWSETEVENT_TYPE_SCOPESTATISTICS )\n\t\tStatistics( indexedDocs:{0} docsToAddCount:{1} docsToReindexCount: {2} )\n", eventData.caul.ElementAt(0), eventData.caul.ElementAt(1), eventData.caul.ElementAt(2));
 					break;
 
 				default:
@@ -342,7 +339,7 @@ static class evtdemo
 
 		void PrintURL(PROPVARIANT itemID)
 		{
-			string wszURL = "";
+			string? wszURL = "";
 			HRESULT hr = itemID.vt == VARTYPE.VT_UI4 ? HRESULT.S_OK : HRESULT.E_INVALIDARG;
 			if (hr.Succeeded)
 			{
