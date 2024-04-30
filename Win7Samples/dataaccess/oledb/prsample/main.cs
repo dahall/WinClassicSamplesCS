@@ -13,7 +13,7 @@ public static partial class Program
 	public const int MIN_DISPLAY_SIZE = 3;
 	public const uint ROUNDUP_AMOUNT = 8;
 
-	private static Flags g_dwFlags = 0;
+	private static Flags g_dwFlags = Flags.USE_PROMPTDATASOURCE | Flags.USE_COMMAND; // | Flags.DISPLAY_METHODCALLS;
 
 	[Flags]
 	public enum Flags : uint
@@ -58,7 +58,10 @@ public static partial class Program
 			// Display the Rowset object data to the user
 			myDisplayRowset(pUnkRowset!, default, out _);
 		}
-		catch { return 1; }
+		catch (Exception ex) {
+			Console.WriteLine(ex);
+			return 1;
+		}
 		finally
 		{
 			//if (pUnkRowset is not null)
@@ -73,7 +76,7 @@ public static partial class Program
 	}
 
 	//ROUNDUP on all platforms pointers must be aligned properly
-	public static uint ROUNDUP(uint size, uint amount = ROUNDUP_AMOUNT) => amount == 0 ? size : (uint)(((ulong)size + amount - 1) & ~((ulong)amount - 1));
+	public static nuint ROUNDUP(nuint size, uint amount = ROUNDUP_AMOUNT) => amount == 0 ? size : (uint)(((ulong)size + amount - 1) & ~((ulong)amount - 1));
 
 	/////////////////////////////////////////////////////////////////
 	// myDisplayInstructions
@@ -158,11 +161,11 @@ public static partial class Program
 	private static char myGetChar()
 	{
 		// Get a character from the keyboard
-		var ch = Console.ReadKey();
+		var ch = Console.ReadKey(true);
 
 		// Re-read for the actual key value if necessary
 		if (ch.KeyChar is (char)0 or (char)0xE0)
-			ch = Console.ReadKey();
+			ch = Console.ReadKey(true);
 
 		return char.ToLower(ch.KeyChar);
 	}
@@ -244,10 +247,8 @@ public static partial class Program
 
 			// Invalid argument; show the usage flags to the user
 			Console.Error.Write("Usage: prsample.exe [-u] [-e] [-c] [-b] [-n]\n\nWhere:\n\t" +
-				"u = Use the Microsoft Data Links UI " +
-				"to create the DataSource\n\t" +
-				"e = Use the Enumerator and IDataInitialize " +
-				"to create the DataSource\n\t" +
+				"u = Use the Microsoft Data Links UI to create the DataSource\n\t" +
+				"e = Use the Enumerator and IDataInitialize to create the DataSource\n\t" +
 				"c = Use ICommand instead of IOpenRowset to create the Rowset\n\t" +
 				"b = Use ISequentialStream for BLOB columns\n\t" +
 				"n = Don't display method call strings\n");

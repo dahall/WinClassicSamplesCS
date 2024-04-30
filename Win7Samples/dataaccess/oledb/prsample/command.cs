@@ -23,7 +23,7 @@ public static partial class Program
 	// - sets the given command text for the Command
 	// - executes the command to create a new Rowset object
 	/////////////////////////////////////////////////////////////////
-	private static void myExecuteCommand(object pUnkCommand, string pwszCommandText, uint cPropSets, DBPROPSET[] rgPropSets, out object? ppUnkRowset)
+	private static void myExecuteCommand(object pUnkCommand, string pwszCommandText, uint cPropSets, DBPROPSET[] rgPropSets, out IRowset? pUnkRowset)
 	{
 		// Set the properties on the Command object
 		ICommandProperties pICommandProperties = (ICommandProperties)pUnkCommand;
@@ -41,7 +41,7 @@ public static partial class Program
 			typeof(IRowset).GUID, //riid
 			default, //pParams
 			out _, //pcRowsAffected
-			out ppUnkRowset //ppRowset
+			out var ppUnkRowset //ppRowset
 		).ThrowIfFailed();
 
 		if (ppUnkRowset is null)
@@ -49,5 +49,6 @@ public static partial class Program
 			Console.Write("\nThe command executed successfully, but did not return a rowset.\nNo rowset will be displayed.\n");
 			throw ((HRESULT)HRESULT.E_FAIL).GetException()!;
 		}
+		pUnkRowset = (IRowset)ppUnkRowset;
 	}
 }

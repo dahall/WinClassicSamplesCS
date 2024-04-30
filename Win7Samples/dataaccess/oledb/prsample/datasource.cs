@@ -1,5 +1,6 @@
 ﻿using Vanara.Extensions;
 using Vanara.InteropServices;
+using Vanara.PInvoke;
 using static Vanara.PInvoke.Ole32;
 
 namespace PRSample;
@@ -32,7 +33,7 @@ public static partial class Program
 	private static void myCreateDataSource(out IDBInitialize ppUnkDataSource)
 	{
 		Guid clsid = CLSID_MSDASQL;
-		object? pIDBInitialize = null;
+		IDBInitialize? pIDBInitialize;
 
 		// Use the Microsoft Data Links UI to create the DataSource object; this will allow the user to select the provider to connect to and
 		// to set the initialization properties for the DataSource object, which will be created by the Data Links UI.
@@ -43,21 +44,14 @@ public static partial class Program
 
 			// Invoke the Data Links UI to allow the user to select the provider and set initialization properties for the DataSource object
 			// that this will create
-			pIDBPromptInitialize.PromptDataSource(default, //pUnkOuter
-				hwnd.Value, //hWndParent
-				DBPROMPTOPTIONS.DBPROMPTOPTIONS_PROPERTYSHEET, //dwPromptOptions
-				0, //cSourceTypeFilter
-				default, //rgSourceTypeFilter
-				default, //pwszszzProviderFilter
-				typeof(IDBInitialize).GUID, //riid
-				ref pIDBInitialize //ppDataSource
-			).ThrowIfFailed();
+			pIDBPromptInitialize.PromptDataSource(hwnd.Value, //hWndParent
+				out pIDBInitialize).ThrowIfFailed();
 
 			// We've obtained a DataSource object from the Data Links UI. This object has had its initialization properties set, so all we
 			// need to do is Initialize it
-			((IDBInitialize)pIDBInitialize!).Initialize().ThrowIfFailed();
+			pIDBInitialize!.Initialize().ThrowIfFailed();
 
-			ppUnkDataSource = (IDBInitialize)pIDBInitialize;
+			ppUnkDataSource = pIDBInitialize;
 		}
 		// We are not using the Data Links UI to create the DataSource object. Instead, we will enumerate the providers installed on this
 		// system through the OLE DB Enumerator and will allow the user to select the ProgID of the provider for which we will create a
@@ -74,18 +68,12 @@ public static partial class Program
 			// Use IDataInitialize::CreateDBInstance to create an uninitialized DataSource object for the chosen provider. By using this
 			// service component method, the service component manager can provide additional functionality beyond what is natively supported
 			// by the provider if the consumer requests that functionality
-			pIDataInitialize.CreateDBInstance(clsid, //clsid -- provider
-				default, //pUnkOuter
-				CLSCTX.CLSCTX_INPROC_SERVER, //dwClsContext
-				default, //pwszReserved
-				typeof(IDBInitialize).GUID, //riid
-				out pIDBInitialize //ppDataSource
-			);
+			pIDBInitialize = pIDataInitialize.CreateDBInstance<IDBInitialize>(clsid); //clsid -- provider
 
 			// Initialize the DataSource object by setting any required initialization properties and calling IDBInitialize::Initialize
 			myDoInitialization(pIDBInitialize!);
 
-			ppUnkDataSource = (IDBInitialize)pIDBInitialize!;
+			ppUnkDataSource = pIDBInitialize!;
 		}
 	}
 
@@ -102,8 +90,8 @@ public static partial class Program
 		// the provider to prompt the user for this required information by setting the following properties:
 		DBPROP[] rgProperties =
 		[
-			myAddProperty(DBPROPENUM.DBPROP_INIT_PROMPT, DBPROMPT_COMPLETE),
-			myAddProperty(DBPROPENUM.DBPROP_INIT_HWND, (IntPtr)hwnd.Value)
+			myAddProperty(DBPROPENUM.DBPROP_INIT_PROMPT, (short)DBPROMPT.DBPROMPT_COMPLETE),
+			myAddProperty(DBPROPENUM.DBPROP_INIT_HWND, IntPtr.Size == 4 ? ((IntPtr)hwnd.Value).ToInt32() : ((IntPtr)hwnd.Value).ToInt64())
 		];
 		DBPROPSET[] rgPropSets = [new DBPROPSET() { rgProperties = rgProperties, guidPropertySet = DBPROPSET_DBINIT }];
 
@@ -131,48 +119,53 @@ public static partial class Program
 		pbValue = false;
 
 		// Set up the Property ID Set
-		SafeNativeArray<DBPROPENUM> rgPropertyIDs = new([dwPropertyID]);
-		DBPROPIDSET[] rgPropertyIDSets = [new() { rgPropertyIDs = rgPropertyIDs, cPropertyIDs = 1, guidPropertySet = guidPropertySet }];
+		DBPROPIDSET[] rgPropertyIDSets = [new() { rgPropertyIDs = [dwPropertyID], guidPropertySet = guidPropertySet }];
 
 		// Get the property value for this property from the provider, but don't try to display extended error information, since this may
 		// not be a supported property: a failure is, in fact, expected if the property is not supported
 		DBPROPSET[] rgPropSets;
-		if (riid == typeof(IDBProperties).GUID)
+		try
 		{
-			IDBProperties pIDBProperties = (IDBProperties)pIUnknown;
-			pIDBProperties.GetProperties(
+			if (riid == typeof(IDBProperties).GUID)
+			{
+				IDBProperties pIDBProperties = (IDBProperties)pIUnknown;
+				pIDBProperties.GetProperties(
+					rgPropertyIDSets, //rgPropertyIDSets
+					out rgPropSets //prgPropSets
+				).ThrowIfFailed();
+			}
+			else if (riid == typeof(ISessionProperties).GUID)
+			{
+				ISessionProperties pISesProps = (ISessionProperties)pIUnknown;
+				pISesProps.GetProperties(
 				rgPropertyIDSets, //rgPropertyIDSets
 				out rgPropSets //prgPropSets
-			).ThrowIfFailed();
-		}
-		else if (riid == typeof(ISessionProperties).GUID)
-		{
-			ISessionProperties pISesProps = (ISessionProperties)pIUnknown;
-			pISesProps.GetProperties(
-			rgPropertyIDSets, //rgPropertyIDSets
-			out rgPropSets //prgPropSets
-			).ThrowIfFailed();
-		}
-		else if (riid == typeof(ICommandProperties).GUID)
-		{
-			ICommandProperties pICmdProps = (ICommandProperties)pIUnknown;
-			pICmdProps.GetProperties(
-				rgPropertyIDSets, //rgPropertyIDSets
-				out rgPropSets //prgPropSets
-			).ThrowIfFailed();
-		}
-		else
-		{
-			IRowsetInfo pIRowsetInfo = (IRowsetInfo)pIUnknown;
-			pIRowsetInfo.GetProperties(
-				rgPropertyIDSets, //rgPropertyIDSets
-				out rgPropSets //prgPropSets
-			).ThrowIfFailed();
-		}
+				).ThrowIfFailed();
+			}
+			else if (riid == typeof(ICommandProperties).GUID)
+			{
+				ICommandProperties pICmdProps = (ICommandProperties)pIUnknown;
+				pICmdProps.GetProperties(
+					rgPropertyIDSets, //rgPropertyIDSets
+					out rgPropSets //prgPropSets
+				).ThrowIfFailed();
+			}
+			else
+			{
+				IRowsetInfo pIRowsetInfo = (IRowsetInfo)pIUnknown;
+				pIRowsetInfo.GetProperties(
+					rgPropertyIDSets, //rgPropertyIDSets
+					out rgPropSets //prgPropSets
+				).ThrowIfFailed();
+			}
 
-		// Return the value for this property to the caller if it's a VT_BOOL type value, as expected
-		if (rgPropSets[0].rgProperties[0].vValue is bool b)
-			pbValue = b;
+			// Return the value for this property to the caller if it's a VT_BOOL type value, as expected
+			if (rgPropSets.Length > 0 && rgPropSets[0].rgProperties.Length > 0 && rgPropSets[0].rgProperties[0].vValue is bool b)
+				pbValue = b;
+		}
+		catch
+		{
+		}
 	}
 }
 

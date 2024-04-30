@@ -34,7 +34,7 @@ public static partial class Program
 	// This function takes an IUnknown pointer for a Rowset object and creates an Accessor that describes the layout of the buffer we will
 	// use when we fetch data. The provider will fill this buffer according to the description contained in the Accessor that we will create here.
 	/////////////////////////////////////////////////////////////////
-	private static void myCreateAccessor(object pUnkRowset, out IntPtr phAccessor, out DBBINDING[] prgBindings, out uint pcbRowSize)
+	private static void myCreateAccessor(object pUnkRowset, out IntPtr phAccessor, out DBBINDING[] prgBindings, out nuint pcbRowSize)
 	{
 		//HRESULT hr;
 		//IAccessor pIAccessor = default;
@@ -60,7 +60,7 @@ public static partial class Program
 	// - Otherwise, the function obtains a table name from the user and calls IOpenRowset::OpenRowset to create a Rowset object over that
 	// table that supports the requested properties
 	/////////////////////////////////////////////////////////////////
-	private static void myCreateRowset(object pUnkSession, out object? ppUnkRowset)
+	private static void myCreateRowset(object pUnkSession, out IRowset? ppUnkRowset)
 	{
 		//HRESULT hr;
 		//object pUnkCommand = default;
@@ -105,14 +105,13 @@ public static partial class Program
 
 			// Get the IOpenRowset interface and create a Rowset object over the requested table through OpenRowset
 			IOpenRowset pIOpenRowset = (IOpenRowset)pUnkSession;
+			using var sProps = new SafeDBPROPSETListHandle(rgPropSets);
 			pIOpenRowset.OpenRowset(default, //pUnkOuter
-				(SafeCoTaskMemStruct<DBID>)TableID, //pTableID
+				TableID, //pTableID
 				default, //pIndexID
-				typeof(IRowset).GUID, //riid
-				1, //cPropSets
-				rgPropSets, //rgPropSets
+				sProps, // rgPropSets, //rgPropSets
 				out ppUnkRowset //ppRowset
-			);
+			).ThrowIfFailed();
 		}
 	}
 
@@ -127,41 +126,32 @@ public static partial class Program
 		IColumnsInfo pIColumnsInfo = (IColumnsInfo)pUnkRowset;
 
 		// Get the columns information
-		pIColumnsInfo.GetColumnInfo(out var cColumns, //pcColumns
-			out var prgColumnInfo, //prgColumnInfo
-			out _ //ppStringBuffer
-		);
-		DBCOLUMNINFO[] rgColumnInfo = prgColumnInfo.ToArray<DBCOLUMNINFO>((int)cColumns);
+		pIColumnsInfo.GetColumnInfo(out var rgColumnInfo);
 
 		// Display the title of the row index column
 		Console.Write(" Row | ");
 
 		// Display all column names
-		for (int iCol = 0; iCol < cColumns; iCol++)
+		for (uint iCol = 0; iCol < rgColumnInfo.Length; iCol++)
 		{
-			string? pwszColName = rgColumnInfo[iCol].pwszName;
-
-			// If the column name is default, we'll use a default string
-			if (pwszColName is not null)
-			{
-				// Is this the bookmark column?
-				pwszColName = rgColumnInfo[iCol].iOrdinal != 0 ? "Bmk" : "(null)";
-			}
+			string pwszColName = rgColumnInfo[iCol].pwszName ?? (rgColumnInfo[iCol].iOrdinal == 0 ? "Bmk" : "(null)");
 
 			// Ensure that the name is no longer than MAX_DISPLAY_SIZE Figure out how many spaces we need to print after this column name
-			string wszColumn = pwszColName!.PadRight(MAX_DISPLAY_SIZE)[..MAX_DISPLAY_SIZE];
+			string wszColumn = pwszColName.FixLen(Math.Min((int)rgDispSize[iCol], MAX_DISPLAY_SIZE));
 
 			// Print the column name
 			Console.Write(wszColumn);
 
 			// Now end the column with a separator marker if necessary
-			if (iCol < cColumns - 1)
+			if (iCol < rgColumnInfo.Length - 1)
 				Console.Write(" | ");
 		}
 
 		// Done with the header, so print a newline
 		Console.Write("\n");
 	}
+
+	private static string FixLen(this string? s, int length) => s?.PadRight(length).Substring(0, length) ?? new(' ', length);
 
 	/////////////////////////////////////////////////////////////////
 	// myDisplayRow
@@ -170,14 +160,13 @@ public static partial class Program
 	/////////////////////////////////////////////////////////////////
 	private static void myDisplayRow(uint iRow, DBBINDING[] rgBindings, IntPtr pData, uint[] rgDispSize)
 	{
-		//HRESULT hr = HRESULT. HRESULT. HRESULT. HRESULT. HRESULT. HRESULT. HRESULT.S_OK;
-		string wszColumn = "";
+		//HRESULT hr = HRESULT.S_OK;
 		//DBSTATUS dwStatus;
 		//uint ulLength;
 		//IntPtr pvValue;
 		//uint iCol;
 		//uint cbRead;
-		ISequentialStream? pISeqStream = default;
+		//ISequentialStream? pISeqStream = default;
 		//SizeT cSpaces;
 		//uint iSpace;
 
@@ -193,6 +182,7 @@ public static partial class Program
 			IntPtr pvValue = pData + (int)rgBindings[iCol].obValue;
 
 			// Check the status of this column. This decides exactly what will be displayed for the column
+			string wszColumn = "";
 			switch (dwStatus)
 			{
 				// The data is default, so don't try to display it
@@ -216,7 +206,7 @@ public static partial class Program
 						case DBTYPE.DBTYPE_IUNKNOWN:
 							// We've bound this as an ISequentialStream object, therefore the data in our buffer is a pointer to the object's
 							// ISequentialStream interface
-							pISeqStream = (ISequentialStream)Marshal.GetObjectForIUnknown(pvValue);
+							ISequentialStream pISeqStream = (ISequentialStream)Marshal.GetObjectForIUnknown(pvValue);
 
 							// We call ISequentialStream::Read to read bytes from the stream blindly into our buffer, simply as a
 							// demonstration of ISequentialStream. To display the data properly, the native provider type of this column
@@ -243,7 +233,7 @@ public static partial class Program
 
 			// Determine how many spaces we need to add after displaying this data to align it with this column in other rows Print the
 			// column data
-			Console.Write(wszColumn.PadRight(MAX_DISPLAY_SIZE));
+			Console.Write(wszColumn.FixLen(Math.Min((int)rgDispSize[iCol], MAX_DISPLAY_SIZE)));
 
 			// Now end the column with a separator marker if necessary
 			if (iCol < rgBindings.Length - 1)
@@ -262,7 +252,7 @@ public static partial class Program
 	// The function takes a pointer to a Rowset object's IUnknown and, optionally, the name of a column and a buffer that will receive the
 	// value of that column when the user selects a row.
 	/////////////////////////////////////////////////////////////////
-	private static void myDisplayRowset(object pUnkRowset, string? pwszColToReturn, out string? pwszBuffer)
+	private static HRESULT myDisplayRowset(object pUnkRowset, string? pwszColToReturn, out string? pwszBuffer)
 	{
 		//HRESULT hr;
 		//IRowset pIRowset = default;
@@ -342,7 +332,7 @@ public static partial class Program
 				// the data on the screen, so we will account for this. This ensures that the resulting order of row data in the pData buffer
 				// matches the order we wish to use to display the data
 				var iIndex = cRows > 0 ? iRow : (int)cRowsObtained - iRow - 1;
-				pCurData = (IntPtr)pData + ((int)cbRowSize + iIndex);
+				pCurData = (IntPtr)pData + ((int)cbRowSize * iIndex);
 
 				// Get the data for this row handle. The provider will copy (and convert, if necessary) the data for each of the columns that
 				// are described in our Accessor into the given buffer (pCurData)
@@ -383,8 +373,7 @@ public static partial class Program
 
 			// Allow the user to navigate the rowset. This displays the appropriate prompts, gets the user's input, may call
 			// IRowset::RestartPosition, and may copy data from a selected row to the selection buffer, if so directed. This will return
-			// HRESULT. HRESULT. HRESULT. HRESULT. HRESULT. HRESULT. HRESULT.S_OK if the user asked for more rows, S_FALSE if the user
-			// selected a row, or HRESULT.HRESULT.HRESULT.HRESULT.HRESULT.HRESULT.HRESULT.E_FAIL if the user quits
+			// HRESULT.S_OK if the user asked for more rows, S_FALSE if the user selected a row, or HRESULT.E_FAIL if the user quits
 			hr = myInteractWithRowset(pIRowset, // IRowset pointer, for RestartPosition
 				out cRows, // updated with fetch direction value
 				cRowsObtained, // to indicate selection range
@@ -403,6 +392,8 @@ public static partial class Program
 		}
 
 		myFreeBindings(rgBindings);
+
+		return hr;
 	}
 
 	/////////////////////////////////////////////////////////////////
@@ -423,19 +414,15 @@ public static partial class Program
 		IColumnsInfo pIColumnsInfo = (IColumnsInfo)pUnkRowset;
 
 		// Get the columns information
-		pIColumnsInfo.GetColumnInfo(out var cColumns, //pcColumns
-			out var prgColumnInfo, //prgColumnInfo
-			out _//ppStringBuffer
-		);
-		DBCOLUMNINFO[] rgColumnInfo = prgColumnInfo.ToArray<DBCOLUMNINFO>((int)cColumns);
+		pIColumnsInfo.GetColumnInfo(out var rgColumnInfo);
 
 		// Search for the column we need
-		for (int iCol = 0; iCol < cColumns; iCol++)
+		for (uint iCol = 0; iCol < rgColumnInfo.Length; iCol++)
 		{
 			// If the column name matches we've found the column...
-			if (!rgColumnInfo[iCol].pwszName.IsNull && pwszName == rgColumnInfo[iCol].pwszName)
+			if (pwszName == rgColumnInfo[iCol].pwszName)
 			{
-				plIndex = iCol;
+				plIndex = (int)iCol;
 				return true;
 			}
 		}
@@ -458,7 +445,7 @@ public static partial class Program
 	}
 
 	private static HRESULT myInteractWithRowset(IRowset pIRowset, out int pcRows, nuint cRowsObtained, bool fCanFetchBackwards,
-			IntPtr pData, uint cbRowSize, DBBINDING? pBinding, out string? pwszBuffer)
+			IntPtr pData, nuint cbRowSize, DBBINDING? pBinding, out string? pwszBuffer)
 	{
 		HRESULT hr = HRESULT.S_OK;
 		pcRows = 0;
@@ -479,7 +466,7 @@ public static partial class Program
 			Console.Write("\n[N]ext; [R]estart; ");
 
 		// Print selection options
-		if (cRowsObtained != 0 && pwszBuffer is not null && pBinding.HasValue)
+		if (cRowsObtained != 0 && pBinding.HasValue)
 			Console.Write("[0]-[{0}] for a row; ", cRowsObtained - 1);
 
 		// User can always quit the program
@@ -497,7 +484,7 @@ public static partial class Program
 
 				// If we're looking for a row selection, allow the user to select a row that we fetched, then copy the data from the
 				// requested column into the selection buffer we were passed
-				if (pwszBuffer is not null && pBinding.HasValue && ch >= '0' && ch < (int)('0' + cRowsObtained))
+				if (pBinding.HasValue && ch >= '0' && ch < (int)('0' + cRowsObtained))
 				{
 					// Save the data for the selected row
 					int nSelection = ch - '0';
@@ -563,7 +550,7 @@ public static partial class Program
 	// if the native column data type is DBTYPE_IUNKNOWN or if the user has requested that BLOB columns be bound as ISequentialStream
 	// objects, in which case we will bind those columns as ISequentialStream objects.
 	/////////////////////////////////////////////////////////////////
-	private static void mySetupBindings(IRowset pUnkRowset, out DBBINDING[] prgBindings, out uint pcbRowSize)
+	private static void mySetupBindings(IRowset pUnkRowset, out DBBINDING[] prgBindings, out nuint pcbRowSize)
 	{
 		//HRESULT hr;
 		//uint cColumns;
@@ -585,24 +572,18 @@ public static partial class Program
 		// - the precision and scale of numeric columns
 		// - the OLE DB data type of the column
 		IColumnsInfo pIColumnsInfo = (IColumnsInfo)pUnkRowset;
-		pIColumnsInfo.GetColumnInfo(out var cColumns, //pcColumns
-			out var prgColumnInfo, //prgColumnInfo
-			out var ppStringBuffer //ppStringBuffer
-		);
-
-		var rgColumnInfo = prgColumnInfo.ToArray<DBCOLUMNINFO>((int)cColumns);
-		var pStringBuffer = ppStringBuffer.ToArray<string>((int)cColumns);
+		pIColumnsInfo.GetColumnInfo(out var rgColumnInfo);
 
 		// Allocate memory for the bindings array; there is a one-to-one mapping between the columns returned from GetColumnInfo and our bindings
-		DBBINDING[] rgBindings = new DBBINDING[(int)cColumns];
+		DBBINDING[] rgBindings = new DBBINDING[rgColumnInfo.Length];
 
 		// Determine if the Rowset supports multiple storage object bindings; if it does not, we will only bind the first BLOB column or
 		// IUnknown column as an ISequentialStream object, and will bind the rest as DBTYPE_WSTR
 		myGetProperty(pUnkRowset, typeof(IRowset).GUID, DBPROPENUM.DBPROP_MULTIPLESTORAGEOBJECTS, DBPROPSET_ROWSET, out var fMultipleObjs);
 
 		// Construct the binding array element for each column
-		uint dwOffset = 0, cStorageObjs = 0;
-		for (uint iCol = 0; iCol < cColumns; iCol++)
+		nuint dwOffset = 0, cStorageObjs = 0;
+		for (uint iCol = 0; iCol < rgColumnInfo.Length; iCol++)
 		{
 			// This binding applies to the ordinal of this column
 			rgBindings[iCol].iOrdinal = rgColumnInfo[iCol].iOrdinal;
@@ -615,8 +596,8 @@ public static partial class Program
 			// values when we fetch data later. When we fetch data, we will pass a pointer to a buffer that the provider will copy column
 			// data to, in accordance with the binding we have provided for that column; these are offsets into that future buffer
 			rgBindings[iCol].obStatus = dwOffset;
-			rgBindings[iCol].obLength = dwOffset + (uint)Marshal.SizeOf(typeof(DBSTATUS));
-			rgBindings[iCol].obValue = dwOffset + (uint)Marshal.SizeOf(typeof(DBSTATUS)) + (uint)Marshal.SizeOf(typeof(uint));
+			rgBindings[iCol].obLength = dwOffset + InteropExtensions.SizeOf<DBSTATUS>();
+			rgBindings[iCol].obValue = dwOffset + InteropExtensions.SizeOf<DBSTATUS>() + InteropExtensions.SizeOf<uint>();
 
 			// Any memory allocated for the data value will be owned by us, the client. Note that no data will be allocated in this case, as
 			// the DBTYPE_WSTR bindings we are using will tell the provider to simply copy data directly into our provided buffer
