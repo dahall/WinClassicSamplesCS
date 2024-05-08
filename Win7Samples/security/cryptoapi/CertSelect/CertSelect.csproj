@@ -5,8 +5,8 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Vanara.PInvoke.CredUI" Version="4.0.0" />
-    <PackageReference Include="Vanara.PInvoke.Security" Version="4.0.0" />
+    <PackageReference Include="Vanara.PInvoke.CredUI" Version="4.0.1" />
+    <PackageReference Include="Vanara.PInvoke.Security" Version="4.0.1" />
   </ItemGroup>
 
 </Project>

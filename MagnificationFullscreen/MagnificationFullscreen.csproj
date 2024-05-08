@@ -4,7 +4,7 @@
 		<UseWindowsForms>true</UseWindowsForms>
 	</PropertyGroup>
 	<ItemGroup>
-		<PackageReference Include="Vanara.PInvoke.Magnification" Version="4.0.0" />
-		<PackageReference Include="Vanara.PInvoke.User32" Version="4.0.0" />
+		<PackageReference Include="Vanara.PInvoke.Magnification" Version="4.0.1" />
+		<PackageReference Include="Vanara.PInvoke.User32" Version="4.0.1" />
 	</ItemGroup>
 </Project>

@@ -1,0 +1,13 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <LangVersion>latest</LangVersion>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Vanara.PInvoke.NetListMgr" Version="4.0.1" />
+    <PackageReference Include="Vanara.PInvoke.WinHTTP" Version="4.0.1" />
+  </ItemGroup>
+
+</Project>

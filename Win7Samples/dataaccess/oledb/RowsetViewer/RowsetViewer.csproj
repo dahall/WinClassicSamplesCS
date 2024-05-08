@@ -1,0 +1,45 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net6.0-windows</TargetFramework>
+    <Nullable>enable</Nullable>
+    <UseWindowsForms>true</UseWindowsForms>
+    <ImplicitUsings>enable</ImplicitUsings>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <!--<PackageReference Include="Vanara.PInvoke.OleDB" Version="4.0.1" />-->
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="Vanara.Core">
+      <HintPath>..\..\..\..\..\Vanara\PInvoke\OleDb\bin\Debug\net6.0\Vanara.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="Vanara.PInvoke.Cryptography">
+      <HintPath>..\..\..\..\..\Vanara\PInvoke\OleDb\bin\Debug\net6.0\Vanara.PInvoke.Cryptography.dll</HintPath>
+    </Reference>
+    <Reference Include="Vanara.PInvoke.Kernel32">
+      <HintPath>..\..\..\..\..\Vanara\PInvoke\OleDb\bin\Debug\net6.0\Vanara.PInvoke.Kernel32.dll</HintPath>
+    </Reference>
+    <Reference Include="Vanara.PInvoke.Odbc32">
+      <HintPath>..\..\..\..\..\Vanara\PInvoke\OleDb\bin\Debug\net6.0\Vanara.PInvoke.Odbc32.dll</HintPath>
+    </Reference>
+    <Reference Include="Vanara.PInvoke.Ole">
+      <HintPath>..\..\..\..\..\Vanara\PInvoke\OleDb\bin\Debug\net6.0\Vanara.PInvoke.Ole.dll</HintPath>
+    </Reference>
+    <Reference Include="Vanara.PInvoke.OleDb">
+      <HintPath>..\..\..\..\..\Vanara\PInvoke\OleDb\bin\Debug\net6.0\Vanara.PInvoke.OleDb.dll</HintPath>
+    </Reference>
+    <Reference Include="Vanara.PInvoke.Rpc">
+      <HintPath>..\..\..\..\..\Vanara\PInvoke\OleDb\bin\Debug\net6.0\Vanara.PInvoke.Rpc.dll</HintPath>
+    </Reference>
+    <Reference Include="Vanara.PInvoke.Security">
+      <HintPath>..\..\..\..\..\Vanara\PInvoke\OleDb\bin\Debug\net6.0\Vanara.PInvoke.Security.dll</HintPath>
+    </Reference>
+    <Reference Include="Vanara.PInvoke.Shared">
+      <HintPath>..\..\..\..\..\Vanara\PInvoke\OleDb\bin\Debug\net6.0\Vanara.PInvoke.Shared.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+    
+</Project>

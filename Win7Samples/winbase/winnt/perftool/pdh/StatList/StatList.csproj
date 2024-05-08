@@ -7,8 +7,8 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Vanara.PInvoke.Pdh" Version="4.0.0" />
-    <PackageReference Include="Vanara.Windows.Forms" Version="4.0.0" />
+    <PackageReference Include="Vanara.PInvoke.Pdh" Version="4.0.1" />
+    <PackageReference Include="Vanara.Windows.Forms" Version="4.0.1" />
     <Using Include="System" />
     <Using Include="System.IO" />
     <Using Include="System.Linq" />

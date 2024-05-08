@@ -20,9 +20,9 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Vanara.PInvoke.Ole" Version="4.0.0" />
-    <PackageReference Include="Vanara.PInvoke.User32" Version="4.0.0" />
-    <PackageReference Include="Vanara.PInvoke.TextServicesFramework" Version="4.0.0" />
+    <PackageReference Include="Vanara.PInvoke.Ole" Version="4.0.1" />
+    <PackageReference Include="Vanara.PInvoke.User32" Version="4.0.1" />
+    <PackageReference Include="Vanara.PInvoke.TextServicesFramework" Version="4.0.1" />
   </ItemGroup>
 
 </Project>

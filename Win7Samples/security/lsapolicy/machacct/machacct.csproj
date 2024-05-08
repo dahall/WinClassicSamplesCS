@@ -5,9 +5,9 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Vanara.PInvoke.Kernel32" Version="4.0.0" />
-    <PackageReference Include="Vanara.PInvoke.NetApi32" Version="4.0.0" />
-    <PackageReference Include="Vanara.PInvoke.Security" Version="4.0.0" />
+    <PackageReference Include="Vanara.PInvoke.Kernel32" Version="4.0.1" />
+    <PackageReference Include="Vanara.PInvoke.NetApi32" Version="4.0.1" />
+    <PackageReference Include="Vanara.PInvoke.Security" Version="4.0.1" />
   </ItemGroup>
 
 </Project>

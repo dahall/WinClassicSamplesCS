@@ -4,8 +4,8 @@
   </PropertyGroup>
 
   <ItemGroup>
-	<PackageReference Include="Vanara.PInvoke.Kernel32" Version="4.0.0" />
-	<PackageReference Include="Vanara.PInvoke.Ole" Version="4.0.0" />
+	<PackageReference Include="Vanara.PInvoke.Kernel32" Version="4.0.1" />
+	<PackageReference Include="Vanara.PInvoke.Ole" Version="4.0.1" />
   </ItemGroup>
 
 </Project>
