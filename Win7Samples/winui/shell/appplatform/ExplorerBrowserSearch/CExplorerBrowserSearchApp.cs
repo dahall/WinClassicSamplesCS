@@ -109,7 +109,7 @@ public partial class CExplorerBrowserSearchApp : Form, IServiceProvider, ICommDl
 		var pqs = pqp.Parse(pszString, null);
 		pqs.GetQuery(out var pc, out var _);
 		SYSTEMTIME st = new(DateTime.Now);
-		unsafe { return pqs.Resolve(pc!, STRUCTURED_QUERY_RESOLVE_OPTION.SQRO_DONT_SPLIT_WORDS, &st); }
+		return pqs.Resolve(pc!, STRUCTURED_QUERY_RESOLVE_OPTION.SQRO_DONT_SPLIT_WORDS, st);
 	}
 
 	private static void SetScope(ISearchFolderItemFactory psfif)

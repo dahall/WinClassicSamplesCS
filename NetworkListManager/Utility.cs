@@ -150,8 +150,8 @@ internal static class Utility
 		{
 			using var session = WinHttpOpen("NetworkListManagerSample.exe", WINHTTP_ACCESS_TYPE.WINHTTP_ACCESS_TYPE_DEFAULT_PROXY, WINHTTP_NO_PROXY_NAME, WINHTTP_NO_PROXY_BYPASS, 0);
 			using var connect = WinHttpConnect(session, "www.msftconnecttest.com", INTERNET_DEFAULT_HTTP_PORT, 0);
-			using var request = WinHttpOpenRequest(connect, "GET", "/connecttest.txt", null, WINHTTP_NO_REFERER, WINHTTP_DEFAULT_ACCEPT_TYPES, 0);
-			Win32Error.ThrowLastErrorIfFalse(WinHttpSendRequest(request, WINHTTP_NO_ADDITIONAL_HEADERS, 0, WINHTTP_NO_REQUEST_DATA));
+			using var request = WinHttpOpenRequest(connect, "GET", "/connecttest.txt", null, null /*WINHTTP_NO_REFERER*/, null /*WINHTTP_DEFAULT_ACCEPT_TYPES*/, 0);
+			Win32Error.ThrowLastErrorIfFalse(WinHttpSendRequest(request, WINHTTP_NO_ADDITIONAL_HEADERS, 0, default /*WINHTTP_NO_REQUEST_DATA*/));
 			Win32Error.ThrowLastErrorIfFalse(WinHttpReceiveResponse(request));
 
 			uint statusCode = WinHttpQueryHeaders<uint>(request, WINHTTP_QUERY.WINHTTP_QUERY_STATUS_CODE | WINHTTP_QUERY.WINHTTP_QUERY_FLAG_NUMBER);

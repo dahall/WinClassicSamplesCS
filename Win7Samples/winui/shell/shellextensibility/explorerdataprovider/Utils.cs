@@ -63,7 +63,7 @@ internal static class Utils
 
 	public static HRESULT StringToStrRet(string pszName, out STRRET pStrRet)
 	{
-		pStrRet = new STRRET { uType = STRRET_TYPE.STRRET_WSTR, pOleStr = Marshal.StringToCoTaskMemUni(pszName) };
+		pStrRet = new(pszName);
 		return HRESULT.S_OK;
 	}
 }
