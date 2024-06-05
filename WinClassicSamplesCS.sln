@@ -374,7 +374,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RowsetViewer", "Win7Samples
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BindLink", "BindLink\BindLink.csproj", "{E5491BA1-4F52-4157-9E3C-4DB4D8643C2E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NetworkListManager", "NetworkListManager\NetworkListManager.csproj", "{4C4E92EB-1DD9-41DF-B507-5D4AC54E358C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NetworkListManager", "NetworkListManager\NetworkListManager.csproj", "{4C4E92EB-1DD9-41DF-B507-5D4AC54E358C}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ThumbnailProvider", "Win7Samples\winui\shell\appplatform\UsingThumbnailProviders\ThumbnailProvider.csproj", "{49637592-A07F-4359-8753-4547A6B49C99}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -1984,6 +1986,18 @@ Global
 		{4C4E92EB-1DD9-41DF-B507-5D4AC54E358C}.Release|x64.Build.0 = Release|Any CPU
 		{4C4E92EB-1DD9-41DF-B507-5D4AC54E358C}.Release|x86.ActiveCfg = Release|Any CPU
 		{4C4E92EB-1DD9-41DF-B507-5D4AC54E358C}.Release|x86.Build.0 = Release|Any CPU
+		{49637592-A07F-4359-8753-4547A6B49C99}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{49637592-A07F-4359-8753-4547A6B49C99}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{49637592-A07F-4359-8753-4547A6B49C99}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{49637592-A07F-4359-8753-4547A6B49C99}.Debug|x64.Build.0 = Debug|Any CPU
+		{49637592-A07F-4359-8753-4547A6B49C99}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{49637592-A07F-4359-8753-4547A6B49C99}.Debug|x86.Build.0 = Debug|Any CPU
+		{49637592-A07F-4359-8753-4547A6B49C99}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{49637592-A07F-4359-8753-4547A6B49C99}.Release|Any CPU.Build.0 = Release|Any CPU
+		{49637592-A07F-4359-8753-4547A6B49C99}.Release|x64.ActiveCfg = Release|Any CPU
+		{49637592-A07F-4359-8753-4547A6B49C99}.Release|x64.Build.0 = Release|Any CPU
+		{49637592-A07F-4359-8753-4547A6B49C99}.Release|x86.ActiveCfg = Release|Any CPU
+		{49637592-A07F-4359-8753-4547A6B49C99}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -2141,6 +2155,7 @@ Global
 		{E39A80CA-9609-4394-94A3-C12BADAC10F0} = {65BAA9ED-E48A-4868-9C6C-90DF2E00AA5D}
 		{37361B76-C1B2-434F-A226-425B0FFA80EA} = {E39A80CA-9609-4394-94A3-C12BADAC10F0}
 		{3ACAED72-C36F-4255-A77A-7D8A43C50EB3} = {E39A80CA-9609-4394-94A3-C12BADAC10F0}
+		{49637592-A07F-4359-8753-4547A6B49C99} = {EC86EA97-FDE0-44A0-8A95-F0076988987F}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {82D57A23-9C32-4014-9AFB-25B38D08E1D1}
