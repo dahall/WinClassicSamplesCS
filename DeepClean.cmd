@@ -24,3 +24,5 @@ FOR /d /r %%F IN (x64?) DO (
     echo deleting folder: %%F
     @IF EXIST %%F RMDIR /S /Q "%%F"
 )
+
+\temp\nuget locals all -clear
