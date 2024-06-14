@@ -1,0 +1,21 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net48</TargetFramework>
+    <UseWindowsForms>True</UseWindowsForms>
+    <StartupObject>ImageFactorySample.Program</StartupObject>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Vanara.PInvoke.Shell32" Version="4.0.2" />
+    <PackageReference Include="Vanara.Windows.Extensions" Version="4.0.2" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Update="ImageFactoryDlg.cs">
+      <CustomToolNamespace>ImageFactorySample</CustomToolNamespace>
+    </Compile>
+  </ItemGroup>
+
+</Project>
