@@ -31,8 +31,8 @@ internal class Program
 	private static void CreateFolderInContainer(IShellItem psi, string pszFolderName)
 	{
 		using ComReleaser<IStorage> pstorage = new(psi.BindToHandler<IStorage>(default, BHID.BHID_Storage));
-		using ComReleaser<IStream> pnewstorage = new(pstorage.Item.CreateStorage(pszFolderName, STGM.STGM_READWRITE | STGM.STGM_SHARE_EXCLUSIVE | STGM.STGM_CREATE));
-		pnewstorage.Item.Commit((int)STGC.STGC_OVERWRITE);
+		using ComReleaser<IStorage> pnewstorage = new(pstorage.Item.CreateStorage(pszFolderName, STGM.STGM_READWRITE | STGM.STGM_SHARE_EXCLUSIVE | STGM.STGM_CREATE));
+		pnewstorage.Item.Commit(STGC.STGC_OVERWRITE);
 	}
 
 	private static IBindCtx CreateBindCtxWithMode(STGM grfMode)
@@ -101,6 +101,7 @@ internal class Program
 		}
 	}
 
+	[STAThread]
 	private static void Main()
 	{
 		TaskDialog taskDialog = new()
@@ -121,7 +122,7 @@ internal class Program
 		bool fDone = false;
 		while (!fDone)
 		{
-			if (taskDialog.ShowDialog() is System.Windows.Forms.DialogResult.OK or System.Windows.Forms.DialogResult.Cancel)
+			if (taskDialog.ShowDialog() is System.Windows.Forms.DialogResult.Cancel || taskDialog.Result.DialogResult == (int)TaskDialogCommonButtons.Close)
 			{
 				fDone = true;
 			}
@@ -141,6 +142,7 @@ internal class Program
 			{
 				ExportToFileDialogItem();
 			}
+			GC.Collect();
 		}
 	}
 }
