@@ -18,7 +18,7 @@
   </ItemGroup>
 
   <Target Name="PreBuild" BeforeTargets="PreBuildEvent">
-    <Exec Command="call &quot;C:\PROGRA~1\MICROS~4\2022\COMMUN~1\VC\AUXILI~1\Build\vcvars64.bat&quot; &amp; rc.exe /r ShellLibraryBackup.rc &amp; link.exe /DLL /NOENTRY /NODEFAULTLIB /MACHINE:iX86 /OUT:ShellLibraryBackupRes.dll ShellLibraryBackup.res" IgnoreExitCode="true" />
+    <Exec Command="call &quot;$(SolutionDir)BuildRC.cmd&quot; $(ProjectName) $(ProjectName)Res" IgnoreExitCode="true" />
   </Target>
 
 </Project>

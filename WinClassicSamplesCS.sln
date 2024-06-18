@@ -359,6 +359,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PackageManagerFindPackagesW
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "@Solution files", "@Solution files", "{471DD72B-B178-4472-A287-CBDAFA0FFB9E}"
 	ProjectSection(SolutionItems) = preProject
+		BuildRC.cmd = BuildRC.cmd
 		Directory.Build.props = Directory.Build.props
 	EndProjectSection
 EndProject
