@@ -388,6 +388,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ShellStorage", "Win7Samples
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "KnownFolders", "Win7Samples\winui\shell\appplatform\KnownFolders\KnownFolders.csproj", "{F30E51E7-07AE-48DC-A45E-0BF86D4A77F6}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ShellLibraryBackup", "Win7Samples\winui\shell\appplatform\ShellLibraryBackup\ShellLibraryBackup.csproj", "{767EAE63-513E-44AA-9A77-91B30A1C0723}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -2068,6 +2070,18 @@ Global
 		{F30E51E7-07AE-48DC-A45E-0BF86D4A77F6}.Release|x64.Build.0 = Release|Any CPU
 		{F30E51E7-07AE-48DC-A45E-0BF86D4A77F6}.Release|x86.ActiveCfg = Release|Any CPU
 		{F30E51E7-07AE-48DC-A45E-0BF86D4A77F6}.Release|x86.Build.0 = Release|Any CPU
+		{767EAE63-513E-44AA-9A77-91B30A1C0723}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{767EAE63-513E-44AA-9A77-91B30A1C0723}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{767EAE63-513E-44AA-9A77-91B30A1C0723}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{767EAE63-513E-44AA-9A77-91B30A1C0723}.Debug|x64.Build.0 = Debug|Any CPU
+		{767EAE63-513E-44AA-9A77-91B30A1C0723}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{767EAE63-513E-44AA-9A77-91B30A1C0723}.Debug|x86.Build.0 = Debug|Any CPU
+		{767EAE63-513E-44AA-9A77-91B30A1C0723}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{767EAE63-513E-44AA-9A77-91B30A1C0723}.Release|Any CPU.Build.0 = Release|Any CPU
+		{767EAE63-513E-44AA-9A77-91B30A1C0723}.Release|x64.ActiveCfg = Release|Any CPU
+		{767EAE63-513E-44AA-9A77-91B30A1C0723}.Release|x64.Build.0 = Release|Any CPU
+		{767EAE63-513E-44AA-9A77-91B30A1C0723}.Release|x86.ActiveCfg = Release|Any CPU
+		{767EAE63-513E-44AA-9A77-91B30A1C0723}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -2231,6 +2245,7 @@ Global
 		{FA246F42-7997-4500-99E4-8E34346D2B42} = {EC86EA97-FDE0-44A0-8A95-F0076988987F}
 		{6439396D-13EA-49B4-9FB6-421462A6F301} = {EC86EA97-FDE0-44A0-8A95-F0076988987F}
 		{F30E51E7-07AE-48DC-A45E-0BF86D4A77F6} = {EC86EA97-FDE0-44A0-8A95-F0076988987F}
+		{767EAE63-513E-44AA-9A77-91B30A1C0723} = {EC86EA97-FDE0-44A0-8A95-F0076988987F}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {82D57A23-9C32-4014-9AFB-25B38D08E1D1}
