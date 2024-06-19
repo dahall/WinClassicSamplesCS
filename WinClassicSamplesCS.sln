@@ -391,6 +391,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "KnownFolders", "Win7Samples
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ShellLibraryBackup", "Win7Samples\winui\shell\appplatform\ShellLibraryBackup\ShellLibraryBackup.csproj", "{767EAE63-513E-44AA-9A77-91B30A1C0723}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FileOperationProgressSink", "Win7Samples\winui\shell\appplatform\FIleOperationProgressSink\FileOperationProgressSink.csproj", "{07781429-2DC5-45AF-AFD6-23A60C8350EF}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -2083,6 +2085,18 @@ Global
 		{767EAE63-513E-44AA-9A77-91B30A1C0723}.Release|x64.Build.0 = Release|Any CPU
 		{767EAE63-513E-44AA-9A77-91B30A1C0723}.Release|x86.ActiveCfg = Release|Any CPU
 		{767EAE63-513E-44AA-9A77-91B30A1C0723}.Release|x86.Build.0 = Release|Any CPU
+		{07781429-2DC5-45AF-AFD6-23A60C8350EF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{07781429-2DC5-45AF-AFD6-23A60C8350EF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{07781429-2DC5-45AF-AFD6-23A60C8350EF}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{07781429-2DC5-45AF-AFD6-23A60C8350EF}.Debug|x64.Build.0 = Debug|Any CPU
+		{07781429-2DC5-45AF-AFD6-23A60C8350EF}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{07781429-2DC5-45AF-AFD6-23A60C8350EF}.Debug|x86.Build.0 = Debug|Any CPU
+		{07781429-2DC5-45AF-AFD6-23A60C8350EF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{07781429-2DC5-45AF-AFD6-23A60C8350EF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{07781429-2DC5-45AF-AFD6-23A60C8350EF}.Release|x64.ActiveCfg = Release|Any CPU
+		{07781429-2DC5-45AF-AFD6-23A60C8350EF}.Release|x64.Build.0 = Release|Any CPU
+		{07781429-2DC5-45AF-AFD6-23A60C8350EF}.Release|x86.ActiveCfg = Release|Any CPU
+		{07781429-2DC5-45AF-AFD6-23A60C8350EF}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -2247,6 +2261,7 @@ Global
 		{6439396D-13EA-49B4-9FB6-421462A6F301} = {EC86EA97-FDE0-44A0-8A95-F0076988987F}
 		{F30E51E7-07AE-48DC-A45E-0BF86D4A77F6} = {EC86EA97-FDE0-44A0-8A95-F0076988987F}
 		{767EAE63-513E-44AA-9A77-91B30A1C0723} = {EC86EA97-FDE0-44A0-8A95-F0076988987F}
+		{07781429-2DC5-45AF-AFD6-23A60C8350EF} = {EC86EA97-FDE0-44A0-8A95-F0076988987F}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {82D57A23-9C32-4014-9AFB-25B38D08E1D1}
