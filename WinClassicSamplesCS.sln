@@ -395,6 +395,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FileOperationProgressSink",
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CommonFileDialogApp", "Win7Samples\winui\shell\appplatform\commonfiledialog\CommonFileDialogApp.csproj", "{95912275-F9C8-44E9-9C73-F294CB331307}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CommonFileDialogModes", "Win7Samples\winui\shell\appplatform\CommonFileDialogModes\CommonFileDialogModes.csproj", "{EA492CBF-CA2B-45BC-A886-18D4B4B11772}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -2111,6 +2113,18 @@ Global
 		{95912275-F9C8-44E9-9C73-F294CB331307}.Release|x64.Build.0 = Release|Any CPU
 		{95912275-F9C8-44E9-9C73-F294CB331307}.Release|x86.ActiveCfg = Release|Any CPU
 		{95912275-F9C8-44E9-9C73-F294CB331307}.Release|x86.Build.0 = Release|Any CPU
+		{EA492CBF-CA2B-45BC-A886-18D4B4B11772}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EA492CBF-CA2B-45BC-A886-18D4B4B11772}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EA492CBF-CA2B-45BC-A886-18D4B4B11772}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{EA492CBF-CA2B-45BC-A886-18D4B4B11772}.Debug|x64.Build.0 = Debug|Any CPU
+		{EA492CBF-CA2B-45BC-A886-18D4B4B11772}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{EA492CBF-CA2B-45BC-A886-18D4B4B11772}.Debug|x86.Build.0 = Debug|Any CPU
+		{EA492CBF-CA2B-45BC-A886-18D4B4B11772}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EA492CBF-CA2B-45BC-A886-18D4B4B11772}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EA492CBF-CA2B-45BC-A886-18D4B4B11772}.Release|x64.ActiveCfg = Release|Any CPU
+		{EA492CBF-CA2B-45BC-A886-18D4B4B11772}.Release|x64.Build.0 = Release|Any CPU
+		{EA492CBF-CA2B-45BC-A886-18D4B4B11772}.Release|x86.ActiveCfg = Release|Any CPU
+		{EA492CBF-CA2B-45BC-A886-18D4B4B11772}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -2277,6 +2291,7 @@ Global
 		{767EAE63-513E-44AA-9A77-91B30A1C0723} = {EC86EA97-FDE0-44A0-8A95-F0076988987F}
 		{07781429-2DC5-45AF-AFD6-23A60C8350EF} = {EC86EA97-FDE0-44A0-8A95-F0076988987F}
 		{95912275-F9C8-44E9-9C73-F294CB331307} = {EC86EA97-FDE0-44A0-8A95-F0076988987F}
+		{EA492CBF-CA2B-45BC-A886-18D4B4B11772} = {EC86EA97-FDE0-44A0-8A95-F0076988987F}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {82D57A23-9C32-4014-9AFB-25B38D08E1D1}
