@@ -1,0 +1,12 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="System.Drawing.Common" Version="8.0.6" />
+    <PackageReference Include="Vanara.PInvoke.Ole" Version="4.0.2" />
+  </ItemGroup>
+
+</Project>
