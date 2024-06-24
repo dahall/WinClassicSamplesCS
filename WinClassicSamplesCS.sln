@@ -401,6 +401,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PropertySchemas", "Win7Samp
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ShellLibraryCommandLine", "Win7Samples\winui\shell\appplatform\ShellLibraryCommandLine\ShellLibraryCommandLine.csproj", "{F9B04A69-3E26-45D6-88FC-CE83E4294481}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DragDropVisuals", "Win7Samples\winui\shell\appplatform\DragDropVisuals\DragDropVisuals.csproj", "{9158CAAB-12BC-4CFC-81B2-86327FC28295}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -2153,6 +2155,18 @@ Global
 		{F9B04A69-3E26-45D6-88FC-CE83E4294481}.Release|x64.Build.0 = Release|Any CPU
 		{F9B04A69-3E26-45D6-88FC-CE83E4294481}.Release|x86.ActiveCfg = Release|Any CPU
 		{F9B04A69-3E26-45D6-88FC-CE83E4294481}.Release|x86.Build.0 = Release|Any CPU
+		{9158CAAB-12BC-4CFC-81B2-86327FC28295}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9158CAAB-12BC-4CFC-81B2-86327FC28295}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9158CAAB-12BC-4CFC-81B2-86327FC28295}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{9158CAAB-12BC-4CFC-81B2-86327FC28295}.Debug|x64.Build.0 = Debug|Any CPU
+		{9158CAAB-12BC-4CFC-81B2-86327FC28295}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{9158CAAB-12BC-4CFC-81B2-86327FC28295}.Debug|x86.Build.0 = Debug|Any CPU
+		{9158CAAB-12BC-4CFC-81B2-86327FC28295}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9158CAAB-12BC-4CFC-81B2-86327FC28295}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9158CAAB-12BC-4CFC-81B2-86327FC28295}.Release|x64.ActiveCfg = Release|Any CPU
+		{9158CAAB-12BC-4CFC-81B2-86327FC28295}.Release|x64.Build.0 = Release|Any CPU
+		{9158CAAB-12BC-4CFC-81B2-86327FC28295}.Release|x86.ActiveCfg = Release|Any CPU
+		{9158CAAB-12BC-4CFC-81B2-86327FC28295}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -2322,6 +2336,7 @@ Global
 		{EA492CBF-CA2B-45BC-A886-18D4B4B11772} = {EC86EA97-FDE0-44A0-8A95-F0076988987F}
 		{23E35A03-9176-4BA6-AE27-2BB1AB79467E} = {EC86EA97-FDE0-44A0-8A95-F0076988987F}
 		{F9B04A69-3E26-45D6-88FC-CE83E4294481} = {EC86EA97-FDE0-44A0-8A95-F0076988987F}
+		{9158CAAB-12BC-4CFC-81B2-86327FC28295} = {EC86EA97-FDE0-44A0-8A95-F0076988987F}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {82D57A23-9C32-4014-9AFB-25B38D08E1D1}

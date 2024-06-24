@@ -11,7 +11,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Vanara.PInvoke.Opc" Version="4.0.1" />
+    <PackageReference Include="Vanara.PInvoke.Opc" Version="4.0.2" />
   </ItemGroup>
 
 </Project>

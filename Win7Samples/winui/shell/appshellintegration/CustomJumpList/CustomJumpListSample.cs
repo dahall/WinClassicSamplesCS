@@ -112,7 +112,7 @@ public partial class CustomJumpListSample : Form
 			try
 			{
 				var psiCompare = poaRemoved.GetAt<IShellItem>(i);
-				if (psiCompare.Compare(psi, SICHINTF.SICHINT_CANONICAL) == 0)
+				if (psiCompare.Compare(psi, SICHINTF.SICHINT_CANONICAL, out _) == 0)
 					return true;
 			}
 			catch { }

@@ -92,13 +92,13 @@ internal class Program
 				if (fCreate)
 				{
 					// If we're in 'create' mode, instantiate a new IShellLibrary in memory.
-					plib = IidGetObj<IShellLibrary>(SHCreateLibrary);
+					plib = IidGetObj<IShellLibrary, HRESULT>(SHCreateLibrary);
 				}
 				else
 				{
 					// Otherwise, load it from the specified IShellItem.
 					STGM grfMode = fReadOnly ? (STGM.STGM_READ | STGM.STGM_SHARE_DENY_WRITE) : (STGM.STGM_READWRITE | STGM.STGM_SHARE_EXCLUSIVE);
-					plib = IidGetObj<IShellLibrary>((in Guid g, out object? o) => SHLoadLibraryFromItem(psiLibrary!, grfMode, g, out o));
+					plib = IidGetObj<IShellLibrary, HRESULT>((in Guid g, out object? o) => SHLoadLibraryFromItem(psiLibrary!, grfMode, g, out o));
 				}
 			}
 			catch (Exception ex) { hr = ex.HResult; }

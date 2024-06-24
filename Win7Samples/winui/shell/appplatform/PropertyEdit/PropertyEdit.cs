@@ -36,7 +36,7 @@ internal class Program
 	{
 		string szAbsPath = System.IO.Path.GetFullPath(Environment.ExpandEnvironmentVariables(pszFilename));
 		SHGetPropertyStoreFromParsingName(szAbsPath, default, gpsFlags, typeof(IPropertyStore).GUID, out var ppps).ThrowIfFailed();
-		return ppps!;
+		return (IPropertyStore)ppps!;
 	}
 
 	private static void GetPropertyValue(string pszFilename, string pszCanonicalName)

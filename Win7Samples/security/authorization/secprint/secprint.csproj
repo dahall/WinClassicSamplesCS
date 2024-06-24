@@ -5,8 +5,8 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Vanara.PInvoke.Printing" Version="4.0.1" />
-    <PackageReference Include="Vanara.PInvoke.Security" Version="4.0.1" />
+    <PackageReference Include="Vanara.PInvoke.Printing" Version="4.0.2" />
+    <PackageReference Include="Vanara.PInvoke.Security" Version="4.0.2" />
   </ItemGroup>
 
 </Project>
