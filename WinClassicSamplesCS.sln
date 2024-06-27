@@ -405,6 +405,10 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DragDropVisuals", "Win7Samp
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NamespaceTreeSample", "Win7Samples\winui\shell\appplatform\NamespaceTreeControl\NamespaceTreeSample.csproj", "{9E8D0E09-D4BD-4B2E-9F2E-AF84692D033C}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PowerSettingRegisterNotification", "PowerSettingRegisterNotification\PowerSettingRegisterNotification.csproj", "{3D61F54C-B572-4D22-8F5D-797183FAFBD6}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PowerGrid", "PowerGrid\PowerGrid.csproj", "{B39CD6BE-B892-41A4-83EC-CE84775D02C0}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -2181,6 +2185,30 @@ Global
 		{9E8D0E09-D4BD-4B2E-9F2E-AF84692D033C}.Release|x64.Build.0 = Release|Any CPU
 		{9E8D0E09-D4BD-4B2E-9F2E-AF84692D033C}.Release|x86.ActiveCfg = Release|Any CPU
 		{9E8D0E09-D4BD-4B2E-9F2E-AF84692D033C}.Release|x86.Build.0 = Release|Any CPU
+		{3D61F54C-B572-4D22-8F5D-797183FAFBD6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3D61F54C-B572-4D22-8F5D-797183FAFBD6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3D61F54C-B572-4D22-8F5D-797183FAFBD6}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{3D61F54C-B572-4D22-8F5D-797183FAFBD6}.Debug|x64.Build.0 = Debug|Any CPU
+		{3D61F54C-B572-4D22-8F5D-797183FAFBD6}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{3D61F54C-B572-4D22-8F5D-797183FAFBD6}.Debug|x86.Build.0 = Debug|Any CPU
+		{3D61F54C-B572-4D22-8F5D-797183FAFBD6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3D61F54C-B572-4D22-8F5D-797183FAFBD6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3D61F54C-B572-4D22-8F5D-797183FAFBD6}.Release|x64.ActiveCfg = Release|Any CPU
+		{3D61F54C-B572-4D22-8F5D-797183FAFBD6}.Release|x64.Build.0 = Release|Any CPU
+		{3D61F54C-B572-4D22-8F5D-797183FAFBD6}.Release|x86.ActiveCfg = Release|Any CPU
+		{3D61F54C-B572-4D22-8F5D-797183FAFBD6}.Release|x86.Build.0 = Release|Any CPU
+		{B39CD6BE-B892-41A4-83EC-CE84775D02C0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B39CD6BE-B892-41A4-83EC-CE84775D02C0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B39CD6BE-B892-41A4-83EC-CE84775D02C0}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{B39CD6BE-B892-41A4-83EC-CE84775D02C0}.Debug|x64.Build.0 = Debug|Any CPU
+		{B39CD6BE-B892-41A4-83EC-CE84775D02C0}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{B39CD6BE-B892-41A4-83EC-CE84775D02C0}.Debug|x86.Build.0 = Debug|Any CPU
+		{B39CD6BE-B892-41A4-83EC-CE84775D02C0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B39CD6BE-B892-41A4-83EC-CE84775D02C0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B39CD6BE-B892-41A4-83EC-CE84775D02C0}.Release|x64.ActiveCfg = Release|Any CPU
+		{B39CD6BE-B892-41A4-83EC-CE84775D02C0}.Release|x64.Build.0 = Release|Any CPU
+		{B39CD6BE-B892-41A4-83EC-CE84775D02C0}.Release|x86.ActiveCfg = Release|Any CPU
+		{B39CD6BE-B892-41A4-83EC-CE84775D02C0}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
