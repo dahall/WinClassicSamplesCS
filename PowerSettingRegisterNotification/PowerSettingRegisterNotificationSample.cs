@@ -16,6 +16,7 @@ Returns error status.
 using Vanara.Extensions;
 using Vanara.PInvoke;
 using static Vanara.PInvoke.PowrProf;
+using static Vanara.PInvoke.User32;
 
 
 //
@@ -23,7 +24,7 @@ using static Vanara.PInvoke.PowrProf;
 //
 
 DEVICE_NOTIFY_SUBSCRIBE_PARAMETERS pparams = new() { Callback = EnergySaverPowerSettingCallback };
-var error = PowerSettingRegisterNotification(GUID_ENERGY_SAVER_STATUS, DEVICE_NOTIFY.DEVICE_NOTIFY_CALLBACK,
+var error = PowerSettingRegisterNotification(GUID_ENERGY_SAVER_STATUS, PowrProf.DEVICE_NOTIFY.DEVICE_NOTIFY_CALLBACK,
 	pparams, out var registrationHandle);
 
 if (error != Win32Error.ERROR_SUCCESS)

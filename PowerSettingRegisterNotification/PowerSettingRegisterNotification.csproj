@@ -6,6 +6,7 @@
 
   <ItemGroup>
     <PackageReference Include="Vanara.PInvoke.PowrProf" Version="4.0.3" />
+    <PackageReference Include="Vanara.PInvoke.User32" Version="4.0.3" />
   </ItemGroup>
 
 </Project>
