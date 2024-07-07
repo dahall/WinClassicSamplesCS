@@ -411,6 +411,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AmsiStream", "AmsiStream\Am
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PowerSettingRegisterNotification", "PowerSettingRegisterNotification\PowerSettingRegisterNotification.csproj", "{FCA8A753-12F4-49F1-A244-608150DBFFBD}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AcousticEchoCancellation", "AcousticEchoCancellation\AcousticEchoCancellation.csproj", "{99C55CEA-C50E-4830-8965-F2BDF9A401B5}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -2223,6 +2225,18 @@ Global
 		{FCA8A753-12F4-49F1-A244-608150DBFFBD}.Release|x64.Build.0 = Release|Any CPU
 		{FCA8A753-12F4-49F1-A244-608150DBFFBD}.Release|x86.ActiveCfg = Release|Any CPU
 		{FCA8A753-12F4-49F1-A244-608150DBFFBD}.Release|x86.Build.0 = Release|Any CPU
+		{99C55CEA-C50E-4830-8965-F2BDF9A401B5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{99C55CEA-C50E-4830-8965-F2BDF9A401B5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{99C55CEA-C50E-4830-8965-F2BDF9A401B5}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{99C55CEA-C50E-4830-8965-F2BDF9A401B5}.Debug|x64.Build.0 = Debug|Any CPU
+		{99C55CEA-C50E-4830-8965-F2BDF9A401B5}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{99C55CEA-C50E-4830-8965-F2BDF9A401B5}.Debug|x86.Build.0 = Debug|Any CPU
+		{99C55CEA-C50E-4830-8965-F2BDF9A401B5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{99C55CEA-C50E-4830-8965-F2BDF9A401B5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{99C55CEA-C50E-4830-8965-F2BDF9A401B5}.Release|x64.ActiveCfg = Release|Any CPU
+		{99C55CEA-C50E-4830-8965-F2BDF9A401B5}.Release|x64.Build.0 = Release|Any CPU
+		{99C55CEA-C50E-4830-8965-F2BDF9A401B5}.Release|x86.ActiveCfg = Release|Any CPU
+		{99C55CEA-C50E-4830-8965-F2BDF9A401B5}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
