@@ -68,7 +68,7 @@ class Program
 		TimeSpan blockDuration = gridForecast.BlockDuration();
 
 		// Avoid division by zero.
-		if (blockDuration.count() == 0)
+		if (blockDuration == TimeSpan.Zero)
 		{
 			return 0;
 		}
@@ -90,7 +90,7 @@ class Program
 		int endBlock = GetForecastIndexContainingTime(gridForecast, endTime + gridForecast.BlockDuration());
 
 		double lowestSeverity = (std.numeric_limits<double>.max)();
-		DateTime timeWithLowestSeverity = (DateTime.max)();
+		DateTime timeWithLowestSeverity = DateTime.MaxValue;
 
 		for (int index = startBlock; index < endBlock; ++index)
 		{
