@@ -133,7 +133,7 @@ public abstract class CCmdBase
 		{
 			// process prefixed options using registered handlers
 			hr = HRESULT.S_OK;
-			int iArg = 0, idx = 0;
+			int iArg = 0;
 			while (hr.Succeeded && iArg < ppszArgs.Length && !string.IsNullOrEmpty(ppszArgs[iArg]) && ppszArgs[iArg][0] is '-' or '/')
 			{
 				string[] splits = ppszArgs[iArg].Substring(1).Split(':');

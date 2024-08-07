@@ -8,8 +8,8 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Vanara.PInvoke.Shell32" Version="4.0.2" />
-    <PackageReference Include="Vanara.Windows.Extensions" Version="4.0.2" />
+    <PackageReference Include="Vanara.PInvoke.Shell32" Version="4.0.3" />
+    <PackageReference Include="Vanara.Windows.Extensions" Version="4.0.3" />
   </ItemGroup>
 
   <ItemGroup>

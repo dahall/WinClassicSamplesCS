@@ -11,9 +11,9 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Vanara.PInvoke.IMAPI" Version="4.0.2" />
-    <PackageReference Include="Vanara.PInvoke.Ole" Version="4.0.2" />
-    <PackageReference Include="Vanara.PInvoke.Shlwapi" Version="4.0.2" />
+    <PackageReference Include="Vanara.PInvoke.IMAPI" Version="4.0.3" />
+    <PackageReference Include="Vanara.PInvoke.Ole" Version="4.0.3" />
+    <PackageReference Include="Vanara.PInvoke.Shlwapi" Version="4.0.3" />
   </ItemGroup>
 
 </Project>

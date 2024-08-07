@@ -479,10 +479,11 @@ internal class Program
 		using ComReleaser<IKnownFolderManager> pkfm = new(new());
 		using ComReleaser<IKnownFolder> pkf = new(pkfm.Item.GetFolder(kfid));
 		string pszPath = pkf.Item.GetPath(0);
+		using var pPath = SafeCoTaskMemHandle.CreateFromStringList([pszPath]);
 		SHFILEOPSTRUCT fos = new()
 		{
 			wFunc = ShellFileOperation.FO_DELETE,
-			pFrom = [pszPath],
+			pFrom = pPath,
 			fFlags = FILEOP_FLAGS.FOF_NOCONFIRMATION | FILEOP_FLAGS.FOF_NOERRORUI | FILEOP_FLAGS.FOF_SILENT
 		};
 		if (0 != SHFileOperation(ref fos))

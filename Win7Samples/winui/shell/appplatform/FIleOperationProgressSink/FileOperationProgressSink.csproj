@@ -5,8 +5,8 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="System.Drawing.Common" Version="8.0.6" />
-    <PackageReference Include="Vanara.Library" Version="4.0.2" />
+    <PackageReference Include="System.Drawing.Common" Version="8.0.7" />
+    <PackageReference Include="Vanara.Library" Version="4.0.3" />
   </ItemGroup>
 
   <ItemGroup>

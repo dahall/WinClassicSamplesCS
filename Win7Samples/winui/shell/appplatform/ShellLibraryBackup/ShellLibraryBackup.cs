@@ -31,7 +31,6 @@ internal class Program
 	[ComVisible(true)]
 	internal class CNameSpaceWalkCB : INamespaceWalkCB2
 	{
-		private long cRef = 1;
 		private int iCurTreeDepth = 0;
 		private HTREEITEM[] rghTreeParentItemArray = new HTREEITEM[MAX_TREE_DEPTH];
 		private HWND hwndTreeView;

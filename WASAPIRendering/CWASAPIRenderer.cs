@@ -13,13 +13,11 @@ internal readonly struct RenderBuffer
 
 internal class CWASAPIRenderer : IMMNotificationClient, IAudioSessionEvents
 {
-	private readonly bool enableAudioViewManagerService, enableStreamSwitch, isDefaultDevice;
+	private readonly bool enableAudioViewManagerService, enableStreamSwitch;
 	private readonly ERole endpointRole;
-	private readonly ERole role;
 	private IAudioClient audioClient;
 	private SafeEventHandle audioSamplesReadyEvent, shutdownEvent, streamSwitchEvent;
 	private IAudioSessionControl? audioSessionControl;
-	private IMMDevice? device;
 	private IMMDeviceEnumerator deviceEnumerator;
 	private IMMDevice endpoint;
 	private uint engineLatencyInMS;

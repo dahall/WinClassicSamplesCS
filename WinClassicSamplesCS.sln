@@ -415,7 +415,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AcousticEchoCancellation", 
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AmbientLightAware", "AmbientLightAware\AmbientLightAware.csproj", "{B9010CA7-AD86-4BE6-B5A8-4DE87C4A8E4B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ClsIDCallback", "ClsIDCallback\ClsIDCallback.csproj", "{27C28009-99AD-4987-991D-44E754AD20E0}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ClsIDCallback", "ClsIDCallback\ClsIDCallback.csproj", "{27C28009-99AD-4987-991D-44E754AD20E0}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CustomResourceManager", "CustomResourceManager\CustomResourceManager.csproj", "{6109C490-CDE7-46CD-9EA3-30024FC82BAC}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -2194,7 +2196,6 @@ Global
 		{9E8D0E09-D4BD-4B2E-9F2E-AF84692D033C}.Release|x86.ActiveCfg = Release|Any CPU
 		{9E8D0E09-D4BD-4B2E-9F2E-AF84692D033C}.Release|x86.Build.0 = Release|Any CPU
 		{F5C32D06-8110-4AB6-9FCB-9B2416A3C9B4}.Debug|Any CPU.ActiveCfg = Debug|x64
-		{F5C32D06-8110-4AB6-9FCB-9B2416A3C9B4}.Debug|Any CPU.Build.0 = Debug|x64
 		{F5C32D06-8110-4AB6-9FCB-9B2416A3C9B4}.Debug|x64.ActiveCfg = Debug|x64
 		{F5C32D06-8110-4AB6-9FCB-9B2416A3C9B4}.Debug|x64.Build.0 = Debug|x64
 		{F5C32D06-8110-4AB6-9FCB-9B2416A3C9B4}.Debug|x86.ActiveCfg = Debug|x64
@@ -2265,6 +2266,18 @@ Global
 		{27C28009-99AD-4987-991D-44E754AD20E0}.Release|x64.Build.0 = Release|Any CPU
 		{27C28009-99AD-4987-991D-44E754AD20E0}.Release|x86.ActiveCfg = Release|Any CPU
 		{27C28009-99AD-4987-991D-44E754AD20E0}.Release|x86.Build.0 = Release|Any CPU
+		{6109C490-CDE7-46CD-9EA3-30024FC82BAC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6109C490-CDE7-46CD-9EA3-30024FC82BAC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6109C490-CDE7-46CD-9EA3-30024FC82BAC}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{6109C490-CDE7-46CD-9EA3-30024FC82BAC}.Debug|x64.Build.0 = Debug|Any CPU
+		{6109C490-CDE7-46CD-9EA3-30024FC82BAC}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{6109C490-CDE7-46CD-9EA3-30024FC82BAC}.Debug|x86.Build.0 = Debug|Any CPU
+		{6109C490-CDE7-46CD-9EA3-30024FC82BAC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6109C490-CDE7-46CD-9EA3-30024FC82BAC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6109C490-CDE7-46CD-9EA3-30024FC82BAC}.Release|x64.ActiveCfg = Release|Any CPU
+		{6109C490-CDE7-46CD-9EA3-30024FC82BAC}.Release|x64.Build.0 = Release|Any CPU
+		{6109C490-CDE7-46CD-9EA3-30024FC82BAC}.Release|x86.ActiveCfg = Release|Any CPU
+		{6109C490-CDE7-46CD-9EA3-30024FC82BAC}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
