@@ -421,6 +421,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CustomResourceManager", "Cu
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DetectBootSector", "DetectBootSector\DetectBootSector.csproj", "{834C2A23-994D-4298-9263-7BE9334022BD}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DedupBackupRestore", "DataDedupBackupRestore\DedupBackupRestore.csproj", "{D7811CC3-6893-4D7E-A642-196B329574BC}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -2292,6 +2294,16 @@ Global
 		{834C2A23-994D-4298-9263-7BE9334022BD}.Release|x64.Build.0 = Release|Any CPU
 		{834C2A23-994D-4298-9263-7BE9334022BD}.Release|x86.ActiveCfg = Release|Any CPU
 		{834C2A23-994D-4298-9263-7BE9334022BD}.Release|x86.Build.0 = Release|Any CPU
+		{D7811CC3-6893-4D7E-A642-196B329574BC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D7811CC3-6893-4D7E-A642-196B329574BC}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{D7811CC3-6893-4D7E-A642-196B329574BC}.Debug|x64.Build.0 = Debug|Any CPU
+		{D7811CC3-6893-4D7E-A642-196B329574BC}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{D7811CC3-6893-4D7E-A642-196B329574BC}.Debug|x86.Build.0 = Debug|Any CPU
+		{D7811CC3-6893-4D7E-A642-196B329574BC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D7811CC3-6893-4D7E-A642-196B329574BC}.Release|x64.ActiveCfg = Release|Any CPU
+		{D7811CC3-6893-4D7E-A642-196B329574BC}.Release|x64.Build.0 = Release|Any CPU
+		{D7811CC3-6893-4D7E-A642-196B329574BC}.Release|x86.ActiveCfg = Release|Any CPU
+		{D7811CC3-6893-4D7E-A642-196B329574BC}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
