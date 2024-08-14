@@ -1,0 +1,154 @@
+// Microsoft Visual C++ generated resource script.
+//
+#include "resource.h"
+
+#define APSTUDIO_READONLY_SYMBOLS
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 2 resource.
+//
+#ifndef APSTUDIO_INVOKED
+#include "targetver.h"
+#endif
+#define APSTUDIO_HIDDEN_SYMBOLS
+#include "windows.h"
+#undef APSTUDIO_HIDDEN_SYMBOLS
+
+/////////////////////////////////////////////////////////////////////////////
+#undef APSTUDIO_READONLY_SYMBOLS
+
+/////////////////////////////////////////////////////////////////////////////
+// English (United States) resources
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)
+LANGUAGE LANG_ENGLISH, SUBLANG_ENGLISH_US
+#pragma code_page(1252)
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Menu
+//
+
+IDC_MAINMENU MENU
+BEGIN
+    POPUP "&File"
+    BEGIN
+        POPUP "Item 1"
+        BEGIN
+            MENUITEM "Sub Item 1",                  ID_ITEM1_SUBITEM1
+            MENUITEM "Sub Item 2",                  ID_ITEM1_SUBITEM2
+            MENUITEM "Sub Item 3",                  ID_ITEM1_SUBITEM3
+        END
+        MENUITEM "Item 2",                      ID_FILE_ITEM2
+        MENUITEM "Item 3",                      ID_FILE_ITEM3
+        MENUITEM "E&xit",                       IDM_EXIT
+    END
+    POPUP "Edit"
+    BEGIN
+        POPUP "Edit Item 1"
+        BEGIN
+            MENUITEM "Edit Sub Item 1",             ID_EDITITEM1_EDITSUBITEM1
+            MENUITEM "Edit Sub Item 2",             ID_EDITITEM1_EDITSUBITEM2
+            MENUITEM "Edit Sub Item 3",             ID_EDITITEM1_EDITSUBITEM3
+        END
+        MENUITEM "Edit Item 2",                 ID_EDIT_EDITITEM2
+        MENUITEM "Edit Item 3",                 ID_EDIT_EDITITEM3
+    END
+    POPUP "View"
+    BEGIN
+        POPUP "View Item 1"
+        BEGIN
+            MENUITEM "View Sub Item 1",             ID_VIEWITEM1_VIEWSUBITEM1
+            MENUITEM "View Sub Item 2",             ID_VIEWITEM1_VIEWSUBITEM2
+            MENUITEM "View Sub Item 3",             ID_VIEWITEM1_VIEWSUBITEM3
+        END
+        MENUITEM "View Item 2",                 ID_VIEW_VIEWITEM2
+        MENUITEM "View Item 3",                 ID_VIEW_VIEWITEM3
+    END
+END
+
+
+#ifdef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// TEXTINCLUDE
+//
+
+1 TEXTINCLUDE 
+BEGIN
+    "resource.h\0"
+END
+
+2 TEXTINCLUDE 
+BEGIN
+    "#ifndef APSTUDIO_INVOKED\r\n"
+    "#include ""targetver.h""\r\n"
+    "#endif\r\n"
+    "#define APSTUDIO_HIDDEN_SYMBOLS\r\n"
+    "#include ""windows.h""\r\n"
+    "#undef APSTUDIO_HIDDEN_SYMBOLS\r\n"
+    "\0"
+END
+
+3 TEXTINCLUDE 
+BEGIN
+    "\r\n"
+    "\0"
+END
+
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Dialog
+//
+
+IDD_DIALOG1 DIALOGEX 0, 0, 304, 339
+STYLE DS_SETFONT | DS_MODALFRAME | DS_CENTER | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "High DPI Awareness Sample"
+FONT 9, "Segoe UI", 400, 0, 0x1
+BEGIN
+    PUSHBUTTON      "Create a DPI unaware window\r\n(DPI_AWARENESS_CONTEXT_UNAWARE)",IDC_BUTTON_UNAWARE,7,111,290,30,BS_MULTILINE
+    PUSHBUTTON      "Create a System DPI aware window\r\n(DPI_AWARENESS_CONTEXT_SYSTEM_AWARE)",IDC_BUTTON_SYSTEM,7,148,290,30,BS_MULTILINE
+    PUSHBUTTON      "Create a Windows 8.1 era Per-Monitor DPI aware window\r\n(DPI_AWARENESS_CONTEXT_PER_MONITOR)",IDC_BUTTON_81,7,186,290,30,BS_MULTILINE
+	PUSHBUTTON      "Create a Windows 10 (1607) Per-Monitor DPI aware window with non-client scaling\r\n(DPI_AWARENESS_CONTEXT_PER_MONITOR_AWARE + EnableNonClientDpiScaling())", IDC_BUTTON_1607, 7, 223, 290, 33, BS_MULTILINE
+    PUSHBUTTON      "Create a Windows 10 (1703) Per-Monitor DPI aware v2 window\r\n(DPI_AWARENESS_CONTEXT_PER_MONITOR_V2)",IDC_BUTTON_1703,7,264,290,30,BS_MULTILINE
+    EDITTEXT        IDC_EDIT1,7,7,290,95,ES_MULTILINE | ES_READONLY | NOT WS_BORDER
+    PUSHBUTTON      "Create a Windows 10 (1803) Per-Monitor DPI aware v2 window with mixed DPI hosting\r\n(DPI_AWARENESS_CONTEXT_PER_MONITOR_V2 + DPI_HOSTING_BEHAVIOR_MIXED)",IDC_BUTTON_1803,7,302,290,30,BS_MULTILINE
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// DESIGNINFO
+//
+
+#ifdef APSTUDIO_INVOKED
+GUIDELINES DESIGNINFO
+BEGIN
+    IDD_DIALOG1, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 297
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 332
+    END
+END
+#endif    // APSTUDIO_INVOKED
+
+#endif    // English (United States) resources
+/////////////////////////////////////////////////////////////////////////////
+
+
+
+#ifndef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 3 resource.
+//
+
+
+/////////////////////////////////////////////////////////////////////////////
+#endif    // not APSTUDIO_INVOKED
+
