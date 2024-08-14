@@ -425,9 +425,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DedupBackupRestore", "DataD
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DPIAwarenessPerWindow", "DPIAwarenessPerWindow", "{A5A686ED-B261-440D-B990-2A9C213736B7}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PluginDLL", "DPIAwarenessPerWindow\PluginDLL\PluginDLL.csproj", "{CFD41FDC-6254-4E88-8567-DA5A394C3E26}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PluginDLL", "DPIAwarenessPerWindow\PluginDLL\PluginDLL.csproj", "{CFD41FDC-6254-4E88-8567-DA5A394C3E26}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DpiAwarenessContext", "DPIAwarenessPerWindow\client\DpiAwarenessContext.csproj", "{CC693C31-7770-434C-9CBA-AC7B747B6EF8}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FmapiVersionCheck", "FmapiVersionCheck\FmapiVersionCheck.csproj", "{1F02F5B6-AC0C-442C-99A4-A6A73F639D2E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -2334,6 +2336,18 @@ Global
 		{CC693C31-7770-434C-9CBA-AC7B747B6EF8}.Release|x64.Build.0 = Release|Any CPU
 		{CC693C31-7770-434C-9CBA-AC7B747B6EF8}.Release|x86.ActiveCfg = Release|Any CPU
 		{CC693C31-7770-434C-9CBA-AC7B747B6EF8}.Release|x86.Build.0 = Release|Any CPU
+		{1F02F5B6-AC0C-442C-99A4-A6A73F639D2E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1F02F5B6-AC0C-442C-99A4-A6A73F639D2E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1F02F5B6-AC0C-442C-99A4-A6A73F639D2E}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{1F02F5B6-AC0C-442C-99A4-A6A73F639D2E}.Debug|x64.Build.0 = Debug|Any CPU
+		{1F02F5B6-AC0C-442C-99A4-A6A73F639D2E}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{1F02F5B6-AC0C-442C-99A4-A6A73F639D2E}.Debug|x86.Build.0 = Debug|Any CPU
+		{1F02F5B6-AC0C-442C-99A4-A6A73F639D2E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1F02F5B6-AC0C-442C-99A4-A6A73F639D2E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1F02F5B6-AC0C-442C-99A4-A6A73F639D2E}.Release|x64.ActiveCfg = Release|Any CPU
+		{1F02F5B6-AC0C-442C-99A4-A6A73F639D2E}.Release|x64.Build.0 = Release|Any CPU
+		{1F02F5B6-AC0C-442C-99A4-A6A73F639D2E}.Release|x86.ActiveCfg = Release|Any CPU
+		{1F02F5B6-AC0C-442C-99A4-A6A73F639D2E}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
