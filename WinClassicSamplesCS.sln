@@ -433,7 +433,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FmapiVersionCheck", "FmapiV
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HangulDecomposition", "HangulDecomposition\HangulDecomposition.csproj", "{7192B30C-8AF1-4409-98DC-EE7A6BDEDE9A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SpellCheckerClient", "SpellCheckerClient\SpellCheckerClient.csproj", "{E4AE24EC-5421-4229-8F3B-B5822694BA3A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SpellCheckerClient", "SpellCheckerClient\SpellCheckerClient.csproj", "{E4AE24EC-5421-4229-8F3B-B5822694BA3A}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SpellCheckerProvider", "SpellCheckerProvider\SpellCheckerProvider.csproj", "{09B9A3F9-8C78-46D6-8A7F-78D9B9D35227}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -2376,6 +2378,18 @@ Global
 		{E4AE24EC-5421-4229-8F3B-B5822694BA3A}.Release|x64.Build.0 = Release|Any CPU
 		{E4AE24EC-5421-4229-8F3B-B5822694BA3A}.Release|x86.ActiveCfg = Release|Any CPU
 		{E4AE24EC-5421-4229-8F3B-B5822694BA3A}.Release|x86.Build.0 = Release|Any CPU
+		{09B9A3F9-8C78-46D6-8A7F-78D9B9D35227}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{09B9A3F9-8C78-46D6-8A7F-78D9B9D35227}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{09B9A3F9-8C78-46D6-8A7F-78D9B9D35227}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{09B9A3F9-8C78-46D6-8A7F-78D9B9D35227}.Debug|x64.Build.0 = Debug|Any CPU
+		{09B9A3F9-8C78-46D6-8A7F-78D9B9D35227}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{09B9A3F9-8C78-46D6-8A7F-78D9B9D35227}.Debug|x86.Build.0 = Debug|Any CPU
+		{09B9A3F9-8C78-46D6-8A7F-78D9B9D35227}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{09B9A3F9-8C78-46D6-8A7F-78D9B9D35227}.Release|Any CPU.Build.0 = Release|Any CPU
+		{09B9A3F9-8C78-46D6-8A7F-78D9B9D35227}.Release|x64.ActiveCfg = Release|Any CPU
+		{09B9A3F9-8C78-46D6-8A7F-78D9B9D35227}.Release|x64.Build.0 = Release|Any CPU
+		{09B9A3F9-8C78-46D6-8A7F-78D9B9D35227}.Release|x86.ActiveCfg = Release|Any CPU
+		{09B9A3F9-8C78-46D6-8A7F-78D9B9D35227}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
