@@ -447,6 +447,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "InjectTouch", "InjectTouchP
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WpdApiSample", "PortableDeviceCOM\WpdApiSample.csproj", "{0584544B-2F65-41A2-A35B-0103AC7FB3F9}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CipherEncryptionDecryption", "Security\CipherEncryptionDecryption\CipherEncryptionDecryption.csproj", "{83900DE4-7D19-40E8-A196-7597B1727DBF}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -2460,6 +2462,18 @@ Global
 		{0584544B-2F65-41A2-A35B-0103AC7FB3F9}.Release|x64.Build.0 = Release|Any CPU
 		{0584544B-2F65-41A2-A35B-0103AC7FB3F9}.Release|x86.ActiveCfg = Release|Any CPU
 		{0584544B-2F65-41A2-A35B-0103AC7FB3F9}.Release|x86.Build.0 = Release|Any CPU
+		{83900DE4-7D19-40E8-A196-7597B1727DBF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{83900DE4-7D19-40E8-A196-7597B1727DBF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{83900DE4-7D19-40E8-A196-7597B1727DBF}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{83900DE4-7D19-40E8-A196-7597B1727DBF}.Debug|x64.Build.0 = Debug|Any CPU
+		{83900DE4-7D19-40E8-A196-7597B1727DBF}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{83900DE4-7D19-40E8-A196-7597B1727DBF}.Debug|x86.Build.0 = Debug|Any CPU
+		{83900DE4-7D19-40E8-A196-7597B1727DBF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{83900DE4-7D19-40E8-A196-7597B1727DBF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{83900DE4-7D19-40E8-A196-7597B1727DBF}.Release|x64.ActiveCfg = Release|Any CPU
+		{83900DE4-7D19-40E8-A196-7597B1727DBF}.Release|x64.Build.0 = Release|Any CPU
+		{83900DE4-7D19-40E8-A196-7597B1727DBF}.Release|x86.ActiveCfg = Release|Any CPU
+		{83900DE4-7D19-40E8-A196-7597B1727DBF}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -2633,6 +2647,7 @@ Global
 		{9E8D0E09-D4BD-4B2E-9F2E-AF84692D033C} = {EC86EA97-FDE0-44A0-8A95-F0076988987F}
 		{CFD41FDC-6254-4E88-8567-DA5A394C3E26} = {A5A686ED-B261-440D-B990-2A9C213736B7}
 		{CC693C31-7770-434C-9CBA-AC7B747B6EF8} = {A5A686ED-B261-440D-B990-2A9C213736B7}
+		{83900DE4-7D19-40E8-A196-7597B1727DBF} = {BDA50AE4-E6AF-4861-A580-5A8ED29DBE37}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {82D57A23-9C32-4014-9AFB-25B38D08E1D1}
