@@ -451,6 +451,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CipherEncryptionDecryption"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DataProtection", "Security\DataProtection\DataProtection.csproj", "{BC2C0459-26F9-4454-AF2D-BA69C4D364C8}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DhOakleyGroup1", "Security\DhOakleyGroup1\DhOakleyGroup1.csproj", "{9230A8C8-5FAA-4BC6-A860-A60A34D5EFCA}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -2488,6 +2490,18 @@ Global
 		{BC2C0459-26F9-4454-AF2D-BA69C4D364C8}.Release|x64.Build.0 = Release|Any CPU
 		{BC2C0459-26F9-4454-AF2D-BA69C4D364C8}.Release|x86.ActiveCfg = Release|Any CPU
 		{BC2C0459-26F9-4454-AF2D-BA69C4D364C8}.Release|x86.Build.0 = Release|Any CPU
+		{9230A8C8-5FAA-4BC6-A860-A60A34D5EFCA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9230A8C8-5FAA-4BC6-A860-A60A34D5EFCA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9230A8C8-5FAA-4BC6-A860-A60A34D5EFCA}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{9230A8C8-5FAA-4BC6-A860-A60A34D5EFCA}.Debug|x64.Build.0 = Debug|Any CPU
+		{9230A8C8-5FAA-4BC6-A860-A60A34D5EFCA}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{9230A8C8-5FAA-4BC6-A860-A60A34D5EFCA}.Debug|x86.Build.0 = Debug|Any CPU
+		{9230A8C8-5FAA-4BC6-A860-A60A34D5EFCA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9230A8C8-5FAA-4BC6-A860-A60A34D5EFCA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9230A8C8-5FAA-4BC6-A860-A60A34D5EFCA}.Release|x64.ActiveCfg = Release|Any CPU
+		{9230A8C8-5FAA-4BC6-A860-A60A34D5EFCA}.Release|x64.Build.0 = Release|Any CPU
+		{9230A8C8-5FAA-4BC6-A860-A60A34D5EFCA}.Release|x86.ActiveCfg = Release|Any CPU
+		{9230A8C8-5FAA-4BC6-A860-A60A34D5EFCA}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -2663,6 +2677,7 @@ Global
 		{CC693C31-7770-434C-9CBA-AC7B747B6EF8} = {A5A686ED-B261-440D-B990-2A9C213736B7}
 		{83900DE4-7D19-40E8-A196-7597B1727DBF} = {BDA50AE4-E6AF-4861-A580-5A8ED29DBE37}
 		{BC2C0459-26F9-4454-AF2D-BA69C4D364C8} = {BDA50AE4-E6AF-4861-A580-5A8ED29DBE37}
+		{9230A8C8-5FAA-4BC6-A860-A60A34D5EFCA} = {BDA50AE4-E6AF-4861-A580-5A8ED29DBE37}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {82D57A23-9C32-4014-9AFB-25B38D08E1D1}
