@@ -5,9 +5,9 @@
   </PropertyGroup>
 
   <ItemGroup>
-	<PackageReference Include="Vanara.PInvoke.Drt" Version="4.0.3" />
-	<PackageReference Include="Vanara.PInvoke.FirewallApi" Version="4.0.3" />
-	<PackageReference Include="Vanara.PInvoke.Security" Version="4.0.3" />
+	<PackageReference Include="Vanara.PInvoke.Drt" Version="4.0.4" />
+	<PackageReference Include="Vanara.PInvoke.FirewallApi" Version="4.0.4" />
+	<PackageReference Include="Vanara.PInvoke.Security" Version="4.0.4" />
   </ItemGroup>
 
 </Project>

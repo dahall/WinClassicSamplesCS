@@ -9,9 +9,9 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Vanara.PInvoke.IpHlpApi" Version="4.0.3" />
-    <PackageReference Include="Vanara.PInvoke.NetListMgr" Version="4.0.3" />
-    <PackageReference Include="Vanara.PInvoke.Ws2_32" Version="4.0.3" />
+    <PackageReference Include="Vanara.PInvoke.IpHlpApi" Version="4.0.4" />
+    <PackageReference Include="Vanara.PInvoke.NetListMgr" Version="4.0.4" />
+    <PackageReference Include="Vanara.PInvoke.Ws2_32" Version="4.0.4" />
   </ItemGroup>
 
 </Project>

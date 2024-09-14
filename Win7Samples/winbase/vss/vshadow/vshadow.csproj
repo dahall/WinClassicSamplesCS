@@ -6,9 +6,9 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Vanara.PInvoke.VssApi" Version="4.0.3" />
-    <PackageReference Include="Vanara.PInvoke.Ole" Version="4.0.3" />
-    <PackageReference Include="Vanara.PInvoke.Shared" Version="4.0.3" />
+    <PackageReference Include="Vanara.PInvoke.VssApi" Version="4.0.4" />
+    <PackageReference Include="Vanara.PInvoke.Ole" Version="4.0.4" />
+    <PackageReference Include="Vanara.PInvoke.Shared" Version="4.0.4" />
   </ItemGroup>
 
 </Project>

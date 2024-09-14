@@ -6,8 +6,8 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Vanara.PInvoke.NetListMgr" Version="4.0.3" />
-    <PackageReference Include="Vanara.PInvoke.WinHTTP" Version="4.0.3" />
+    <PackageReference Include="Vanara.PInvoke.NetListMgr" Version="4.0.4" />
+    <PackageReference Include="Vanara.PInvoke.WinHTTP" Version="4.0.4" />
   </ItemGroup>
 
 </Project>

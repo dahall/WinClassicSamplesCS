@@ -5,8 +5,8 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Vanara.PInvoke.Kernel32" Version="4.0.3" />
-    <PackageReference Include="Vanara.PInvoke.RstrtMgr" Version="4.0.3" />
+    <PackageReference Include="Vanara.PInvoke.Kernel32" Version="4.0.4" />
+    <PackageReference Include="Vanara.PInvoke.RstrtMgr" Version="4.0.4" />
   </ItemGroup>
 
 </Project>

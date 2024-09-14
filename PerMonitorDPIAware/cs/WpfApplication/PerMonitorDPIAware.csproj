@@ -157,10 +157,10 @@
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Vanara.PInvoke.SHCore">
-      <Version>4.0.3</Version>
+      <Version>4.0.4</Version>
     </PackageReference>
     <PackageReference Include="Vanara.PInvoke.User32">
-      <Version>4.0.3</Version>
+      <Version>4.0.4</Version>
     </PackageReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
