@@ -1,0 +1,26 @@
+﻿using Vanara.DirectoryServices;
+
+///////////////////////////////////
+// Bind to the object
+/////////////////////////////////
+var pCont = (ADsComputer)ADsObject.GetObject($"WinNT://{Environment.MachineName}");
+
+///////////////////////////////////
+// Build variant filter
+/////////////////////////////////
+string[] pszFilter = { "user", "group" };
+
+///////////////////////////////////
+// Set the filter
+/////////////////////////////////
+pCont.Children.Filter = pszFilter;
+
+////////////////////////////////////////////
+// Enumerate the result
+///////////////////////////////////////////////
+foreach (var pChild in pCont.Children)
+{
+	Console.WriteLine("{0}\t\t({1})", pChild.Name, pChild.Class);
+}
+
+return 0;
