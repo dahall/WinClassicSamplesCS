@@ -499,7 +499,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DsSrch", "Win7Samples\netds
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "adscmd", "Win7Samples\netds\adsi\general\adscmd\adscmd.csproj", "{68A84AE9-6CE9-4F46-B1BF-57ADD14F0B00}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ADQI", "Win7Samples\netds\adsi\general\ADQI\ADQI.csproj", "{10F9FC1C-4286-4963-8E82-9934A2505618}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ADQI", "Win7Samples\netds\adsi\general\ADQI\ADQI.csproj", "{10F9FC1C-4286-4963-8E82-9934A2505618}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "enablerouter", "Win7Samples\netds\iphelp\enablerouter\enablerouter.csproj", "{FEC7B1D1-4B5E-4E89-8856-3DCD1E0C4773}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -2802,6 +2804,18 @@ Global
 		{10F9FC1C-4286-4963-8E82-9934A2505618}.Release|x64.Build.0 = Release|Any CPU
 		{10F9FC1C-4286-4963-8E82-9934A2505618}.Release|x86.ActiveCfg = Release|Any CPU
 		{10F9FC1C-4286-4963-8E82-9934A2505618}.Release|x86.Build.0 = Release|Any CPU
+		{FEC7B1D1-4B5E-4E89-8856-3DCD1E0C4773}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FEC7B1D1-4B5E-4E89-8856-3DCD1E0C4773}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FEC7B1D1-4B5E-4E89-8856-3DCD1E0C4773}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{FEC7B1D1-4B5E-4E89-8856-3DCD1E0C4773}.Debug|x64.Build.0 = Debug|Any CPU
+		{FEC7B1D1-4B5E-4E89-8856-3DCD1E0C4773}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{FEC7B1D1-4B5E-4E89-8856-3DCD1E0C4773}.Debug|x86.Build.0 = Debug|Any CPU
+		{FEC7B1D1-4B5E-4E89-8856-3DCD1E0C4773}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FEC7B1D1-4B5E-4E89-8856-3DCD1E0C4773}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FEC7B1D1-4B5E-4E89-8856-3DCD1E0C4773}.Release|x64.ActiveCfg = Release|Any CPU
+		{FEC7B1D1-4B5E-4E89-8856-3DCD1E0C4773}.Release|x64.Build.0 = Release|Any CPU
+		{FEC7B1D1-4B5E-4E89-8856-3DCD1E0C4773}.Release|x86.ActiveCfg = Release|Any CPU
+		{FEC7B1D1-4B5E-4E89-8856-3DCD1E0C4773}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -3001,6 +3015,7 @@ Global
 		{AAAC7DCB-48AC-4693-9CEB-90D5E4FD76E3} = {DA6C426C-065D-4D43-BC2C-D30E6C04374C}
 		{68A84AE9-6CE9-4F46-B1BF-57ADD14F0B00} = {DA6C426C-065D-4D43-BC2C-D30E6C04374C}
 		{10F9FC1C-4286-4963-8E82-9934A2505618} = {DA6C426C-065D-4D43-BC2C-D30E6C04374C}
+		{FEC7B1D1-4B5E-4E89-8856-3DCD1E0C4773} = {231BEB1C-7F5A-4401-B2DE-1D21A7562924}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {82D57A23-9C32-4014-9AFB-25B38D08E1D1}
