@@ -246,7 +246,8 @@ void PrintIpStats(in MIB_IPSTATS pStats)
 {
 	Console.Write("\nIP Statistics:\n");
 
-	Console.Write("" +		"  dwForwarding       = {0}\n" +
+	Console.Write("" +
+		"  dwForwarding       = {0}\n" +
 		"  dwDefaultTTL       = {1}\n" +
 		"  dwInReceives       = {2}\n" +
 		"  dwInHdrErrors      = {3}\n" +
@@ -352,7 +353,8 @@ void PrintTcpStats(in MIB_TCPSTATS pStats)
 void PrintUdpStats(in MIB_UDPSTATS pStats)
 {
 	Console.Write("\nUDP Statistics\n");
-	Console.Write("" +		"  dwInDatagrams      = {0}\n" +
+	Console.Write("" +
+		"  dwInDatagrams      = {0}\n" +
 		"  dwNoPorts          = {1}\n" +
 		"  dwInErrors         = {2}\n" +
 		"  dwOutDatagrams     = {3}\n" +

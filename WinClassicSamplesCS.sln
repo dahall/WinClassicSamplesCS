@@ -507,6 +507,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ipstat", "Win7Samples\netds
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ipconfig", "Win7Samples\netds\iphelp\ipconfig\ipconfig.csproj", "{D30D7499-C442-4BF7-ADCD-F7309881720E}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "IPRoute", "Win7Samples\netds\iphelp\IPRoute\IPRoute.csproj", "{4D95186D-5094-4DCF-9652-F7BE8B2A14F8}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -2844,6 +2846,18 @@ Global
 		{D30D7499-C442-4BF7-ADCD-F7309881720E}.Release|x64.Build.0 = Release|Any CPU
 		{D30D7499-C442-4BF7-ADCD-F7309881720E}.Release|x86.ActiveCfg = Release|Any CPU
 		{D30D7499-C442-4BF7-ADCD-F7309881720E}.Release|x86.Build.0 = Release|Any CPU
+		{4D95186D-5094-4DCF-9652-F7BE8B2A14F8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4D95186D-5094-4DCF-9652-F7BE8B2A14F8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4D95186D-5094-4DCF-9652-F7BE8B2A14F8}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{4D95186D-5094-4DCF-9652-F7BE8B2A14F8}.Debug|x64.Build.0 = Debug|Any CPU
+		{4D95186D-5094-4DCF-9652-F7BE8B2A14F8}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{4D95186D-5094-4DCF-9652-F7BE8B2A14F8}.Debug|x86.Build.0 = Debug|Any CPU
+		{4D95186D-5094-4DCF-9652-F7BE8B2A14F8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4D95186D-5094-4DCF-9652-F7BE8B2A14F8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4D95186D-5094-4DCF-9652-F7BE8B2A14F8}.Release|x64.ActiveCfg = Release|Any CPU
+		{4D95186D-5094-4DCF-9652-F7BE8B2A14F8}.Release|x64.Build.0 = Release|Any CPU
+		{4D95186D-5094-4DCF-9652-F7BE8B2A14F8}.Release|x86.ActiveCfg = Release|Any CPU
+		{4D95186D-5094-4DCF-9652-F7BE8B2A14F8}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -3046,6 +3060,7 @@ Global
 		{FEC7B1D1-4B5E-4E89-8856-3DCD1E0C4773} = {231BEB1C-7F5A-4401-B2DE-1D21A7562924}
 		{C129AE84-DCEA-4865-A823-AEB2D03275E1} = {231BEB1C-7F5A-4401-B2DE-1D21A7562924}
 		{D30D7499-C442-4BF7-ADCD-F7309881720E} = {231BEB1C-7F5A-4401-B2DE-1D21A7562924}
+		{4D95186D-5094-4DCF-9652-F7BE8B2A14F8} = {231BEB1C-7F5A-4401-B2DE-1D21A7562924}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {82D57A23-9C32-4014-9AFB-25B38D08E1D1}
