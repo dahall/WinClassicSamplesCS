@@ -47,7 +47,7 @@ if (args.Length < 1)
 }
 
 // Loop continuously for the 'stress' command line switch
-if (char.ToLower(args[1][0]) == 's')
+if (char.ToLower(args[0][0]) == 's')
 {
 	while (true)
 	{
@@ -89,7 +89,7 @@ if (char.ToLower(args[1][0]) == 's')
 
 // Run the API regressions for the 'regress' command line switch
 
-if (char.ToLower(args[1][0]) == 'r')
+if (char.ToLower(args[0][0]) == 'r')
 {
 	// Regression test EnableRouter()
 
