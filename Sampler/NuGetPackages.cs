@@ -19,13 +19,11 @@ public partial class NuGetPackages : Form
 	static readonly ILogger logger = NullLogger.Instance; // TODO: Replace with actual logger if needed
 	static readonly CancellationToken cancellationToken = CancellationToken.None; // TODO: Replace with actual cancellation token if needed
 
-	public NuGetPackages()
-	{
-		InitializeComponent();
-	}
+	public NuGetPackages() => InitializeComponent();
 
-	private void NuGetPackages_Load(object sender, EventArgs e)
+	protected override void OnLoad(EventArgs e)
 	{
+		base.OnLoad(e);
 		listBox1.Format += (s, args) => args.Value = args.ListItem is IPackageSearchMetadata r ? r.Title : args.ListItem?.ToString() ?? string.Empty;
 		Task.Factory.StartNew(async () =>
 		{

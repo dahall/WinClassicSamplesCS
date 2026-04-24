@@ -1,5 +1,4 @@
-﻿using System.Runtime.Versioning;
-using System.Windows.Forms;
+﻿using System.Windows.Forms;
 
 namespace Sampler;
 

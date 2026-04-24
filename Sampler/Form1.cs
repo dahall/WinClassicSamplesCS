@@ -15,7 +15,7 @@ public partial class Form1 : Form
 	private const string folderKey = "5EEB255733234c4dBECF9A128E896A1E";
 	private const char sep = '\\';
 
-	private DirectoryInfo[] topDirs;
+	private DirectoryInfo[] topDirs = [];
 
 	public Form1() => InitializeComponent();
 
@@ -56,9 +56,9 @@ public partial class Form1 : Form
 			try
 			{
 				if (ilkey == folderKey)
-					imageList.Images.Add(ilkey, GetSystemIcon());
+					imageList.Images.Add(ilkey, GetSystemIcon()!);
 				else
-					imageList.Images.Add(ilkey, IconExtension.GetFileIcon(ext, IconSize.Small).ToBitmap());
+					imageList.Images.Add(ilkey, IconExtension.GetFileIcon(ext, IconSize.Small)!.ToBitmap());
 			}
 			catch (ArgumentException ex)
 			{
@@ -68,11 +68,11 @@ public partial class Form1 : Form
 		return parent.Add(systemItemPath, Path.GetFileName(systemItemPath), ilkey, ilkey);
 	}
 
-	private static Bitmap GetSystemIcon()
+	private static Bitmap? GetSystemIcon()
 	{
 		var shfi = new SHFILEINFO();
 		HIMAGELIST hSystemImageList = SHGetFileInfo("", 0, ref shfi, SHFILEINFO.Size, SHGFI.SHGFI_SYSICONINDEX | SHGFI.SHGFI_SMALLICON);
-		return hSystemImageList.IsNull ? null : ImageList_GetIcon(hSystemImageList, shfi.iIcon, IMAGELISTDRAWFLAGS.ILD_TRANSPARENT).ToBitmap();
+		return hSystemImageList.IsNull ? null : ImageList_GetIcon(hSystemImageList, shfi.iIcon, IMAGELISTDRAWFLAGS.ILD_TRANSPARENT)?.ToBitmap();
 	}
 
 	private void explorerBrowser_SelectionChanged(object sender, EventArgs e)
@@ -94,14 +94,14 @@ public partial class Form1 : Form
 		root.Expand();
 		foreach (var fi in RootPath.EnumerateFiles("*.csproj", SearchOption.AllDirectories))
 		{
-			if (!fi.DirectoryName.EndsWith("\\Sampler"))
+			if (!fi.DirectoryName!.EndsWith("\\Sampler"))
 				AddLeaf(root, fi, projectView.ImageList);
 		}
 	}
 
 	private void projectView_AfterSelect(object sender, TreeViewEventArgs e)
 	{
-		var di = new DirectoryInfo(e.Node.Name);
+		var di = new DirectoryInfo(e.Node!.Name);
 		var prj = di.Exists ? di.EnumerateFiles("*.csproj").FirstOrDefault() : null;
 		explorerBrowser.Navigate(new ShellFolder(e.Node.Name));
 		if (prj != null)
