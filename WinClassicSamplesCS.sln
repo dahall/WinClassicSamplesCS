@@ -53,7 +53,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "aclapi", "Win7Samples\secur
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "audit", "Win7Samples\security\authorization\audit\audit.csproj", "{B5CB45DC-4DED-4EE2-9242-3F7B0EAEAF58}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "authz", "Win7Samples\security\authorization\authz\authz.csproj", "{86EB6286-8842-4D4C-896B-BB7E5BB5D6D6}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "authzclisvr", "Win7Samples\security\authorization\authz\authzclisvr.csproj", "{86EB6286-8842-4D4C-896B-BB7E5BB5D6D6}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AzMigrate", "Win7Samples\security\authorization\azman\AzMigrate.csproj", "{69DA869D-1797-4417-8102-F02D3AD7C029}"
 EndProject
